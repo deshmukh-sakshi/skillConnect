@@ -1,10 +1,10 @@
-# WorkOrbit
+# SkillConnect
 
-WorkOrbit is a platform connecting clients and freelancers through a streamlined bidding system.
+SkillConnect is a platform connecting clients and freelancers through a streamlined bidding system.
 
 ## Overview
 
-WorkOrbit enables clients to post jobs and freelancers to bid on them, facilitating transparent project management from proposal to contract.
+SkillConnect enables clients to post jobs and freelancers to bid on them, facilitating transparent project management from proposal to contract.
 
 ### Core Workflow
 
