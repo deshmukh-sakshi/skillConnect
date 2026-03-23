@@ -1,0 +1,37 @@
+package com.skillconnect.backend.Auth.Controller;
+
+import com.skillconnect.backend.Auth.DTO.AuthResponse;
+import com.skillconnect.backend.Auth.DTO.LoginRequest;
+import com.skillconnect.backend.Auth.DTO.RegistrationRequest;
+import com.skillconnect.backend.Auth.Service.AuthService;
+import com.skillconnect.backend.DTO.ApiResponse;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/auth")
+@RequiredArgsConstructor
+public class AuthController {
+
+    private final AuthService authService;
+
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<AuthResponse>> login(@Valid @RequestBody LoginRequest request) {
+        return ResponseEntity.ok(authService.login(request));
+    }
+
+    @PostMapping("/register/client")
+    public ResponseEntity<ApiResponse<AuthResponse>> registerClient(@Valid @RequestBody RegistrationRequest request) {
+        return ResponseEntity.ok(authService.registerClient(request));
+    }
+
+    @PostMapping("/register/freelancer")
+    public ResponseEntity<ApiResponse<AuthResponse>> registerFreelancer(@Valid @RequestBody RegistrationRequest request) {
+        return ResponseEntity.ok(authService.registerFreelancer(request));
+    }
+}
