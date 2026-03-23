@@ -1,0 +1,55 @@
+package com.skillconnect.backend.Entity;
+import java.time.LocalDateTime;
+import java.util.*;
+import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+@Entity
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@EntityListeners(AuditingEntityListener.class)
+public class Freelancer {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    private Double rating;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "freelancer_skill",
+            joinColumns= @JoinColumn(name="freelancer_id", referencedColumnName="id"),
+            inverseJoinColumns= @JoinColumn(name="skill_id", referencedColumnName="id")
+    )
+    private Set<Skills>freelancerSkill = new HashSet<>();
+
+    @OneToMany(mappedBy = "freelancer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PastWork> pastWorks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "freelancer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Bids> bids = new ArrayList<>();
+
+}
