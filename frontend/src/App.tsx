@@ -6,7 +6,7 @@ const App = () => {
         <div className="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_500px_at_50%_200px,#C9EBFF,transparent)]">
           <section className="min-h-screen flex flex-col items-center justify-center px-4 text-center">
             <p className="text-6xl font-extrabold tracking-tight leading-tight sm:text-7xl">
-              SkillConnect
+              Skill-Connect
             </p>
             <p className="mt-4 text-lg sm:text-xl text-gray-600">
               Freelance Job Bidding Platform
