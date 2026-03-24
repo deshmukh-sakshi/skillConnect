@@ -1,8 +1,7 @@
 const siteConfigs = {
-  name: "Works Orbit",
+  name: "Skill Connect",
   links: {
-    github: "https://github.com/code-mitra-yt/bl-sheet-client",
-    linkedin: "https://www.linkedin.com/in/rushikesh-mungse",
+    github: "https://github.com/deshmukh-sakshi/skillConnect"
   },
 };
 
