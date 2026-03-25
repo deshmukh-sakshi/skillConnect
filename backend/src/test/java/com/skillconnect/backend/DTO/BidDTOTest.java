@@ -20,7 +20,7 @@ class BidDTOTest {
 
     @Test
     void allArgsConstructor_setsAllFields() {
-        BidDTO bidDTO = new BidDTO(1L, 2L, "Test proposal", 1000.0, 30L);
+        BidDTO bidDTO = new BidDTO(1L, 2L, "Test proposal", 1000.0, 30L, null);
         
         assertEquals(1L, bidDTO.getFreelancerId());
         assertEquals(2L, bidDTO.getProjectId());
@@ -76,7 +76,7 @@ class BidDTOTest {
 
     @Test
     void setNullValues_setsCorrectly() {
-        BidDTO bidDTO = new BidDTO(1L, 2L, "Proposal", 1000.0, 30L);
+        BidDTO bidDTO = new BidDTO(1L, 2L, "Proposal", 1000.0, 30L, null);
         
         bidDTO.setFreelancerId(null);
         bidDTO.setProjectId(null);
