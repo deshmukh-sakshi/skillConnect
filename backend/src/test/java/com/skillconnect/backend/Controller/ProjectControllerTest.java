@@ -1,5 +1,7 @@
 package com.skillconnect.backend.Controller;
 
+import com.skillconnect.backend.DTO.ApiResponse;
+import com.skillconnect.backend.DTO.BidResponseDTO;
 import com.skillconnect.backend.DTO.ProjectDTO;
 import com.skillconnect.backend.Service.project.ProjectService;
 import org.junit.jupiter.api.Test;
@@ -10,9 +12,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,17 +31,36 @@ class ProjectControllerTest {
 
     @Test
     void createProject_returnsCreatedWithBody() {
-        ProjectDTO request = new ProjectDTO();
-        ProjectDTO created = new ProjectDTO();
-        created.setId(12L);
+        ProjectDTO request = new ProjectDTO(
+                null,
+                "Landing page",
+                "Build landing page",
+                "Web",
+                LocalDateTime.of(2026, 5, 1, 12, 0),
+                10000L,
+                null,
+                2L
+        );
+        ProjectDTO created = new ProjectDTO(
+                12L,
+                "Landing page",
+                "Build landing page",
+                "Web",
+                LocalDateTime.of(2026, 5, 1, 12, 0),
+                10000L,
+                null,
+                2L
+        );
 
         when(projectService.createProject(request)).thenReturn(created);
 
-        ResponseEntity<ProjectDTO> response = projectController.createProject(request);
+        ResponseEntity<ApiResponse<ProjectDTO>> response = projectController.createProject(request);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals(12L, response.getBody().getId());
+        assertEquals("success", response.getBody().getStatus());
+        assertNotNull(response.getBody().getData());
+        assertEquals(12L, response.getBody().getData().getId());
     }
 
     @Test
@@ -45,10 +69,14 @@ class ProjectControllerTest {
         dto.setId(1L);
         when(projectService.getAllProjects()).thenReturn(List.of(dto));
 
-        List<ProjectDTO> response = projectController.getAllProjects();
+        ResponseEntity<ApiResponse<List<ProjectDTO>>> response = projectController.getAllProjects();
 
-        assertEquals(1, response.size());
-        assertEquals(1L, response.getFirst().getId());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("success", response.getBody().getStatus());
+        assertNotNull(response.getBody().getData());
+        assertEquals(1, response.getBody().getData().size());
+        assertEquals(1L, response.getBody().getData().getFirst().getId());
     }
 
     @Test
@@ -57,20 +85,25 @@ class ProjectControllerTest {
         dto.setId(8L);
         when(projectService.getProjectById(8L)).thenReturn(dto);
 
-        ResponseEntity<ProjectDTO> response = projectController.getProjectById(8L);
+        ResponseEntity<ApiResponse<ProjectDTO>> response = projectController.getProjectById(8L);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(8L, response.getBody().getId());
+        assertNotNull(response.getBody());
+        assertEquals("success", response.getBody().getStatus());
+        assertNotNull(response.getBody().getData());
+        assertEquals(8L, response.getBody().getData().getId());
     }
 
     @Test
     void getProjectById_whenMissing_returnsNotFound() {
         when(projectService.getProjectById(9L)).thenThrow(new RuntimeException("Project not found"));
 
-        ResponseEntity<ProjectDTO> response = projectController.getProjectById(9L);
+        ResponseEntity<ApiResponse<ProjectDTO>> response = projectController.getProjectById(9L);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertNull(response.getBody());
+        assertNotNull(response.getBody());
+        assertEquals("error", response.getBody().getStatus());
+        assertEquals("Project not found", response.getBody().getError());
     }
 
     @Test
@@ -78,13 +111,107 @@ class ProjectControllerTest {
         when(projectService.deleteProjectById(7L)).thenReturn(true);
         when(projectService.deleteProjectById(99L)).thenReturn(false);
 
-        ResponseEntity<String> okResponse = projectController.deleteProject(7L);
-        ResponseEntity<String> missingResponse = projectController.deleteProject(99L);
+        ResponseEntity<ApiResponse<String>> okResponse = projectController.deleteProject(7L);
+        ResponseEntity<ApiResponse<String>> missingResponse = projectController.deleteProject(99L);
 
         assertEquals(HttpStatus.OK, okResponse.getStatusCode());
-        assertEquals("Project deleted successfully", okResponse.getBody());
+        assertNotNull(okResponse.getBody());
+        assertEquals("success", okResponse.getBody().getStatus());
+        assertEquals("Project deleted", okResponse.getBody().getData());
+
         assertEquals(HttpStatus.NOT_FOUND, missingResponse.getStatusCode());
-        assertEquals("Project not found", missingResponse.getBody());
+        assertNotNull(missingResponse.getBody());
+        assertEquals("error", missingResponse.getBody().getStatus());
+        assertEquals("Project not found", missingResponse.getBody().getError());
+    }
+
+    @Test
+    void getBidsByProject_returnsSuccessResponse() {
+        BidResponseDTO bid = new BidResponseDTO();
+        bid.setBidId(1L);
+        when(projectService.getBidsByProjectId(4L)).thenReturn(List.of(bid));
+
+        ResponseEntity<ApiResponse<List<BidResponseDTO>>> response = projectController.getBidsByProject(4L);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("success", response.getBody().getStatus());
+        assertNotNull(response.getBody().getData());
+        assertEquals(1, response.getBody().getData().size());
+        assertEquals(1L, response.getBody().getData().getFirst().getBidId());
+    }
+
+    @Test
+    void updateProject_returnsUpdatedProject() {
+        ProjectDTO request = new ProjectDTO();
+        ProjectDTO updated = new ProjectDTO();
+        updated.setId(10L);
+
+        when(projectService.updateProject(10L, request)).thenReturn(updated);
+
+        ResponseEntity<ApiResponse<ProjectDTO>> response = projectController.updateProject(10L, request);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("success", response.getBody().getStatus());
+        assertNotNull(response.getBody().getData());
+        assertEquals(10L, response.getBody().getData().getId());
+    }
+
+    @Test
+    void updateProject_whenServiceThrows_propagatesException() {
+        ProjectDTO request = new ProjectDTO();
+        when(projectService.updateProject(10L, request)).thenThrow(new RuntimeException("Project not found"));
+
+        RuntimeException ex = assertThrows(RuntimeException.class,
+                () -> projectController.updateProject(10L, request));
+
+        assertEquals("Project not found", ex.getMessage());
+    }
+
+    @Test
+    void acceptBid_returnsSuccessMessage() {
+        doNothing().when(projectService).acceptBid(3L, 6L);
+
+        ResponseEntity<ApiResponse<String>> response = projectController.acceptBid(3L, 6L);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("success", response.getBody().getStatus());
+        assertEquals("Project bid accepted", response.getBody().getData());
+    }
+
+    @Test
+    void acceptBid_whenServiceThrows_propagatesException() {
+        doThrow(new RuntimeException("Bid not found")).when(projectService).acceptBid(3L, 6L);
+
+        RuntimeException ex = assertThrows(RuntimeException.class,
+                () -> projectController.acceptBid(3L, 6L));
+
+        assertEquals("Bid not found", ex.getMessage());
+    }
+
+    @Test
+    void rejectBid_returnsSuccessMessage() {
+        doNothing().when(projectService).rejectBid(3L, 7L);
+
+        ResponseEntity<ApiResponse<String>> response = projectController.rejectBid(3L, 7L);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("success", response.getBody().getStatus());
+        assertEquals("Project rejected", response.getBody().getData());
+    }
+
+    @Test
+    void rejectBid_whenServiceThrows_propagatesException() {
+        doThrow(new IllegalStateException("Only pending bids can be rejected"))
+                .when(projectService).rejectBid(3L, 7L);
+
+        IllegalStateException ex = assertThrows(IllegalStateException.class,
+                () -> projectController.rejectBid(3L, 7L));
+
+        assertEquals("Only pending bids can be rejected", ex.getMessage());
     }
 }
 
