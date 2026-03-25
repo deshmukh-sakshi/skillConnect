@@ -1,8 +1,11 @@
 package com.skillconnect.backend.Auth.Controller;
 
 import com.skillconnect.backend.Auth.DTO.AuthResponse;
+import com.skillconnect.backend.Auth.DTO.ForgotPasswordRequest;
 import com.skillconnect.backend.Auth.DTO.LoginRequest;
+import com.skillconnect.backend.Auth.DTO.PasswordResponse;
 import com.skillconnect.backend.Auth.DTO.RegistrationRequest;
+import com.skillconnect.backend.Auth.DTO.ResetPasswordRequest;
 import com.skillconnect.backend.Auth.Service.AuthService;
 import com.skillconnect.backend.DTO.ApiResponse;
 import jakarta.validation.Valid;
@@ -33,5 +36,25 @@ public class AuthController {
     @PostMapping("/register/freelancer")
     public ResponseEntity<ApiResponse<AuthResponse>> registerFreelancer(@Valid @RequestBody RegistrationRequest request) {
         return ResponseEntity.ok(authService.registerFreelancer(request));
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<ApiResponse<PasswordResponse>> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        ApiResponse<PasswordResponse> response = authService.processForgotPasswordRequest(request);
+        if (response.isSuccess()) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<ApiResponse<PasswordResponse>> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        ApiResponse<PasswordResponse> response = authService.resetPassword(request);
+        if (response.isSuccess()) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 }
