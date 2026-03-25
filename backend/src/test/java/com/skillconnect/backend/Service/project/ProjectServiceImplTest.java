@@ -9,6 +9,7 @@ import com.skillconnect.backend.Entity.Project;
 import com.skillconnect.backend.Repository.BidRepository;
 import com.skillconnect.backend.Repository.ClientRepository;
 import com.skillconnect.backend.Repository.ProjectRepository;
+import com.skillconnect.backend.Service.contract.ContractService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -35,6 +36,9 @@ class ProjectServiceImplTest {
     @Mock
     private BidRepository bidRepo;
 
+    @Mock
+    private ContractService contractService;
+
     @InjectMocks
     private ProjectServiceImpl projectService;
 
@@ -48,7 +52,10 @@ class ProjectServiceImplTest {
                 LocalDateTime.of(2026, 4, 1, 12, 0),
                 25000L,
                 null,
-                7L
+                7L,
+                null,
+                null,
+                null
         );
 
         Client client = new Client();
@@ -87,7 +94,10 @@ class ProjectServiceImplTest {
                 LocalDateTime.of(2026, 5, 1, 9, 30),
                 15000L,
                 null,
-                123L
+                123L,
+                null,
+                null,
+                null
         );
 
         when(clientRepository.findById(123L)).thenReturn(Optional.empty());
@@ -186,7 +196,10 @@ class ProjectServiceImplTest {
                 LocalDateTime.of(2026, 8, 1, 11, 0),
                 30000L,
                 null,
-                8L
+                8L,
+                null,
+                null,
+                null
         );
 
         when(projectRepository.findById(13L)).thenReturn(Optional.of(existing));
@@ -214,7 +227,10 @@ class ProjectServiceImplTest {
                 LocalDateTime.of(2026, 9, 1, 10, 0),
                 45000L,
                 null,
-                99L
+                99L,
+                null,
+                null,
+                null
         );
 
         when(projectRepository.findById(14L)).thenReturn(Optional.of(existing));

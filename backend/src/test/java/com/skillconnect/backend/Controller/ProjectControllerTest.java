@@ -39,7 +39,10 @@ class ProjectControllerTest {
                 LocalDateTime.of(2026, 5, 1, 12, 0),
                 10000L,
                 null,
-                2L
+                2L,
+                null,
+                null,
+                null
         );
         ProjectDTO created = new ProjectDTO(
                 12L,
@@ -49,7 +52,10 @@ class ProjectControllerTest {
                 LocalDateTime.of(2026, 5, 1, 12, 0),
                 10000L,
                 null,
-                2L
+                2L,
+                null,
+                null,
+                null
         );
 
         when(projectService.createProject(request)).thenReturn(created);

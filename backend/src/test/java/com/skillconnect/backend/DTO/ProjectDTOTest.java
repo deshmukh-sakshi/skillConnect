@@ -36,7 +36,10 @@ class ProjectDTOTest {
             deadline,
             5000L,
             Project.ProjectStatus.OPEN,
-            10L
+            10L,
+            null,
+            null,
+            null
         );
         
         assertEquals(1L, dto.getId());
@@ -156,7 +159,7 @@ class ProjectDTOTest {
     @Test
     void setNullValues_setsCorrectly() {
         LocalDateTime deadline = LocalDateTime.now();
-        ProjectDTO dto = new ProjectDTO(1L, "Title", "Description", "Category", deadline, 1000L, Project.ProjectStatus.OPEN, 1L);
+        ProjectDTO dto = new ProjectDTO(1L, "Title", "Description", "Category", deadline, 1000L, Project.ProjectStatus.OPEN, 1L, null, null, null);
         
         dto.setId(null);
         dto.setTitle(null);

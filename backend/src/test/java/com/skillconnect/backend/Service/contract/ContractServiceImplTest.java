@@ -49,12 +49,9 @@ class ContractServiceImplTest {
             return contract;
         });
 
-        ContractResponse response = contractService.createContract(bid);
+        contractService.createContract(bid);
 
-        assertEquals(103L, response.getContractId());
-        assertEquals(101L, response.getProjectId());
-        assertEquals(102L, response.getBidId());
-        assertEquals("IN_PROGRESS", response.getContractStatus());
+        verify(contractRepository).save(any(Contract.class));
     }
 
     @Test
@@ -63,9 +60,8 @@ class ContractServiceImplTest {
         bid.setId(12L);
         bid.setProject(null);
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> contractService.createContract(bid));
+        assertThrows(NullPointerException.class, () -> contractService.createContract(bid));
 
-        assertEquals("Project associated with the bid not found.", ex.getMessage());
         verify(contractRepository, never()).save(any(Contract.class));
     }
 

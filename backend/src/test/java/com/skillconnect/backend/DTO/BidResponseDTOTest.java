@@ -26,7 +26,7 @@ class BidResponseDTOTest {
     @Test
     void allArgsConstructor_setsAllFields() {
         LocalDateTime now = LocalDateTime.now();
-        BidResponseDTO dto = new BidResponseDTO(1L, 2L, 3L, "Proposal", 1500.0, 20L, "PENDING", now);
+        BidResponseDTO dto = new BidResponseDTO(1L, 2L, 3L, null, "Proposal", 1500.0, 20L, null, "PENDING", now);
         
         assertEquals(1L, dto.getBidId());
         assertEquals(2L, dto.getFreelancerId());
@@ -89,7 +89,7 @@ class BidResponseDTOTest {
     @Test
     void setNullValues_setsCorrectly() {
         LocalDateTime now = LocalDateTime.now();
-        BidResponseDTO dto = new BidResponseDTO(1L, 2L, 3L, "Proposal", 1500.0, 20L, "PENDING", now);
+        BidResponseDTO dto = new BidResponseDTO(1L, 2L, 3L, null, "Proposal", 1500.0, 20L, null, "PENDING", now);
         
         dto.setBidId(null);
         dto.setFreelancerId(null);

@@ -32,7 +32,7 @@ class BidControllerTest {
 
     @Test
     void placeBid_returnsCreatedEnvelope() {
-        BidDTO dto = new BidDTO(2L, 3L, "I can do this", 5000.0, 20L);
+        BidDTO dto = new BidDTO(2L, 3L, "I can do this", 5000.0, 20L, null);
         Bids bid = new Bids();
         bid.setId(11L);
 

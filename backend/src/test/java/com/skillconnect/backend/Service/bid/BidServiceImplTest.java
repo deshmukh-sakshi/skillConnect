@@ -43,7 +43,7 @@ class BidServiceImplTest {
 
     @Test
     void placeBid_whenFreelancerMissing_throwsRuntimeException() {
-        BidDTO dto = new BidDTO(9L, 3L, "Proposal", 3000.0, 10L);
+        BidDTO dto = new BidDTO(9L, 3L, "Proposal", 3000.0, 10L, null);
         when(freelancerRepo.findById(9L)).thenReturn(Optional.empty());
 
         RuntimeException ex = assertThrows(RuntimeException.class, () -> bidService.placeBid(dto));
@@ -54,7 +54,7 @@ class BidServiceImplTest {
 
     @Test
     void placeBid_whenProjectMissing_throwsRuntimeException() {
-        BidDTO dto = new BidDTO(1L, 3L, "Proposal", 3000.0, 10L);
+        BidDTO dto = new BidDTO(1L, 3L, "Proposal", 3000.0, 10L, null);
 
         Freelancer freelancer = new Freelancer();
         freelancer.setId(1L);
@@ -69,7 +69,7 @@ class BidServiceImplTest {
 
     @Test
     void placeBid_whenProjectClosed_throwsIllegalStateException() {
-        BidDTO dto = new BidDTO(1L, 3L, "Proposal", 3000.0, 10L);
+        BidDTO dto = new BidDTO(1L, 3L, "Proposal", 3000.0, 10L, null);
 
         Freelancer freelancer = new Freelancer();
         freelancer.setId(1L);
@@ -88,7 +88,7 @@ class BidServiceImplTest {
 
     @Test
     void placeBid_whenAlreadyBid_throwsIllegalStateException() {
-        BidDTO dto = new BidDTO(1L, 3L, "Proposal", 3000.0, 10L);
+        BidDTO dto = new BidDTO(1L, 3L, "Proposal", 3000.0, 10L, null);
 
         Freelancer freelancer = new Freelancer();
         freelancer.setId(1L);
@@ -108,7 +108,7 @@ class BidServiceImplTest {
 
     @Test
     void placeBid_success_savesPendingBid() {
-        BidDTO dto = new BidDTO(1L, 3L, "Detailed proposal", 7000.0, 25L);
+        BidDTO dto = new BidDTO(1L, 3L, "Detailed proposal", 7000.0, 25L, null);
 
         Freelancer freelancer = new Freelancer();
         freelancer.setId(1L);
