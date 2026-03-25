@@ -12,9 +12,11 @@ public class BidResponseDTO {
     private Long bidId;
     private Long freelancerId;
     private Long projectId;
+    private String freelancerName;
     private String proposal;
     private Double bidAmount;
     private Long durationDays;
+    private Integer teamSize;
     private String status;
     private LocalDateTime createdAt;
 }
