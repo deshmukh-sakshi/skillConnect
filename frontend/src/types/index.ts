@@ -16,3 +16,31 @@ export interface RequestType {
   url?: string;
   isFormData?: boolean;
 }
+
+export type UserRoles = "ROLE_FREELANCER" | "ROLE_CLIENT";
+
+export interface User {
+  id?: number;
+  name: string;
+  email: string;
+  role: UserRoles;
+  token: string;
+}
+
+export interface NavLinkType {
+  id: number;
+  title: string;
+  path: string;
+  isProtected: boolean;
+  icon: LucideIcon;
+}
+
+export interface ApiError {
+  response?: {
+    data?: {
+      error?: {
+        message?: string;
+      };
+    };
+  };
+}
