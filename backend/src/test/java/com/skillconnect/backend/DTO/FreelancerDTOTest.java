@@ -119,9 +119,9 @@ class FreelancerDTOTest {
     @Test
     void setPastWorks_withMultipleWorks_setsCorrectly() {
         FreelancerDTO dto = new FreelancerDTO();
-        PastWorkDTO work1 = new PastWorkDTO("Project 1", "http://link1.com", "Description 1", 1L);
-        PastWorkDTO work2 = new PastWorkDTO("Project 2", "http://link2.com", "Description 2", 1L);
-        PastWorkDTO work3 = new PastWorkDTO("Project 3", "http://link3.com", "Description 3", 1L);
+        PastWorkDTO work1 = new PastWorkDTO(); work1.setTitle("Project 1"); work1.setLink("http://link1.com"); work1.setDescription("Description 1");
+        PastWorkDTO work2 = new PastWorkDTO(); work2.setTitle("Project 2"); work2.setLink("http://link2.com"); work2.setDescription("Description 2");
+        PastWorkDTO work3 = new PastWorkDTO(); work3.setTitle("Project 3"); work3.setLink("http://link3.com"); work3.setDescription("Description 3");
         
         List<PastWorkDTO> pastWorks = Arrays.asList(work1, work2, work3);
         dto.setPastWorks(pastWorks);
