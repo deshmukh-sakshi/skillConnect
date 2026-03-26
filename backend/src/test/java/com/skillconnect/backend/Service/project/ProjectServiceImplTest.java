@@ -40,6 +40,9 @@ class ProjectServiceImplTest {
     @Mock
     private ContractService contractService;
 
+    @Mock
+    private com.skillconnect.backend.Wallet.Service.WalletService walletService;
+
     @InjectMocks
     private ProjectServiceImpl projectService;
 
@@ -293,14 +296,19 @@ class ProjectServiceImplTest {
 
     @Test
     void acceptBid_success_closesProjectAndUpdatesAllBidStatuses() {
+        Client client = new Client();
+        client.setId(10L);
+
         Project project = new Project();
         project.setId(4L);
         project.setStatus(Project.ProjectStatus.OPEN);
+        project.setClient(client);
 
         Bids target = new Bids();
         target.setId(40L);
         target.setProject(project);
         target.setStatus(Bids.bidStatus.Pending);
+        target.setBidAmount(500.0);
 
         Bids other = new Bids();
         other.setId(41L);
@@ -317,6 +325,7 @@ class ProjectServiceImplTest {
         assertEquals(Bids.bidStatus.Rejected, other.getStatus());
         verify(projectRepository).save(project);
         verify(bidRepo).saveAll(List.of(target, other));
+        verify(walletService).freezeAmount(10L, 4L, 500.0);
     }
 
     @Test

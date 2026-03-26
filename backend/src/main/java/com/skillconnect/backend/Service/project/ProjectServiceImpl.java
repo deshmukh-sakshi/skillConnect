@@ -10,14 +10,13 @@ import com.skillconnect.backend.Repository.BidRepository;
 import com.skillconnect.backend.Repository.ClientRepository;
 import com.skillconnect.backend.Repository.ProjectRepository;
 import com.skillconnect.backend.Service.contract.ContractService;
+import com.skillconnect.backend.Wallet.Service.WalletService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.*;
-import java.util.List;
 import java.util.Optional;
 
-import static com.skillconnect.backend.Service.bid.BidServiceImpl.getBidResponseDTO;
 
 @Slf4j
 @Service
@@ -27,6 +26,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final ClientRepository clientRepository;
     private final ContractService contractService;
+    private final WalletService walletService;
     private final BidRepository bidRepo;
 
     @Override
@@ -134,17 +134,13 @@ public class ProjectServiceImpl implements ProjectService {
         log.info("Accepting bid for project ID: {} with bid ID: {}", projectId, bidId);
         Bids acceptedBid = bidRepo.findById(bidId)
                 .orElseThrow(() -> new RuntimeException("Bid not found"));
-        log.info("Bid found: {}", acceptedBid.getId());
         Project project = acceptedBid.getProject();
 
         if (!project.getId().equals(projectId)) {
-            log.error("Bid does not belong to the specified project: {}", bidId);
             throw new RuntimeException("Bid does not belong to the specified project");
         }
 
-        // Reject if bid is not in PENDING state
         if (acceptedBid.getStatus() != Bids.bidStatus.Pending) {
-            log.error("Bid is not in PENDING state: {}", acceptedBid.getId());
             throw new IllegalStateException("Only pending bids can be accepted");
         }
 
@@ -153,7 +149,6 @@ public class ProjectServiceImpl implements ProjectService {
         projectRepository.save(project);
 
         List<Bids> allBids = bidRepo.findByProject_Id(projectId);
-
         for (Bids bid : allBids) {
             if (bid.getId().equals(bidId)) {
                 bid.setStatus(Bids.bidStatus.Accepted);
@@ -161,12 +156,17 @@ public class ProjectServiceImpl implements ProjectService {
                 bid.setStatus(Bids.bidStatus.Rejected);
             }
         }
-
         bidRepo.saveAll(allBids);
-        // Create contract for accepted bid
-        log.info("Creating contract for accepted bid: {}", acceptedBid.getId());
+
+        Long clientId = project.getClient().getId();
+        Double amount = acceptedBid.getBidAmount();
+
+        log.info("Freezing amount {} for clientId {} on projectId {}", amount, clientId, projectId);
+        walletService.freezeAmount(clientId, projectId, amount);
+
         contractService.createContract(acceptedBid);
     }
+
 
     @Override
     public void rejectBid(Long projectId, Long bidId) {
@@ -245,7 +245,7 @@ public class ProjectServiceImpl implements ProjectService {
             clientDTO = new ClientDTO(
                     project.getClient().getName(),
                     project.getClient().getAppUser().getEmail(),
-                    null // skip project list to avoid circular reference
+                    null
             );
         }
 
@@ -259,9 +259,9 @@ public class ProjectServiceImpl implements ProjectService {
                 project.getStatus(),
                 clientDTO,
                 project.getClient() != null ? project.getClient().getId() : null,
-                project.getCreatedAt(),        // ✅ ADD THIS LINE
-                project.getUpdatedAt(),        // ✅ ADD THIS LINE
-                project.getBids() != null ? project.getBids().size() : 0  // ✅ ADD THIS LINE
+                project.getCreatedAt(),
+                project.getUpdatedAt(),
+                project.getBids() != null ? project.getBids().size() : 0
         );
     }
 }
