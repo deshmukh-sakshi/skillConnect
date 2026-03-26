@@ -8,121 +8,112 @@ class SkillDTOTest {
 
     @Test
     void noArgsConstructor_createsInstance() {
-        SkillDTO dto = new SkillDTO();
-        
+        PastWorkUpdateDTO dto = new PastWorkUpdateDTO();
+
         assertNotNull(dto);
         assertNull(dto.getId());
-        assertNull(dto.getSkillName());
-        assertNull(dto.getFreelancerId());
-    }
-
-    @Test
-    void allArgsConstructor_setsAllFields() {
-        SkillDTO dto = new SkillDTO(1L, "Java", 10L);
-        
-        assertEquals(1L, dto.getId());
-        assertEquals("Java", dto.getSkillName());
-        assertEquals(10L, dto.getFreelancerId());
+        assertNull(dto.getTitle());
+        assertNull(dto.getLink());
+        assertNull(dto.getDescription());
+        assertNull(dto.getToDelete());
     }
 
     @Test
     void settersAndGetters_workCorrectly() {
-        SkillDTO dto = new SkillDTO();
-        
+        PastWorkUpdateDTO dto = new PastWorkUpdateDTO();
+
+        dto.setId(1L);
+        dto.setTitle("My Project");
+        dto.setLink("https://example.com");
+        dto.setDescription("A great project");
+        dto.setToDelete(false);
+
+        assertEquals(1L, dto.getId());
+        assertEquals("My Project", dto.getTitle());
+        assertEquals("https://example.com", dto.getLink());
+        assertEquals("A great project", dto.getDescription());
+        assertFalse(dto.getToDelete());
+    }
+
+    @Test
+    void setToDelete_true_setsCorrectly() {
+        PastWorkUpdateDTO dto = new PastWorkUpdateDTO();
+
+        dto.setTitle("Old Work");
+        dto.setLink("https://old.com");
+        dto.setDescription("desc");
         dto.setId(5L);
-        dto.setSkillName("Python");
-        dto.setFreelancerId(20L);
-        
+        dto.setToDelete(true);
+
+        assertTrue(dto.getToDelete());
         assertEquals(5L, dto.getId());
-        assertEquals("Python", dto.getSkillName());
-        assertEquals(20L, dto.getFreelancerId());
     }
 
     @Test
-    void setSkillName_withVariousSkills_setsCorrectly() {
-        SkillDTO dto = new SkillDTO();
-        
-        dto.setSkillName("JavaScript");
-        assertEquals("JavaScript", dto.getSkillName());
-        
-        dto.setSkillName("Spring Boot");
-        assertEquals("Spring Boot", dto.getSkillName());
-        
-        dto.setSkillName("React");
-        assertEquals("React", dto.getSkillName());
-        
-        dto.setSkillName("PostgreSQL");
-        assertEquals("PostgreSQL", dto.getSkillName());
+    void setTitle_withVariousValues_setsCorrectly() {
+        PastWorkUpdateDTO dto = new PastWorkUpdateDTO();
+
+        dto.setTitle("JavaScript App");
+        assertEquals("JavaScript App", dto.getTitle());
+
+        dto.setTitle("Spring Boot API");
+        assertEquals("Spring Boot API", dto.getTitle());
     }
 
     @Test
-    void setSkillName_withLongName_setsCorrectly() {
-        SkillDTO dto = new SkillDTO();
-        String longSkillName = "Advanced Machine Learning and Artificial Intelligence";
-        
-        dto.setSkillName(longSkillName);
-        
-        assertEquals(longSkillName, dto.getSkillName());
+    void setLink_withDifferentURLs_setsCorrectly() {
+        PastWorkUpdateDTO dto = new PastWorkUpdateDTO();
+
+        dto.setLink("https://github.com/user/repo");
+        assertEquals("https://github.com/user/repo", dto.getLink());
+
+        dto.setLink("http://portfolio.com/project");
+        assertEquals("http://portfolio.com/project", dto.getLink());
     }
 
     @Test
     void setId_withDifferentValues_setsCorrectly() {
-        SkillDTO dto = new SkillDTO();
-        
+        PastWorkUpdateDTO dto = new PastWorkUpdateDTO();
+
         dto.setId(0L);
         assertEquals(0L, dto.getId());
-        
-        dto.setId(100L);
-        assertEquals(100L, dto.getId());
-        
+
         dto.setId(999999L);
         assertEquals(999999L, dto.getId());
     }
 
     @Test
-    void setFreelancerId_withDifferentValues_setsCorrectly() {
-        SkillDTO dto = new SkillDTO();
-        
-        dto.setFreelancerId(1L);
-        assertEquals(1L, dto.getFreelancerId());
-        
-        dto.setFreelancerId(500L);
-        assertEquals(500L, dto.getFreelancerId());
-    }
-
-    @Test
     void setNullValues_setsCorrectly() {
-        SkillDTO dto = new SkillDTO(1L, "Java", 10L);
-        
+        PastWorkUpdateDTO dto = new PastWorkUpdateDTO();
+        dto.setId(1L);
+        dto.setTitle("Title");
+        dto.setLink("Link");
+        dto.setDescription("Desc");
+        dto.setToDelete(true);
+
         dto.setId(null);
-        dto.setSkillName(null);
-        dto.setFreelancerId(null);
-        
+        dto.setTitle(null);
+        dto.setLink(null);
+        dto.setDescription(null);
+        dto.setToDelete(null);
+
         assertNull(dto.getId());
-        assertNull(dto.getSkillName());
-        assertNull(dto.getFreelancerId());
+        assertNull(dto.getTitle());
+        assertNull(dto.getLink());
+        assertNull(dto.getDescription());
+        assertNull(dto.getToDelete());
     }
 
     @Test
-    void setEmptySkillName_setsCorrectly() {
-        SkillDTO dto = new SkillDTO();
-        
-        dto.setSkillName("");
-        
-        assertEquals("", dto.getSkillName());
-    }
+    void setEmptyStrings_setsCorrectly() {
+        PastWorkUpdateDTO dto = new PastWorkUpdateDTO();
 
-    @Test
-    void multipleSkillsForSameFreelancer_workCorrectly() {
-        SkillDTO skill1 = new SkillDTO(1L, "Java", 100L);
-        SkillDTO skill2 = new SkillDTO(2L, "Spring Boot", 100L);
-        SkillDTO skill3 = new SkillDTO(3L, "Docker", 100L);
-        
-        assertEquals(100L, skill1.getFreelancerId());
-        assertEquals(100L, skill2.getFreelancerId());
-        assertEquals(100L, skill3.getFreelancerId());
-        
-        assertNotEquals(skill1.getId(), skill2.getId());
-        assertNotEquals(skill2.getId(), skill3.getId());
+        dto.setTitle("");
+        dto.setLink("");
+        dto.setDescription("");
+
+        assertEquals("", dto.getTitle());
+        assertEquals("", dto.getLink());
+        assertEquals("", dto.getDescription());
     }
 }

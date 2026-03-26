@@ -1,9 +1,11 @@
 package com.skillconnect.backend.Controller;
 
 import com.skillconnect.backend.DTO.ApiResponse;
+import com.skillconnect.backend.DTO.FreelancerDTO;
+import com.skillconnect.backend.DTO.FreelancerUpdateDTO;
 import com.skillconnect.backend.DTO.PastWorkDTO;
-import com.skillconnect.backend.Entity.PastWork;
-import com.skillconnect.backend.Service.pastWork.PastWorkService;
+import com.skillconnect.backend.DTO.PastWorkUpdateDTO;
+import com.skillconnect.backend.Service.freelancer.FreelancerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,85 +14,87 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PastWorkControllerTest {
 
     @Mock
-    private PastWorkService pastWorkService;
+    private FreelancerService freelancerService;
 
     @InjectMocks
-    private PastWorkController pastWorkController;
+    private FreelancerController freelancerController;
 
     @Test
-    void addPastWork_returnsCreatedEnvelope() {
-        PastWorkDTO request = new PastWorkDTO("Portfolio", "https://example.com", "Client project", 4L);
-        PastWorkDTO saved = new PastWorkDTO("Portfolio", "https://example.com", "Client project", 4L);
+    void updateFreelancer_addPastWork_returnsOkEnvelope() {
+        PastWorkUpdateDTO pwDto = new PastWorkUpdateDTO();
+        pwDto.setTitle("Portfolio");
+        pwDto.setLink("https://example.com");
+        pwDto.setDescription("Client project");
 
-        when(pastWorkService.addPastWork(request)).thenReturn(saved);
+        FreelancerUpdateDTO request = new FreelancerUpdateDTO();
+        request.setName("Sam");
+        request.setPastWorks(List.of(pwDto));
 
-        ResponseEntity<ApiResponse<PastWorkDTO>> response = pastWorkController.addPastWork(request);
+        PastWorkDTO savedWork = new PastWorkDTO();
+        savedWork.setTitle("Portfolio");
+        savedWork.setLink("https://example.com");
 
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals("success", response.getBody().getStatus());
-        assertEquals(4L, response.getBody().getData().getFreelancerId());
-    }
+        FreelancerDTO updated = new FreelancerDTO();
+        updated.setName("Sam");
+        updated.setPastWorks(List.of(savedWork));
 
-    @Test
-    void updatePastWork_returnsSuccessEnvelope() {
-        PastWorkDTO request = new PastWorkDTO("Updated", "https://link", "desc", 4L);
-        PastWork saved = new PastWork();
-        saved.setId(9L);
-        saved.setTitle("Updated");
+        when(freelancerService.updateFreelancerProfile(4L, request)).thenReturn(updated);
 
-        when(pastWorkService.updatePastWork(9L, request)).thenReturn(saved);
-
-        ResponseEntity<ApiResponse<PastWork>> response = pastWorkController.updatePastWork(9L, request);
+        ResponseEntity<ApiResponse<FreelancerDTO>> response = freelancerController.updateFreelancer(4L, request);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals("success", response.getBody().getStatus());
-        assertEquals(9L, response.getBody().getData().getId());
+        assertEquals(1, response.getBody().getData().getPastWorks().size());
+        assertEquals("Portfolio", response.getBody().getData().getPastWorks().getFirst().getTitle());
     }
 
     @Test
-    void updatePastWork_whenServiceThrows_propagatesException() {
-        PastWorkDTO request = new PastWorkDTO("Updated", "https://link", "desc", 4L);
-        when(pastWorkService.updatePastWork(9L, request)).thenThrow(new RuntimeException("Past work not found"));
+    void updateFreelancer_deletePastWork_returnsEmptyPastWorks() {
+        PastWorkUpdateDTO pwDto = new PastWorkUpdateDTO();
+        pwDto.setId(9L);
+        pwDto.setTitle("Old");
+        pwDto.setLink("https://old");
+        pwDto.setDescription("desc");
+        pwDto.setToDelete(true);
 
-        RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> pastWorkController.updatePastWork(9L, request));
+        FreelancerUpdateDTO request = new FreelancerUpdateDTO();
+        request.setName("Sam");
+        request.setPastWorks(List.of(pwDto));
 
-        assertEquals("Past work not found", ex.getMessage());
-    }
+        FreelancerDTO updated = new FreelancerDTO();
+        updated.setName("Sam");
+        updated.setPastWorks(List.of());
 
-    @Test
-    void deletePastWork_returnsSuccessEnvelope() {
-        doNothing().when(pastWorkService).deletePastWork(5L);
+        when(freelancerService.updateFreelancerProfile(4L, request)).thenReturn(updated);
 
-        ResponseEntity<ApiResponse<String>> response = pastWorkController.deletePastWork(5L);
+        ResponseEntity<ApiResponse<FreelancerDTO>> response = freelancerController.updateFreelancer(4L, request);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals("success", response.getBody().getStatus());
-        assertEquals("Past work deleted.", response.getBody().getData());
+        assertTrue(response.getBody().getData().getPastWorks().isEmpty());
     }
 
     @Test
-    void deletePastWork_whenServiceThrows_propagatesException() {
-        doThrow(new RuntimeException("Past work not found")).when(pastWorkService).deletePastWork(5L);
+    void updateFreelancer_whenServiceThrows_propagatesException() {
+        FreelancerUpdateDTO request = new FreelancerUpdateDTO();
+        request.setName("Sam");
+        request.setPastWorks(List.of());
+
+        when(freelancerService.updateFreelancerProfile(4L, request))
+                .thenThrow(new RuntimeException("Freelancer not found"));
 
         RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> pastWorkController.deletePastWork(5L));
+                () -> freelancerController.updateFreelancer(4L, request));
 
-        assertEquals("Past work not found", ex.getMessage());
+        assertEquals("Freelancer not found", ex.getMessage());
     }
 }
-
