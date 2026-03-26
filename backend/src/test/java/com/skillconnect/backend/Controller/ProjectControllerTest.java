@@ -2,6 +2,7 @@ package com.skillconnect.backend.Controller;
 
 import com.skillconnect.backend.DTO.ApiResponse;
 import com.skillconnect.backend.DTO.BidResponseDTO;
+import com.skillconnect.backend.DTO.ClientDTO;
 import com.skillconnect.backend.DTO.ProjectDTO;
 import com.skillconnect.backend.Service.project.ProjectService;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,7 @@ class ProjectControllerTest {
 
     @Test
     void createProject_returnsCreatedWithBody() {
+        ClientDTO clientDTO = new ClientDTO("Client", "client@test.com", null);
         ProjectDTO request = new ProjectDTO(
                 null,
                 "Landing page",
@@ -39,10 +41,8 @@ class ProjectControllerTest {
                 LocalDateTime.of(2026, 5, 1, 12, 0),
                 10000L,
                 null,
-                2L,
-                null,
-                null,
-                null
+                clientDTO,
+                2L
         );
         ProjectDTO created = new ProjectDTO(
                 12L,
@@ -52,10 +52,8 @@ class ProjectControllerTest {
                 LocalDateTime.of(2026, 5, 1, 12, 0),
                 10000L,
                 null,
-                2L,
-                null,
-                null,
-                null
+                clientDTO,
+                2L
         );
 
         when(projectService.createProject(request)).thenReturn(created);
@@ -73,9 +71,9 @@ class ProjectControllerTest {
     void getAllProjects_returnsList() {
         ProjectDTO dto = new ProjectDTO();
         dto.setId(1L);
-        when(projectService.getAllProjects()).thenReturn(List.of(dto));
+        when(projectService.getAllProjects(null)).thenReturn(List.of(dto));
 
-        ResponseEntity<ApiResponse<List<ProjectDTO>>> response = projectController.getAllProjects();
+        ResponseEntity<ApiResponse<List<ProjectDTO>>> response = projectController.getAllProjects(null);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
