@@ -1,6 +1,7 @@
 package com.skillconnect.backend.Service.project;
 
 import com.skillconnect.backend.DTO.BidResponseDTO;
+import com.skillconnect.backend.DTO.ClientDTO;
 import com.skillconnect.backend.DTO.ProjectDTO;
 import com.skillconnect.backend.Entity.Bids;
 import com.skillconnect.backend.Entity.Client;
@@ -52,10 +53,8 @@ class ProjectServiceImplTest {
                 LocalDateTime.of(2026, 4, 1, 12, 0),
                 25000L,
                 null,
-                7L,
                 null,
-                null,
-                null
+                7L
         );
 
         Client client = new Client();
@@ -94,10 +93,8 @@ class ProjectServiceImplTest {
                 LocalDateTime.of(2026, 5, 1, 9, 30),
                 15000L,
                 null,
-                123L,
                 null,
-                null,
-                null
+                123L
         );
 
         when(clientRepository.findById(123L)).thenReturn(Optional.empty());
@@ -159,7 +156,7 @@ class ProjectServiceImplTest {
 
         when(projectRepository.findAll()).thenReturn(List.of(project));
 
-        List<ProjectDTO> result = projectService.getAllProjects();
+        List<ProjectDTO> result = projectService.getAllProjects(null);
 
         assertEquals(1, result.size());
         assertEquals(21L, result.get(0).getId());
@@ -196,10 +193,8 @@ class ProjectServiceImplTest {
                 LocalDateTime.of(2026, 8, 1, 11, 0),
                 30000L,
                 null,
-                8L,
                 null,
-                null,
-                null
+                8L
         );
 
         when(projectRepository.findById(13L)).thenReturn(Optional.of(existing));
@@ -227,10 +222,8 @@ class ProjectServiceImplTest {
                 LocalDateTime.of(2026, 9, 1, 10, 0),
                 45000L,
                 null,
-                99L,
                 null,
-                null,
-                null
+                99L
         );
 
         when(projectRepository.findById(14L)).thenReturn(Optional.of(existing));

@@ -161,7 +161,7 @@ class BidServiceImplTest {
         assertEquals(1, result.size());
         assertEquals(6L, result.getFirst().getBidId());
         assertEquals(4L, result.getFirst().getFreelancerId());
-        assertEquals(5L, result.getFirst().getProjectId());
+        assertEquals(5L, result.getFirst().getProject().getId());
         assertEquals("Accepted", result.getFirst().getStatus());
     }
 

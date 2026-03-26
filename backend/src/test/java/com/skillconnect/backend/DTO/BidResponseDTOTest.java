@@ -15,7 +15,7 @@ class BidResponseDTOTest {
         assertNotNull(dto);
         assertNull(dto.getBidId());
         assertNull(dto.getFreelancerId());
-        assertNull(dto.getProjectId());
+        assertNull(dto.getProject());
         assertNull(dto.getProposal());
         assertNull(dto.getBidAmount());
         assertNull(dto.getDurationDays());
@@ -26,11 +26,14 @@ class BidResponseDTOTest {
     @Test
     void allArgsConstructor_setsAllFields() {
         LocalDateTime now = LocalDateTime.now();
-        BidResponseDTO dto = new BidResponseDTO(1L, 2L, 3L, null, "Proposal", 1500.0, 20L, null, "PENDING", now);
+        ProjectDTO projectDTO = new ProjectDTO();
+        projectDTO.setId(3L);
+        BidResponseDTO dto = new BidResponseDTO(1L, 2L, projectDTO, null, "Proposal", 1500.0, 20L, null, "PENDING", now);
         
         assertEquals(1L, dto.getBidId());
         assertEquals(2L, dto.getFreelancerId());
-        assertEquals(3L, dto.getProjectId());
+        assertNotNull(dto.getProject());
+        assertEquals(3L, dto.getProject().getId());
         assertEquals("Proposal", dto.getProposal());
         assertEquals(1500.0, dto.getBidAmount());
         assertEquals(20L, dto.getDurationDays());
@@ -42,10 +45,12 @@ class BidResponseDTOTest {
     void settersAndGetters_workCorrectly() {
         BidResponseDTO dto = new BidResponseDTO();
         LocalDateTime timestamp = LocalDateTime.of(2024, 1, 15, 10, 30);
+        ProjectDTO projectDTO = new ProjectDTO();
+        projectDTO.setId(300L);
         
         dto.setBidId(100L);
         dto.setFreelancerId(200L);
-        dto.setProjectId(300L);
+        dto.setProject(projectDTO);
         dto.setProposal("Detailed proposal");
         dto.setBidAmount(3000.75);
         dto.setDurationDays(60L);
@@ -54,7 +59,8 @@ class BidResponseDTOTest {
         
         assertEquals(100L, dto.getBidId());
         assertEquals(200L, dto.getFreelancerId());
-        assertEquals(300L, dto.getProjectId());
+        assertNotNull(dto.getProject());
+        assertEquals(300L, dto.getProject().getId());
         assertEquals("Detailed proposal", dto.getProposal());
         assertEquals(3000.75, dto.getBidAmount());
         assertEquals(60L, dto.getDurationDays());
@@ -89,11 +95,13 @@ class BidResponseDTOTest {
     @Test
     void setNullValues_setsCorrectly() {
         LocalDateTime now = LocalDateTime.now();
-        BidResponseDTO dto = new BidResponseDTO(1L, 2L, 3L, null, "Proposal", 1500.0, 20L, null, "PENDING", now);
+        ProjectDTO projectDTO = new ProjectDTO();
+        projectDTO.setId(3L);
+        BidResponseDTO dto = new BidResponseDTO(1L, 2L, projectDTO, null, "Proposal", 1500.0, 20L, null, "PENDING", now);
         
         dto.setBidId(null);
         dto.setFreelancerId(null);
-        dto.setProjectId(null);
+        dto.setProject(null);
         dto.setProposal(null);
         dto.setBidAmount(null);
         dto.setDurationDays(null);
@@ -102,7 +110,7 @@ class BidResponseDTOTest {
         
         assertNull(dto.getBidId());
         assertNull(dto.getFreelancerId());
-        assertNull(dto.getProjectId());
+        assertNull(dto.getProject());
         assertNull(dto.getProposal());
         assertNull(dto.getBidAmount());
         assertNull(dto.getDurationDays());

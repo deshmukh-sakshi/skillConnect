@@ -27,6 +27,7 @@ class ProjectDTOTest {
     @Test
     void allArgsConstructor_setsAllFields() {
         LocalDateTime deadline = LocalDateTime.of(2024, 12, 31, 23, 59);
+        ClientDTO clientDTO = new ClientDTO("Client", "client@test.com", null);
         
         ProjectDTO dto = new ProjectDTO(
             1L,
@@ -36,10 +37,8 @@ class ProjectDTOTest {
             deadline,
             5000L,
             Project.ProjectStatus.OPEN,
-            10L,
-            null,
-            null,
-            null
+            clientDTO,
+            10L
         );
         
         assertEquals(1L, dto.getId());
@@ -159,7 +158,8 @@ class ProjectDTOTest {
     @Test
     void setNullValues_setsCorrectly() {
         LocalDateTime deadline = LocalDateTime.now();
-        ProjectDTO dto = new ProjectDTO(1L, "Title", "Description", "Category", deadline, 1000L, Project.ProjectStatus.OPEN, 1L, null, null, null);
+        ClientDTO clientDTO = new ClientDTO("Client", "client@test.com", null);
+        ProjectDTO dto = new ProjectDTO(1L, "Title", "Description", "Category", deadline, 1000L, Project.ProjectStatus.OPEN, clientDTO, 1L);
         
         dto.setId(null);
         dto.setTitle(null);
