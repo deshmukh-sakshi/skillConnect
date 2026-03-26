@@ -1,5 +1,12 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { FilePlus2, Briefcase, Users, Handshake } from "lucide-react";
+import {
+  FilePlus2,
+  Briefcase,
+  Handshake,
+  WalletMinimal,
+  HandCoins,
+  SwatchBook,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
@@ -34,9 +41,9 @@ export const navMain = [
   },
   {
     id: 4,
-    title: "Freelancers",
-    path: "/dashboard/freelancers",
-    icon: Users,
+    title: "My Projects",
+    path: "/dashboard/my-projects",
+    icon: SwatchBook,
     role: "ROLE_CLIENT",
   },
   {
@@ -45,6 +52,20 @@ export const navMain = [
     path: "/dashboard/contracts",
     icon: Handshake,
     role: "COMMON",
+  },
+  {
+    id: 6,
+    title: "Wallet",
+    path: "/dashboard/wallet",
+    icon: WalletMinimal,
+    role: "ROLE_CLIENT",
+  },
+  {
+    id: 6,
+    title: "Revenue",
+    path: "/dashboard/revenue",
+    icon: HandCoins,
+    role: "ROLE_FREELANCER",
   },
 ];
 
