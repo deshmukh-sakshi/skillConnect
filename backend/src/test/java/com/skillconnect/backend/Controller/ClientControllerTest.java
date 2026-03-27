@@ -1,5 +1,6 @@
 package com.skillconnect.backend.Controller;
 
+import com.skillconnect.backend.DTO.ApiResponse;
 import com.skillconnect.backend.DTO.ClientDTO;
 import com.skillconnect.backend.Service.client.ClientService;
 import org.junit.jupiter.api.Test;
@@ -29,41 +30,48 @@ class ClientControllerTest {
 
         when(clientService.getClientDTOById(1L)).thenReturn(dto);
 
-        ResponseEntity<ClientDTO> response = clientController.getClient(1L);
+        ResponseEntity<ApiResponse<ClientDTO>> response = clientController.getClient(1L);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals("Acme", response.getBody().getName());
+        assertTrue(response.getBody().isSuccess());
+        assertEquals("Acme", response.getBody().getData().getName());
     }
 
     @Test
     void getClient_whenMissing_returnsNotFound() {
         when(clientService.getClientDTOById(5L)).thenReturn(null);
 
-        ResponseEntity<ClientDTO> response = clientController.getClient(5L);
+        ResponseEntity<ApiResponse<ClientDTO>> response = clientController.getClient(5L);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertNull(response.getBody());
+        assertNotNull(response.getBody());
+        assertFalse(response.getBody().isSuccess());
+        assertNull(response.getBody().getData());
     }
 
     @Test
     void deleteClient_whenDeleted_returnsSuccessMessage() {
         when(clientService.deleteClient(4L)).thenReturn(true);
 
-        ResponseEntity<String> response = clientController.deleteClient(4L);
+        ResponseEntity<ApiResponse<String>> response = clientController.deleteClient(4L);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Client deleted successfully", response.getBody());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().isSuccess());
+        assertEquals("Client deleted successfully", response.getBody().getData());
     }
 
     @Test
     void deleteClient_whenMissing_returnsNotFoundMessage() {
         when(clientService.deleteClient(4L)).thenReturn(false);
 
-        ResponseEntity<String> response = clientController.deleteClient(4L);
+        ResponseEntity<ApiResponse<String>> response = clientController.deleteClient(4L);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals("Client not found", response.getBody());
+        assertNotNull(response.getBody());
+        assertFalse(response.getBody().isSuccess());
+        assertEquals("Client not found", response.getBody().getError());
     }
 }
 
