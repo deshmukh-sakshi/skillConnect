@@ -1,13 +1,17 @@
 package com.skillconnect.backend.Service.bid;
 
+import com.skillconnect.backend.Chat.Service.ChatService;
 import com.skillconnect.backend.DTO.BidDTO;
 import com.skillconnect.backend.DTO.BidResponseDTO;
 import com.skillconnect.backend.Entity.Bids;
+import com.skillconnect.backend.Entity.Client;
 import com.skillconnect.backend.Entity.Freelancer;
 import com.skillconnect.backend.Entity.Project;
 import com.skillconnect.backend.Repository.BidRepository;
 import com.skillconnect.backend.Repository.FreelancerRepository;
 import com.skillconnect.backend.Repository.ProjectRepository;
+import com.skillconnect.backend.Service.contract.ContractService;
+import com.skillconnect.backend.Wallet.Service.WalletService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,13 +22,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BidServiceImplTest {
@@ -37,6 +37,15 @@ class BidServiceImplTest {
 
     @Mock
     private ProjectRepository projectRepo;
+
+    @Mock
+    private ChatService chatService;
+
+    @Mock
+    private ContractService contractService;
+
+    @Mock
+    private WalletService walletService;
 
     @InjectMocks
     private BidServiceImpl bidService;
@@ -134,6 +143,34 @@ class BidServiceImplTest {
         assertEquals(1L, saved.getFreelancer().getId());
         assertEquals(3L, saved.getProject().getId());
         assertNotNull(saved.getCreatedAt());
+        verify(chatService).createBidNegotiationChat(99L);
+    }
+
+    @Test
+    void placeBid_whenChatCreationFails_stillReturnsSavedBid() {
+        BidDTO dto = new BidDTO(1L, 3L, "Proposal", 3500.0, 12L, 2);
+
+        Freelancer freelancer = new Freelancer();
+        freelancer.setId(1L);
+
+        Project project = new Project();
+        project.setId(3L);
+        project.setStatus(Project.ProjectStatus.OPEN);
+
+        when(freelancerRepo.findById(1L)).thenReturn(Optional.of(freelancer));
+        when(projectRepo.findById(3L)).thenReturn(Optional.of(project));
+        when(bidRepo.existsByFreelancerIdAndProjectId(1L, 3L)).thenReturn(false);
+        when(bidRepo.save(any(Bids.class))).thenAnswer(invocation -> {
+            Bids bid = invocation.getArgument(0);
+            bid.setId(77L);
+            return bid;
+        });
+        doThrow(new RuntimeException("chat unavailable")).when(chatService).createBidNegotiationChat(77L);
+
+        Bids saved = bidService.placeBid(dto);
+
+        assertEquals(77L, saved.getId());
+        verify(bidRepo).save(any(Bids.class));
     }
 
     @Test
@@ -223,6 +260,95 @@ class BidServiceImplTest {
         bidService.deleteBid(10L, 3L);
 
         verify(bidRepo).deleteById(10L);
+        verify(chatService).closeBidChat(10L);
+    }
+
+    @Test
+    void acceptBid_success_updatesStatusesAndCreatesContract() {
+        Client client = new Client();
+        client.setId(99L);
+
+        Project project = new Project();
+        project.setId(5L);
+        project.setClient(client);
+        project.setStatus(Project.ProjectStatus.OPEN);
+
+        Bids acceptedBid = new Bids();
+        acceptedBid.setId(11L);
+        acceptedBid.setProject(project);
+        acceptedBid.setStatus(Bids.bidStatus.Pending);
+        acceptedBid.setBidAmount(1200.0);
+
+        Bids rejectedBid = new Bids();
+        rejectedBid.setId(12L);
+        rejectedBid.setProject(project);
+        rejectedBid.setStatus(Bids.bidStatus.Pending);
+
+        when(bidRepo.findById(11L)).thenReturn(Optional.of(acceptedBid));
+        when(bidRepo.findByProject_Id(5L)).thenReturn(List.of(acceptedBid, rejectedBid));
+        when(contractService.createContract(acceptedBid)).thenReturn(777L);
+
+        Long contractId = bidService.acceptBid(11L, 99L);
+
+        assertEquals(777L, contractId);
+        assertEquals(Project.ProjectStatus.CLOSED, project.getStatus());
+        assertEquals(Bids.bidStatus.Accepted, acceptedBid.getStatus());
+        assertEquals(Bids.bidStatus.Rejected, rejectedBid.getStatus());
+        verify(projectRepo).save(project);
+        verify(bidRepo).saveAll(List.of(acceptedBid, rejectedBid));
+        verify(walletService).freezeAmount(99L, 5L, 1200.0);
+        verify(chatService).closeBidChat(12L);
+        verify(chatService).convertToContractChat(11L, 777L);
+    }
+
+    @Test
+    void acceptBid_whenWalletFreezeFails_throwsRuntimeException() {
+        Client client = new Client();
+        client.setId(99L);
+
+        Project project = new Project();
+        project.setId(5L);
+        project.setClient(client);
+
+        Bids acceptedBid = new Bids();
+        acceptedBid.setId(11L);
+        acceptedBid.setProject(project);
+        acceptedBid.setStatus(Bids.bidStatus.Pending);
+        acceptedBid.setBidAmount(1200.0);
+
+        when(bidRepo.findById(11L)).thenReturn(Optional.of(acceptedBid));
+        when(bidRepo.findByProject_Id(5L)).thenReturn(List.of(acceptedBid));
+        doThrow(new RuntimeException("Insufficient funds to accept this bid."))
+                .when(walletService).freezeAmount(99L, 5L, 1200.0);
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> bidService.acceptBid(11L, 99L));
+
+        assertTrue(ex.getMessage().startsWith("Failed to freeze payment amount:"));
+        verify(contractService, never()).createContract(any(Bids.class));
+    }
+
+    @Test
+    void rejectBid_success_updatesBidAndHandlesChatOperations() {
+        Client client = new Client();
+        client.setId(51L);
+
+        Project project = new Project();
+        project.setId(7L);
+        project.setClient(client);
+
+        Bids bid = new Bids();
+        bid.setId(70L);
+        bid.setProject(project);
+        bid.setStatus(Bids.bidStatus.Pending);
+
+        when(bidRepo.findById(70L)).thenReturn(Optional.of(bid));
+
+        bidService.rejectBid(70L, 51L);
+
+        assertEquals(Bids.bidStatus.Rejected, bid.getStatus());
+        verify(bidRepo).save(bid);
+        verify(chatService).sendBidSystemNotification(70L, "Bid has been rejected.");
+        verify(chatService).closeBidChat(70L);
     }
 }
 
