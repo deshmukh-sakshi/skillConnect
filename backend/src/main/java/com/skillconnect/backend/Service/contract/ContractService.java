@@ -7,7 +7,7 @@ import com.skillconnect.backend.DTO.ContractResponse;
 import com.skillconnect.backend.Entity.Bids;
 
 public interface ContractService {
-	void createContract(Bids bid);
+	Long createContract(Bids bid);
 	ApiResponse<List<ContractResponse>> getAllContracts();
 	ApiResponse<ContractResponse> getContractById(Long id);
 	ApiResponse<ContractResponse> updateContract(Long id, String contractStatus);
