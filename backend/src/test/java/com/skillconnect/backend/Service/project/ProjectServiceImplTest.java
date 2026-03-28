@@ -1,5 +1,6 @@
 package com.skillconnect.backend.Service.project;
 
+import com.skillconnect.backend.Chat.Service.ChatService;
 import com.skillconnect.backend.DTO.BidResponseDTO;
 import com.skillconnect.backend.DTO.ClientDTO;
 import com.skillconnect.backend.DTO.ProjectDTO;
@@ -42,6 +43,9 @@ class ProjectServiceImplTest {
 
     @Mock
     private com.skillconnect.backend.Wallet.Service.WalletService walletService;
+
+    @Mock
+    private ChatService chatService;
 
     @InjectMocks
     private ProjectServiceImpl projectService;
@@ -165,6 +169,32 @@ class ProjectServiceImplTest {
         assertEquals(21L, result.get(0).getId());
         assertEquals("Web", result.get(0).getCategory());
         assertEquals(3L, result.get(0).getClientId());
+    }
+
+    @Test
+    void getAllProjects_withQuery_usesSearchRepository() {
+        Client client = new Client();
+        client.setId(13L);
+
+        Project project = new Project();
+        project.setId(31L);
+        project.setTitle("Design system");
+        project.setDescription("Build shared components");
+        project.setCategory("Design");
+        project.setDeadline(LocalDateTime.of(2026, 10, 1, 10, 0));
+        project.setBudget(45000L);
+        project.setStatus(Project.ProjectStatus.OPEN);
+        project.setClient(client);
+
+        when(projectRepository.findByTitleContainingIgnoreCaseOrCategoryContainingIgnoreCase("design", "design"))
+                .thenReturn(List.of(project));
+
+        List<ProjectDTO> result = projectService.getAllProjects("  design ");
+
+        assertEquals(1, result.size());
+        assertEquals(31L, result.getFirst().getId());
+        verify(projectRepository).findByTitleContainingIgnoreCaseOrCategoryContainingIgnoreCase("design", "design");
+        verify(projectRepository, never()).findAll();
     }
 
     @Test
@@ -317,6 +347,7 @@ class ProjectServiceImplTest {
 
         when(bidRepo.findById(40L)).thenReturn(Optional.of(target));
         when(bidRepo.findByProject_Id(4L)).thenReturn(List.of(target, other));
+        when(contractService.createContract(target)).thenReturn(501L);
 
         projectService.acceptBid(4L, 40L);
 
@@ -326,6 +357,9 @@ class ProjectServiceImplTest {
         verify(projectRepository).save(project);
         verify(bidRepo).saveAll(List.of(target, other));
         verify(walletService).freezeAmount(10L, 4L, 500.0);
+        verify(contractService).createContract(target);
+        verify(chatService).closeBidChat(41L);
+        verify(chatService).convertToContractChat(40L, 501L);
     }
 
     @Test
@@ -390,6 +424,8 @@ class ProjectServiceImplTest {
 
         assertEquals(Bids.bidStatus.Rejected, bid.getStatus());
         verify(bidRepo).save(bid);
+        verify(chatService).sendBidSystemNotification(91L, "Bid has been rejected.");
+        verify(chatService).closeBidChat(91L);
     }
 
     @Test

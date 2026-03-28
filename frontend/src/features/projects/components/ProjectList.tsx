@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import { format } from "date-fns";
 import {
     CalendarIcon,
-    DollarSignIcon,
     EyeIcon,
+    IndianRupee,
     MessageSquareIcon,
     PlusIcon,
 } from "lucide-react";
@@ -32,10 +32,12 @@ import { useNavigate } from "react-router-dom";
 
 interface ProjectListProps {
     filterStatus?: "OPEN" | "CLOSED";
+    onCreateProject?: () => void;
 }
 
 const ProjectList: React.FC<ProjectListProps> = ({
     filterStatus,
+    onCreateProject,
 }) => {
     const loading = useSelector(selectProjectsLoading);
     const projects = useSelector(selectProjects);
@@ -54,16 +56,18 @@ const ProjectList: React.FC<ProjectListProps> = ({
     }
 
     if (filteredProjects.length === 0) {
-        return <EmptyProjectList status={filterStatus} />;
+        return (
+            <EmptyProjectList
+                status={filterStatus}
+                onCreateProject={onCreateProject}
+            />
+        );
     }
 
     return (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredProjects.map((project) => (
-                <ProjectCard
-                    key={project.id}
-                    project={project}
-                />
+                <ProjectCard key={project.id} project={project} />
             ))}
         </div>
     );
@@ -73,9 +77,7 @@ interface ProjectCardProps {
     project: Project;
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({
-    project,
-}) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
     const { handleError } = useErrorHandler();
     const navigate = useNavigate();
 
@@ -111,10 +113,16 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                             {project.title}
                         </CardTitle>
                         <div className="flex items-center gap-2 mb-4">
-                            <Badge variant={getStatusColor(project.status)} className="capitalize">
+                            <Badge
+                                variant={getStatusColor(project.status)}
+                                className="capitalize"
+                            >
                                 {project.status.toLowerCase()}
                             </Badge>
-                            <Badge variant="outline" className="text-xs bg-slate-50">
+                            <Badge
+                                variant="outline"
+                                className="text-xs bg-slate-50"
+                            >
                                 {project.category}
                             </Badge>
                         </div>
@@ -130,7 +138,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                     <div className="grid grid-cols-5 gap-4 text-sm">
                         <div className="flex items-center gap-2 col-span-2">
                             <div className="bg-blue-50 p-1.5 rounded-full">
-                                <DollarSignIcon className="h-3.5 w-3.5 text-blue-500" />
+                                <IndianRupee className="h-3.5 w-3.5 text-blue-500" />
                             </div>
                             <span className="font-medium">
                                 {project.budget.toLocaleString()}
@@ -140,7 +148,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                             <div className="bg-green-50 p-1.5 rounded-full">
                                 <CalendarIcon className="h-3.5 w-3.5 text-green-500" />
                             </div>
-                            <span className="whitespace-nowrap">{formatDeadline(project.deadline)}</span>
+                            <span className="whitespace-nowrap">
+                                {formatDeadline(project.deadline)}
+                            </span>
                         </div>
                     </div>
 
@@ -214,9 +224,10 @@ const ProjectListSkeleton: React.FC = () => {
     );
 };
 
-const EmptyProjectList: React.FC<{ status?: "OPEN" | "CLOSED" }> = ({
-    status,
-}) => {
+const EmptyProjectList: React.FC<{
+    status?: "OPEN" | "CLOSED";
+    onCreateProject?: () => void;
+}> = ({ status, onCreateProject }) => {
     let message =
         "You haven't posted any projects yet. Create your first project to start receiving bids from talented freelancers.";
 
@@ -235,7 +246,11 @@ const EmptyProjectList: React.FC<{ status?: "OPEN" | "CLOSED" }> = ({
             </div>
             <h3 className="text-lg font-semibold mb-2">No projects found</h3>
             <p className="text-muted-foreground mb-6 max-w-md">{message}</p>
-            <Button variant="outline" className="hover:bg-primary hover:text-white transition-colors cursor-pointer">
+            <Button
+                variant="outline"
+                onClick={onCreateProject}
+                className="hover:bg-primary hover:text-white transition-colors cursor-pointer"
+            >
                 <PlusIcon className="mr-2 h-4 w-4" />
                 Post Your First Project
             </Button>
