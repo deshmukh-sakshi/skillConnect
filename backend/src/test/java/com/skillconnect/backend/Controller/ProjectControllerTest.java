@@ -73,9 +73,9 @@ class ProjectControllerTest {
     void getAllProjects_returnsList() {
         ProjectDTO dto = new ProjectDTO();
         dto.setId(1L);
-        when(projectService.getAllProjects(null, "createdAt", "desc")).thenReturn(List.of(dto));
+        when(projectService.getAllProjects(null)).thenReturn(List.of(dto));
 
-        ResponseEntity<ApiResponse<List<ProjectDTO>>> response = projectController.getAllProjects(null, "createdAt", "desc");
+        ResponseEntity<ApiResponse<List<ProjectDTO>>> response = projectController.getAllProjects(null);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -89,9 +89,9 @@ class ProjectControllerTest {
     void getAllProjects_withSortParams_returnsSortedList() {
         ProjectDTO dto = new ProjectDTO();
         dto.setId(2L);
-        when(projectService.getAllProjects("web", "budget", "asc")).thenReturn(List.of(dto));
+        when(projectService.getAllProjects("web")).thenReturn(List.of(dto));
 
-        ResponseEntity<ApiResponse<List<ProjectDTO>>> response = projectController.getAllProjects("web", "budget", "asc");
+        ResponseEntity<ApiResponse<List<ProjectDTO>>> response = projectController.getAllProjects("web");
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
