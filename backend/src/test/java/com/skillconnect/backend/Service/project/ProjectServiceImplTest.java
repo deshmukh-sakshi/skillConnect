@@ -3,6 +3,7 @@ package com.skillconnect.backend.Service.project;
 import com.skillconnect.backend.Chat.Service.ChatService;
 import com.skillconnect.backend.DTO.BidResponseDTO;
 import com.skillconnect.backend.DTO.ClientDTO;
+import com.skillconnect.backend.DTO.ProjectCountsResponse;
 import com.skillconnect.backend.DTO.ProjectDTO;
 import com.skillconnect.backend.Entity.Bids;
 import com.skillconnect.backend.Entity.Client;
@@ -161,9 +162,9 @@ class ProjectServiceImplTest {
         project.setStatus(Project.ProjectStatus.OPEN);
         project.setClient(client);
 
-        when(projectRepository.findAll()).thenReturn(List.of(project));
+        when(projectRepository.findAll(any(org.springframework.data.domain.Sort.class))).thenReturn(List.of(project));
 
-        List<ProjectDTO> result = projectService.getAllProjects(null);
+        List<ProjectDTO> result = projectService.getAllProjects(null, "createdAt", "desc");
 
         assertEquals(1, result.size());
         assertEquals(21L, result.get(0).getId());
@@ -186,15 +187,15 @@ class ProjectServiceImplTest {
         project.setStatus(Project.ProjectStatus.OPEN);
         project.setClient(client);
 
-        when(projectRepository.findByTitleContainingIgnoreCaseOrCategoryContainingIgnoreCase("design", "design"))
+        when(projectRepository.findProjectsWithSearch(eq("design"), any(org.springframework.data.domain.Sort.class)))
                 .thenReturn(List.of(project));
 
-        List<ProjectDTO> result = projectService.getAllProjects("  design ");
+        List<ProjectDTO> result = projectService.getAllProjects("  design ", "createdAt", "desc");
 
         assertEquals(1, result.size());
         assertEquals(31L, result.getFirst().getId());
-        verify(projectRepository).findByTitleContainingIgnoreCaseOrCategoryContainingIgnoreCase("design", "design");
-        verify(projectRepository, never()).findAll();
+        verify(projectRepository).findProjectsWithSearch(eq("design"), any(org.springframework.data.domain.Sort.class));
+        verify(projectRepository, never()).findAll(any(org.springframework.data.domain.Sort.class));
     }
 
     @Test
@@ -446,6 +447,111 @@ class ProjectServiceImplTest {
 
         assertFalse(deleted);
         verify(projectRepository, never()).deleteById(anyLong());
+    }
+
+    @Test
+    void getAllProjects_withSortByBudget_usesBudgetSort() {
+        Client client = new Client();
+        client.setId(5L);
+
+        Project project = new Project();
+        project.setId(50L);
+        project.setTitle("Budget test");
+        project.setDescription("Sort by budget");
+        project.setCategory("Web");
+        project.setDeadline(LocalDateTime.of(2026, 8, 1, 9, 0));
+        project.setBudget(80000L);
+        project.setStatus(Project.ProjectStatus.OPEN);
+        project.setClient(client);
+
+        when(projectRepository.findAll(any(org.springframework.data.domain.Sort.class))).thenReturn(List.of(project));
+
+        List<ProjectDTO> result = projectService.getAllProjects(null, "budget", "asc");
+
+        assertEquals(1, result.size());
+        assertEquals(50L, result.getFirst().getId());
+        verify(projectRepository).findAll(any(org.springframework.data.domain.Sort.class));
+    }
+
+    @Test
+    void getAllProjects_withInvalidSortField_defaultsToCreatedAt() {
+        Client client = new Client();
+        client.setId(6L);
+
+        Project project = new Project();
+        project.setId(60L);
+        project.setTitle("Default sort test");
+        project.setDescription("Invalid sort field");
+        project.setCategory("Design");
+        project.setDeadline(LocalDateTime.of(2026, 9, 1, 9, 0));
+        project.setBudget(30000L);
+        project.setStatus(Project.ProjectStatus.OPEN);
+        project.setClient(client);
+
+        when(projectRepository.findAll(any(org.springframework.data.domain.Sort.class))).thenReturn(List.of(project));
+
+        List<ProjectDTO> result = projectService.getAllProjects(null, "invalidField", "desc");
+
+        assertEquals(1, result.size());
+        verify(projectRepository).findAll(any(org.springframework.data.domain.Sort.class));
+    }
+
+    @Test
+    void getAllProjects_withInvalidSortDirection_defaultsToDesc() {
+        Client client = new Client();
+        client.setId(7L);
+
+        Project project = new Project();
+        project.setId(70L);
+        project.setTitle("Default direction test");
+        project.setDescription("Invalid sort direction");
+        project.setCategory("Mobile");
+        project.setDeadline(LocalDateTime.of(2026, 10, 1, 9, 0));
+        project.setBudget(50000L);
+        project.setStatus(Project.ProjectStatus.OPEN);
+        project.setClient(client);
+
+        when(projectRepository.findAll(any(org.springframework.data.domain.Sort.class))).thenReturn(List.of(project));
+
+        List<ProjectDTO> result = projectService.getAllProjects(null, "deadline", "random");
+
+        assertEquals(1, result.size());
+        verify(projectRepository).findAll(any(org.springframework.data.domain.Sort.class));
+    }
+
+    @Test
+    void getProjectCountsByCategory_returnsMappedResponse() {
+        Object[] webRow = new Object[]{"Web Development", 5L};
+        Object[] designRow = new Object[]{"Graphic Design", 3L};
+
+        when(projectRepository.countActiveProjectsByCategory()).thenReturn(List.of(webRow, designRow));
+        when(projectRepository.countTotalActiveProjects()).thenReturn(8L);
+
+        ProjectCountsResponse result = projectService.getProjectCountsByCategory();
+
+        assertNotNull(result);
+        assertEquals(8L, result.getTotalActiveProjects());
+        assertEquals(2, result.getCounts().size());
+
+        assertEquals("Web Development", result.getCounts().get(0).getCategory());
+        assertEquals(5L, result.getCounts().get(0).getActiveProjectCount());
+        assertEquals(1L, result.getCounts().get(0).getCategoryId());
+
+        assertEquals("Graphic Design", result.getCounts().get(1).getCategory());
+        assertEquals(3L, result.getCounts().get(1).getActiveProjectCount());
+        assertEquals(2L, result.getCounts().get(1).getCategoryId());
+    }
+
+    @Test
+    void getProjectCountsByCategory_whenNoActiveProjects_returnsEmptyList() {
+        when(projectRepository.countActiveProjectsByCategory()).thenReturn(List.of());
+        when(projectRepository.countTotalActiveProjects()).thenReturn(0L);
+
+        ProjectCountsResponse result = projectService.getProjectCountsByCategory();
+
+        assertNotNull(result);
+        assertEquals(0L, result.getTotalActiveProjects());
+        assertTrue(result.getCounts().isEmpty());
     }
 }
 
