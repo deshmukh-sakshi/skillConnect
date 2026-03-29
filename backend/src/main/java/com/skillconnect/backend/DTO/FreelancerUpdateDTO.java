@@ -1,6 +1,7 @@
 package com.skillconnect.backend.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -15,7 +16,7 @@ public class FreelancerUpdateDTO {
     @Schema(
         description = "Updated full name of the freelancer",
         example = "John Smith",
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     @NotBlank(message = "Name cannot be blank")
     private String name;

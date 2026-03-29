@@ -1,6 +1,7 @@
 package com.skillconnect.backend.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,14 +27,14 @@ public class ProjectCountResponse {
     @Schema(
         description = "Category name for which the count is provided",
         example = "Web Development",
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     private String category;
     
     @Schema(
         description = "Category ID for which the count is provided",
         example = "1",
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     private Long categoryId;
     
@@ -41,14 +42,14 @@ public class ProjectCountResponse {
         description = "Number of active (OPEN status) projects in this category",
         example = "15",
         minimum = "0",
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     private Long activeProjectCount;
     
     @Schema(
         description = "Timestamp when this count was last calculated",
         example = "2025-01-08T10:30:00",
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     private LocalDateTime lastUpdated;
 }

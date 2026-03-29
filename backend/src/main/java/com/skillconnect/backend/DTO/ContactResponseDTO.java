@@ -1,6 +1,7 @@
 package com.skillconnect.backend.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,7 +27,7 @@ public class ContactResponseDTO {
     @Schema(
         description = "Unique identifier for the contact request",
         example = "123",
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     private Long id;
     
@@ -34,21 +35,21 @@ public class ContactResponseDTO {
         description = "Current status of the contact request",
         example = "RECEIVED",
         allowableValues = {"RECEIVED", "PROCESSING", "RESOLVED"},
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     private String status;
     
     @Schema(
         description = "Whether a confirmation email was sent to the user",
         example = "true",
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     private Boolean confirmationSent;
     
     @Schema(
         description = "Timestamp when the contact request was created",
         example = "2025-01-08T10:30:00",
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     private LocalDateTime createdAt;
 }

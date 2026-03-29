@@ -1,6 +1,7 @@
 package com.skillconnect.backend.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.*;
 import java.util.List;
 
@@ -13,14 +14,14 @@ public class FreelancerDTO {
     @Schema(
         description = "Full name of the freelancer",
         example = "John Smith",
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     private String name;
     
     @Schema(
         description = "Email address of the freelancer",
         example = "john.smith@example.com",
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     private String email;
     

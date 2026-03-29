@@ -1,6 +1,7 @@
 package com.skillconnect.backend.Wallet.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.*;
 
 @Schema(description = "Monthly data point containing earnings and project statistics")
@@ -11,21 +12,21 @@ public class MonthlyDataPoint {
     @Schema(
         description = "Month identifier in YYYY-MM format",
         example = "2024-01",
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     private String month;
     
     @Schema(
         description = "Total earnings for the specified month",
         example = "2875.50",
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     private Double earnings;
     
     @Schema(
         description = "Number of projects completed in the specified month",
         example = "3",
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     private Integer projects;
 }

@@ -1,6 +1,7 @@
 package com.skillconnect.backend.Auth.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -18,7 +19,7 @@ public class RegistrationRequest {
     @Schema(
         description = "Full name of the user",
         example = "John Doe",
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     @NotBlank(message = "name is required")
     private String name;
@@ -26,7 +27,7 @@ public class RegistrationRequest {
     @Schema(
         description = "Email address for the new user account",
         example = "john.doe@example.com",
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
             flags = Pattern.Flag.CASE_INSENSITIVE,
@@ -37,7 +38,7 @@ public class RegistrationRequest {
     @Schema(
         description = "Password for the new user account (8-20 characters)",
         example = "mySecurePassword123",
-        required = true,
+        requiredMode = RequiredMode.REQUIRED,
         minLength = 8,
         maxLength = 20
     )

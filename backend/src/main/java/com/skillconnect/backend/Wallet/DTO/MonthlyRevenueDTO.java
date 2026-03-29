@@ -1,6 +1,7 @@
 package com.skillconnect.backend.Wallet.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.*;
 
 import java.util.List;
@@ -13,27 +14,27 @@ public class MonthlyRevenueDTO {
     @Schema(
         description = "Total revenue earned in the current month",
         example = "3250.00",
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     private Double currentMonth;
     
     @Schema(
         description = "Total revenue earned in the previous month",
         example = "2875.50",
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     private Double lastMonth;
     
     @Schema(
         description = "Total revenue earned in the current year",
         example = "15750.50",
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     private Double currentYear;
     
     @Schema(
         description = "Monthly revenue data points for trend analysis",
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     private List<MonthlyDataPoint> monthlyData;
 }

@@ -1,6 +1,7 @@
 package com.skillconnect.backend.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,7 +35,7 @@ public class ProjectCountsResponse {
     
     @Schema(
         description = "List of project counts grouped by category",
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     private List<ProjectCountResponse> counts;
     
@@ -42,7 +43,7 @@ public class ProjectCountsResponse {
         description = "Total number of active projects across all categories",
         example = "23",
         minimum = "0",
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     private Long totalActiveProjects;
 }

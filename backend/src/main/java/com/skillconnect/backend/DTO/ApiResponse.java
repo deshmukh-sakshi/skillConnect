@@ -2,6 +2,7 @@ package com.skillconnect.backend.DTO;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,7 +32,7 @@ public class ApiResponse<T> {
                       "Will be 'success' for successful operations and 'error' for failed operations.",
         example = "success",
         allowableValues = {"success", "error"},
-        required = true
+        requiredMode = RequiredMode.REQUIRED
     )
     private String status;
     

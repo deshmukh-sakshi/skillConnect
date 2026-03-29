@@ -256,4 +256,43 @@ public class EmailService {
         return "N/A";
     }
 
+    @Async
+    public void sendPaymentConfirmationEmail(String recipientEmail, String userName, double amount, String txnId, String paymentMethod) {
+        log.info("📨 Sending payment confirmation email to: {}", recipientEmail);
+
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(
+                    message,
+                    MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+                    StandardCharsets.UTF_8.name()
+            );
+
+            String fromName = "SkillConnect Team";
+            helper.setFrom(fromAddress, fromName);
+            helper.setTo(recipientEmail);
+            helper.setSubject("💰 Payment Confirmation - SkillConnect");
+
+            // Prepare email content using Thymeleaf
+            Context context = new Context();
+            context.setVariable("userName", userName);
+            context.setVariable("amount", amount);
+            context.setVariable("transactionId", txnId);
+            context.setVariable("paymentMethod", paymentMethod);
+            context.setVariable("dateTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            context.setVariable("supportEmail", "support@skillconnect.com");
+            context.setVariable("frontendUrl", frontendUrl);
+
+            System.out.println("Context: " + context);
+
+            String emailContent = templateEngine.process("email/payment-confirmation-email", context);
+            helper.setText(emailContent, true);
+
+            mailSender.send(message);
+            log.info("✅ Payment confirmation email sent to {}", recipientEmail);
+
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            log.error("❌ Failed to send payment confirmation email to {}: {}", recipientEmail, e.getMessage());
+        }
+    }
 }

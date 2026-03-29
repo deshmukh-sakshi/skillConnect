@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Request Received - SkillConnect</title>
+    <title>Payment Confirmation - SkillConnect</title>
     <style>
         body {
             margin: 0;
@@ -60,6 +60,15 @@
             line-height: 1.6;
         }
 
+        .ascii-art {
+            color: #00ff88;
+            font-size: 10px;
+            line-height: 1;
+            margin: 20px 0;
+            text-align: center;
+            white-space: pre;
+        }
+
         .prompt {
             color: #00ff88;
             font-weight: 600;
@@ -76,20 +85,9 @@
             padding-left: 16px;
         }
 
-        .success {
-            color: #51cf66;
-            font-weight: 500;
-        }
-
-        .info {
-            color: #74c0fc;
-            font-weight: 500;
-        }
-
-        .warning {
-            color: #ffd43b;
-            font-weight: 500;
-        }
+        .success { color: #51cf66; font-weight: 500; }
+        .info { color: #74c0fc; font-weight: 500; }
+        .warning { color: #ffd43b; font-weight: 500; }
 
         .message-box {
             background: #2a2a2a;
@@ -98,33 +96,6 @@
             padding: 16px;
             margin: 16px 0;
             color: #d8dee9;
-        }
-
-        .contact-link {
-            display: inline-block;
-            background: linear-gradient(45deg, #00ff88, #00d4ff);
-            color: #000;
-            text-decoration: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            font-weight: 700;
-            margin: 16px 0;
-            transition: all 0.3s ease;
-            font-family: inherit;
-        }
-
-        .contact-link:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
-        }
-
-        .ascii-art {
-            color: #00ff88;
-            font-size: 10px;
-            line-height: 1;
-            margin: 20px 0;
-            text-align: center;
-            white-space: pre;
         }
 
         .blink {
@@ -145,17 +116,9 @@
         }
 
         @media (max-width: 640px) {
-            body {
-                padding: 10px;
-            }
-
-            .terminal-body {
-                padding: 16px;
-            }
-
-            .ascii-art {
-                font-size: 8px;
-            }
+            body { padding: 10px; }
+            .terminal-body { padding: 16px; }
+            .ascii-art { font-size: 8px; }
         }
     </style>
 </head>
@@ -167,10 +130,11 @@
             <div class="dot yellow"></div>
             <div class="dot green"></div>
         </div>
-        <div class="terminal-title">skillconnect-support@terminal</div>
+        <div class="terminal-title">wallet@skillconnect</div>
     </div>
 
     <div class="terminal-body">
+
         <pre class="ascii-art">
 ███████╗██╗  ██╗██╗██╗     ██╗      ██████╗ ██████╗ ███╗   ██╗███╗   ██╗███████╗ ██████╗████████╗
 ██╔════╝██║ ██╔╝██║██║     ██║     ██╔════╝██╔═══██╗████╗  ██║████╗  ██║██╔════╝██╔════╝╚══██╔══╝
@@ -180,56 +144,47 @@
 ╚══════╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═╝   
         </pre>
 
-        <div class="prompt">skillconnect@support:~$ </div>
-        <div class="command">process-contact-request --id=<span th:text="${requestId}">12345</span></div>
+        <div class="prompt">skillconnect@wallet:~$</div>
+        <div class="command">confirm-payment --txn=<span th:text="${transactionId}">txn_ABC123</span></div>
         <div class="output">
-            <div class="success">✓ Contact request received successfully</div>
-            <div class="success">✓ Request logged in support system</div>
+            <div class="success">✓ Payment successfully received</div>
+            <div class="success">✓ Wallet balance updated</div>
             <div class="success">✓ Confirmation email generated</div>
+
             <div style="margin: 12px 0;">
-                Request ID: <span class="info" th:text="${requestId}">12345</span><br>
-                Email: <span class="success" th:text="${userEmail}">user@example.com</span><br>
-                Subject: <span class="warning" th:text="${subject}">Contact Subject</span><br>
-                Submitted: <span class="info" th:text="${submissionDate}">2025-01-08 10:30:00</span>
+                User: <span class="info" th:text="${userName}">User Name</span><br>
+                Amount: ₹<span class="success" th:text="${amount}">0.00</span><br>
+                Transaction ID: <span class="warning" th:text="${transactionId}">txn_ABC123</span><br>
+                Payment Method: <span class="info" th:text="${paymentMethod}">Razorpay</span><br>
+                Date & Time: <span class="info" th:text="${dateTime}">2024-04-12 12:00</span>
             </div>
         </div>
 
-        <div class="prompt">skillconnect@support:~$ </div>
-        <div class="command">cat original-message.txt</div>
+        <div class="prompt">skillconnect@wallet:~$</div>
+        <div class="command">echo "Need help?" | figlet</div>
         <div class="output">
-            <div class="info">📝 Your Original Message:</div>
-            <div class="message-box" th:text="${message}">
-                Your original message content will appear here...
+            <div class="info">🛠️ Support Contact:</div>
+            <div class="message-box">
+                If you have any issues with this transaction,<br>
+                please contact us at:
+                <a th:href="'mailto:' + ${supportEmail}" th:text="${supportEmail}" style="color: #00ff88;">support@skillconnect.com</a>
             </div>
         </div>
 
-        <div class="prompt">skillconnect@support:~$ </div>
-        <div class="command">echo "What happens next?" | figlet</div>
-        <div class="output">
-            <div class="success">🚀 Next Steps:</div>
-            <div style="margin: 12px 0; color: #d8dee9;">
-                → Our support team will review your request<br>
-                → You'll receive a response within 24-48 hours<br>
-                → Keep this email for your records<br>
-                → Reference ID: <span class="warning" th:text="${requestId}">12345</span>
-            </div>
-        </div>
-
-        <div class="prompt">skillconnect@support:~$ </div>
-        <div class="command">tail -f support-queue.log</div>
+        <div class="prompt">skillconnect@wallet:~$</div>
+        <div class="command">tail -f wallet-transactions.log</div>
         <div class="output">
             <div style="color: #666; font-size: 11px;">
-                [INFO] Request added to support queue...<br>
-                [INFO] Priority: NORMAL<br>
-                [INFO] Estimated response time: 24-48 hours<br>
-                [INFO] Status: RECEIVED<span class="blink">_</span>
+                [INFO] Payment received<br>
+                [INFO] Balance updated<br>
+                [INFO] Confirmation email sent to <span th:text="${userName}">User</span><span class="blink">_</span>
             </div>
         </div>
     </div>
 
     <div class="footer-terminal">
-        <div class="prompt" style="display: inline;">skillconnect@support:~$ </div>
-        <span style="color: #666;">Thank you for contacting SkillConnect! We'll be in touch soon.</span>
+        <div class="prompt" style="display: inline;">skillconnect@wallet:~$</div>
+        <span style="color: #666;">Thank you for using SkillConnect Wallet 🚀</span>
     </div>
 </div>
 </body>

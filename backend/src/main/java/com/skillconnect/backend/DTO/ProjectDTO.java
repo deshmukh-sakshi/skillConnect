@@ -2,6 +2,7 @@ package com.skillconnect.backend.DTO;
 
 import com.skillconnect.backend.Entity.Project;
 import io.swagger.v3.oas.annotations.media.Schema;
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -15,21 +16,21 @@ public class ProjectDTO {
     @Schema(description = "Unique identifier for the project", example = "1")
     private Long id;
     
-    @Schema(description = "Project title", example = "E-commerce Website Development", required = true)
+    @Schema(description = "Project title", example = "E-commerce Website Development", requiredMode = RequiredMode.REQUIRED)
     private String title;
     
     @Schema(description = "Detailed project description", 
             example = "Looking for a skilled developer to build a modern e-commerce website with payment integration", 
-            required = true)
+            requiredMode = RequiredMode.REQUIRED)
     private String description;
     
-    @Schema(description = "Project category", example = "Web Development", required = true)
+    @Schema(description = "Project category", example = "Web Development", requiredMode = RequiredMode.REQUIRED)
     private String category;
     
-    @Schema(description = "Project deadline", example = "2024-12-31T23:59:59", required = true)
+    @Schema(description = "Project deadline", example = "2024-12-31T23:59:59", requiredMode = RequiredMode.REQUIRED)
     private LocalDateTime deadline;
     
-    @Schema(description = "Project budget in cents", example = "500000", required = true)
+    @Schema(description = "Project budget in cents", example = "500000", requiredMode = RequiredMode.REQUIRED)
     private Long budget;
     
     @Schema(description = "Current project status", example = "OPEN", allowableValues = {"OPEN", "CLOSED"})
