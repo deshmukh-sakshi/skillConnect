@@ -2,6 +2,8 @@ package com.skillconnect.backend.Service.project;
 
 import com.skillconnect.backend.DTO.BidResponseDTO;
 import com.skillconnect.backend.DTO.ClientDTO;
+import com.skillconnect.backend.DTO.ProjectCountResponse;
+import com.skillconnect.backend.DTO.ProjectCountsResponse;
 import com.skillconnect.backend.DTO.ProjectDTO;
 import com.skillconnect.backend.Entity.Bids;
 import com.skillconnect.backend.Entity.Client;
@@ -14,7 +16,9 @@ import com.skillconnect.backend.Wallet.Service.WalletService;
 import com.skillconnect.backend.Chat.Service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Slf4j
@@ -53,19 +57,59 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectDTO> getAllProjects(String query) {
-        log.info("Fetching all projects");
+    public List<ProjectDTO> getAllProjects(String query, String sortBy, String sortDirection) {
+        log.info("Fetching all projects with query: '{}', sortBy: '{}', sortDirection: '{}'",
+                query, sortBy, sortDirection);
+
+        String validatedSortBy = validateSortField(sortBy);
+        Sort.Direction direction = validateSortDirection(sortDirection);
+
+
+        Sort sort = Sort.by(direction, validatedSortBy);
+
         List<Project> projects;
 
         if (query == null || query.trim().isEmpty()) {
-            projects = projectRepository.findAll();
+            projects = projectRepository.findAll(sort);
         } else {
-            String trimmedQuery = query.trim();
-            projects = projectRepository.findByTitleContainingIgnoreCaseOrCategoryContainingIgnoreCase(trimmedQuery,
-                    trimmedQuery);
+
+            projects = projectRepository.findProjectsWithSearch(query.trim(), sort);
         }
 
+        log.info("Found {} projects", projects.size());
         return projects.stream().map(this::toDTO).toList();
+    }
+
+    private String validateSortField(String sortBy) {
+        if (sortBy == null || sortBy.trim().isEmpty()) {
+            return "createdAt";
+        }
+
+        // Map of allowed sort fields
+        Map<String, String> allowedSortFields = Map.of(
+                "budget", "budget",
+                "deadline", "deadline",
+                "title", "title",
+                "category", "category",
+                "created", "createdAt",
+                "updated", "updatedAt"
+        );
+
+        String normalizedSortBy = sortBy.toLowerCase().trim();
+        return allowedSortFields.getOrDefault(normalizedSortBy, "createdAt");
+    }
+
+    private Sort.Direction validateSortDirection(String sortDirection) {
+        if (sortDirection == null || sortDirection.trim().isEmpty()) {
+            return Sort.Direction.DESC;
+        }
+
+        String normalizedDirection = sortDirection.toLowerCase().trim();
+        return switch (normalizedDirection) {
+            case "asc", "ascending" -> Sort.Direction.ASC;
+            case "desc", "descending" -> Sort.Direction.DESC;
+            default -> Sort.Direction.DESC;
+        };
     }
 
     @Override
@@ -225,6 +269,47 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         log.info("Bid rejected: {}", bid.getId());
+    }
+
+    @Override
+    public ProjectCountsResponse getProjectCountsByCategory() {
+        log.info("Fetching project counts by category");
+        
+        List<Object[]> categoryCountsRaw = projectRepository.countActiveProjectsByCategory();
+        Long totalActiveProjects = projectRepository.countTotalActiveProjects();
+        
+        LocalDateTime now = LocalDateTime.now();
+        List<ProjectCountResponse> counts = categoryCountsRaw.stream()
+                .map(row -> {
+                    String category = (String) row[0];
+                    Long count = (Long) row[1];
+                    Long categoryId = getCategoryIdFromName(category);
+                    return new ProjectCountResponse(category, categoryId, count, now);
+                })
+                .toList();
+        
+        log.info("Found {} categories with active projects, total: {}", counts.size(), totalActiveProjects);
+        return new ProjectCountsResponse(counts, totalActiveProjects);
+    }
+
+    private Long getCategoryIdFromName(String categoryName) {
+        return switch (categoryName.toLowerCase()) {
+            case "web development" -> 1L;
+            case "graphic design" -> 2L;
+            case "photography" -> 3L;
+            case "marketing" -> 4L;
+            case "video editing" -> 5L;
+            case "content writing" -> 6L;
+            case "it & networking" -> 7L;
+            case "translation" -> 8L;
+            case "swe" -> 9L;
+            case "ai-ml" -> 10L;
+            case "mobile development" -> 11L;
+            case "ui-ux designer" -> 12L;
+            case "app development" -> 11L; // Map app development to mobile development
+            case "data analysis" -> 10L; // Map data analysis to AI-ML
+            default -> 0L; // Default ID for unknown categories
+        };
     }
 
     private ProjectDTO toDTO(Project project) {
