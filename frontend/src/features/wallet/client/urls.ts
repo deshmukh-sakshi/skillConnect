@@ -1,8 +1,8 @@
 const urls = {
-  getFrozenAmounts: "/api/wallet/frozen-amounts",
-  addMoney: "/api/wallet/add-money",
-  verifyPayment: "/api/wallet/verify-payment",
-  getWalletDetails: "/api/wallet",
+  getFrozenAmounts: "/wallet/frozen-amounts",
+  addMoney: "/wallet/add-money",
+  verifyPayment: "/wallet/verify-payment",
+  getWalletDetails: "/wallet",
 };
 
 export default urls;

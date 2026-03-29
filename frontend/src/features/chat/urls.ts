@@ -2,7 +2,7 @@
  * URL constants for chat-related API endpoints
  */
 
-const BASE_URL = "/api/chat";
+const BASE_URL = "/chat";
 
 export const CHAT_URLS = {
   // Message operations
@@ -42,12 +42,12 @@ export const CHAT_URLS = {
     `${BASE_URL}/rooms/${chatRoomId}/create-milestone`,
   UPDATE_MILESTONE_STATUS: (chatRoomId: number, milestoneId: number) =>
     `${BASE_URL}/rooms/${chatRoomId}/milestones/${milestoneId}/status`,
-  DELETE_MILESTONE: (milestoneId: number) => `/api/milestones/${milestoneId}`,
-  UPDATE_MILESTONE: (milestoneId: number) => `/api/milestones/${milestoneId}`,
+  DELETE_MILESTONE: (milestoneId: number) => `/milestones/${milestoneId}`,
+  UPDATE_MILESTONE: (milestoneId: number) => `/milestones/${milestoneId}`,
   UPDATE_MILESTONE_STATUS_DIRECT: (milestoneId: number) =>
-    `/api/milestones/${milestoneId}/status`,
+    `/milestones/${milestoneId}/status`,
   CREATE_MILESTONE_DIRECT: (contractId: number) =>
-    `/api/milestones/contract/${contractId}`,
+    `/milestones/contract/${contractId}`,
 };
 
 export default CHAT_URLS;

@@ -2,10 +2,10 @@
  * URL constants for contract API endpoints
  */
 const urls = {
-  getContracts: "/api/contracts",
-  getContract: "/api/contracts",
-  updateContract: "/api/contracts",
-  deleteContract: "/api/contracts",
+  getContracts: "/contracts",
+  getContract: "/contracts",
+  updateContract: "/contracts",
+  deleteContract: "/contracts",
 };
 
 export default urls;

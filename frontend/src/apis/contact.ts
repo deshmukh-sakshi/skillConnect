@@ -13,7 +13,7 @@ export const submitContactForm = async (
 ): Promise<ContactResponse> => {
   const response = await request({
     method: "POST",
-    url: "/api/contact",
+    url: "/contact",
     data: contactData,
     authToken,
   });

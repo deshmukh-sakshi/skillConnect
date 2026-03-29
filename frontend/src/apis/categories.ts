@@ -9,7 +9,7 @@ export const getProjectCounts = async (): Promise<ProjectCountsResponse> => {
   try {
     const response = await request({
       method: "GET",
-      url: "/api/projects/counts-by-category",
+      url: "/projects/counts-by-category",
     });
 
     return response.data.data || response.data;
