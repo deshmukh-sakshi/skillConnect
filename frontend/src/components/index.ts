@@ -11,15 +11,15 @@ import type LogoLink from "./shared/logo-link";
 import type Logo from "./shared/logo";
 
 export {
-    SignInIcon,
-    SignUpIcon,
-    DashboardSidebar,
-    ModeToggle,
-    AuthButtons,
-    SiteFooter,
-    SiteHeader,
-    ListComponent,
-    ContactFormModal,
+  SignInIcon,
+  SignUpIcon,
+  DashboardSidebar,
+  ModeToggle,
+  AuthButtons,
+  SiteFooter,
+  SiteHeader,
+  ListComponent,
+  ContactFormModal,
 };
 
 export type { Logo, LogoLink };

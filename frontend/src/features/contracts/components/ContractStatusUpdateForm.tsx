@@ -151,7 +151,7 @@ const ContractStatusUpdateForm: React.FC<ContractStatusUpdateFormProps> = ({
             freelancerRating: clientRating ?? null,
           },
           authToken,
-        }) as any
+        }) as any,
       );
 
       if (result.meta.requestStatus === "fulfilled") {
@@ -159,7 +159,7 @@ const ContractStatusUpdateForm: React.FC<ContractStatusUpdateFormProps> = ({
         setTimeout(() => {
           onClose();
           dispatch(
-            fetchContractById({ contractId: contract.contractId, authToken })
+            fetchContractById({ contractId: contract.contractId, authToken }),
           );
         }, 1500);
       }

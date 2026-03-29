@@ -29,7 +29,7 @@ interface EditPastWorkDialogProps {
 const EditPastWorkDialog: React.FC<EditPastWorkDialogProps> = ({
   work,
   onSave,
-  onCancel
+  onCancel,
 }) => {
   const [editedWork, setEditedWork] = useState<PastWork>(work);
   const [startDateOpen, setStartDateOpen] = useState(false);
@@ -81,10 +81,10 @@ const EditPastWorkDialog: React.FC<EditPastWorkDialogProps> = ({
     }
   };
 
-  const isFormValid = 
-    editedWork.title && 
-    editedWork.link && 
-    editedWork.description && 
+  const isFormValid =
+    editedWork.title &&
+    editedWork.link &&
+    editedWork.description &&
     !dateValidationError;
 
   return (
@@ -105,7 +105,9 @@ const EditPastWorkDialog: React.FC<EditPastWorkDialogProps> = ({
             <Input
               id="edit-title"
               value={editedWork.title}
-              onChange={(e) => setEditedWork({ ...editedWork, title: e.target.value })}
+              onChange={(e) =>
+                setEditedWork({ ...editedWork, title: e.target.value })
+              }
               placeholder="Enter project title"
               className="border-gray-300 focus:border-purple-500"
             />
@@ -120,7 +122,9 @@ const EditPastWorkDialog: React.FC<EditPastWorkDialogProps> = ({
               id="edit-link"
               type="url"
               value={editedWork.link}
-              onChange={(e) => setEditedWork({ ...editedWork, link: e.target.value })}
+              onChange={(e) =>
+                setEditedWork({ ...editedWork, link: e.target.value })
+              }
               placeholder="https://example.com"
               className="border-gray-300 focus:border-purple-500"
             />
@@ -134,7 +138,9 @@ const EditPastWorkDialog: React.FC<EditPastWorkDialogProps> = ({
             <Textarea
               id="edit-description"
               value={editedWork.description}
-              onChange={(e) => setEditedWork({ ...editedWork, description: e.target.value })}
+              onChange={(e) =>
+                setEditedWork({ ...editedWork, description: e.target.value })
+              }
               placeholder="Describe your project, technologies used, and your role..."
               className="border-gray-300 focus:border-purple-500 min-h-[100px]"
               rows={4}
@@ -157,7 +163,7 @@ const EditPastWorkDialog: React.FC<EditPastWorkDialogProps> = ({
                       variant="outline"
                       className={cn(
                         "w-full justify-start text-left font-normal border-gray-300 focus:border-purple-500",
-                        !editedWork.startDate && "text-muted-foreground"
+                        !editedWork.startDate && "text-muted-foreground",
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
@@ -190,7 +196,7 @@ const EditPastWorkDialog: React.FC<EditPastWorkDialogProps> = ({
                       variant="outline"
                       className={cn(
                         "w-full justify-start text-left font-normal border-gray-300 focus:border-purple-500",
-                        !editedWork.endDate && "text-muted-foreground"
+                        !editedWork.endDate && "text-muted-foreground",
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
@@ -213,7 +219,9 @@ const EditPastWorkDialog: React.FC<EditPastWorkDialogProps> = ({
                         const startDate = editedWork.startDate
                           ? new Date(editedWork.startDate)
                           : null;
-                        return date > today || (startDate ? date < startDate : false);
+                        return (
+                          date > today || (startDate ? date < startDate : false)
+                        );
                       }}
                     />
                   </PopoverContent>

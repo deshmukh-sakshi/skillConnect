@@ -110,7 +110,7 @@ const ProfileUpdate = () => {
 
     const updatedExisting = profile.pastWorks
       .filter(
-        (w: any) => isRealBackendId(w.id) && !deletedPastWorkIds.includes(w.id)
+        (w: any) => isRealBackendId(w.id) && !deletedPastWorkIds.includes(w.id),
       )
       .map((w: any) => ({
         id: w.id,

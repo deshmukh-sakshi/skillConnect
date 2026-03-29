@@ -67,7 +67,7 @@ const AddPastWorkForm: React.FC<AddPastWorkFormProps> = ({
               },
             ],
           }
-        : null
+        : null,
     );
 
     setNewPastWork({
@@ -193,7 +193,7 @@ const AddPastWorkForm: React.FC<AddPastWorkFormProps> = ({
                       variant="outline"
                       className={cn(
                         "w-full justify-start text-left font-normal border-gray-300 focus:border-purple-500",
-                        !newPastWork.startDate && "text-muted-foreground"
+                        !newPastWork.startDate && "text-muted-foreground",
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
@@ -227,7 +227,7 @@ const AddPastWorkForm: React.FC<AddPastWorkFormProps> = ({
                       variant="outline"
                       className={cn(
                         "w-full justify-start text-left font-normal border-gray-300 focus:border-purple-500",
-                        !newPastWork.endDate && "text-muted-foreground"
+                        !newPastWork.endDate && "text-muted-foreground",
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
@@ -250,7 +250,9 @@ const AddPastWorkForm: React.FC<AddPastWorkFormProps> = ({
                         const startDate = newPastWork.startDate
                           ? new Date(newPastWork.startDate)
                           : null;
-                        return date > today || (startDate ? date < startDate : false);
+                        return (
+                          date > today || (startDate ? date < startDate : false)
+                        );
                       }}
                       initialFocus
                     />

@@ -20,7 +20,7 @@ const Header = () => {
   const { user } = useAuth();
   const dispatch = useDispatch<AppDispatch>();
   const { authToken } = useSelector((state: RootState) => state.auth);
-  
+
   useEffect(() => {
     if (authToken) {
       dispatch(fetchUserChatRooms({ authToken }));

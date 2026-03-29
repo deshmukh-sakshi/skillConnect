@@ -42,7 +42,10 @@ const router = createBrowserRouter(
       <Route path="dashboard" element={<DashboardLayout />}>
         <Route path="profile" element={<Profile />} />
         <Route path="profile/update" element={<ProfileUpdate />} />
-        <Route path="profile/:freelancerId" element={<FreelancerProfileRoutePage />} />
+        <Route
+          path="profile/:freelancerId"
+          element={<FreelancerProfileRoutePage />}
+        />
         <Route path="projects/*" element={<ClientProjectsDashboard />} />
         <Route path="contracts/*" element={<ContractsFeature />} />
         <Route path="browse-projects" element={<BrowseProjects />} />
@@ -54,8 +57,8 @@ const router = createBrowserRouter(
         <Route path="chats/*" element={<ChatPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
-    </Route>
-  )
+    </Route>,
+  ),
 );
 
 export default router;

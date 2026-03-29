@@ -20,7 +20,7 @@ const useSignUpClient = () => {
         setAuth({
           user: response?.data,
           authToken: response?.data?.token,
-        })
+        }),
       );
     },
     onError: (err: any) => {

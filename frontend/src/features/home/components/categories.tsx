@@ -5,11 +5,7 @@ import { useProjectCounts } from "@/hooks/useProjectCounts";
 import CategoryCard from "./category-card";
 
 const Categories = () => {
-  const { 
-    isLoading, 
-    error, 
-    getCountForCategory
-  } = useProjectCounts();
+  const { isLoading, error, getCountForCategory } = useProjectCounts();
 
   return (
     <section className="py-8 md:py-10 md:mt-8 mx-auto container">
@@ -54,10 +50,10 @@ const Categories = () => {
           renderItem={(item: CategoryType) => {
             // Get the actual count from backend data
             const actualCount = getCountForCategory(item.id);
-            
+
             return (
-              <CategoryCard 
-                key={item.id} 
+              <CategoryCard
+                key={item.id}
                 item={item}
                 activeProjectCount={actualCount} // This will be 0 if no data found
                 isCountLoading={isLoading}

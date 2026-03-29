@@ -27,7 +27,7 @@ const SearchInput = ({
     <Input
       className={cn(
         "w-full bg-white sm:max-w-sm h-8 p-0 m-0 px-3 py-1.5",
-        className
+        className,
       )}
       type="text"
       placeholder={placeholder}

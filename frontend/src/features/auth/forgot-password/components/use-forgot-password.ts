@@ -10,12 +10,14 @@ const useForgotPassword = () => {
       apis.forgotPassword({ data }),
     onSuccess: () => {
       toast.success("Password reset email sent", {
-        description: "Check your email for password reset instructions"
+        description: "Check your email for password reset instructions",
       });
     },
     onError: (err: ApiError) => {
       toast.error("Something went wrong", {
-        description: err?.response?.data?.error?.message || "Failed to send password reset email"
+        description:
+          err?.response?.data?.error?.message ||
+          "Failed to send password reset email",
       });
     },
     retry: false,

@@ -111,7 +111,7 @@ const ProjectCreateForm: React.FC<ProjectCreateFormProps> = ({
       };
 
       const result = await dispatch(
-        createProject({ data: projectData, authToken })
+        createProject({ data: projectData, authToken }),
       );
 
       if (createProject.fulfilled.match(result)) {

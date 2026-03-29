@@ -94,7 +94,7 @@ const PastWorkSection: React.FC<PastWorkSectionProps> = ({
             ...prev,
             pastWorks: prev.pastWorks.filter((w: any) => w.id !== id),
           }
-        : null
+        : null,
     );
     setDeletedPastWorkIds((prev) => [...prev, id]);
   };
@@ -138,7 +138,7 @@ const PastWorkSection: React.FC<PastWorkSectionProps> = ({
         {sortedPastWorks.map((work: PastWork) => {
           // Find the original index for editing purposes
           const originalIndex = profile.pastWorks.findIndex(
-            (w) => w.id === work.id
+            (w) => w.id === work.id,
           );
           return (
             <PastWorkItem

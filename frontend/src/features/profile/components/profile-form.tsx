@@ -5,7 +5,6 @@ import BasicInfoSection from "../sections/basic-info";
 import SkillsSection from "../sections/skill-section";
 import PastWorkSection from "../sections/pastwork-section";
 
-
 interface ProfileFormProps {
   profile: ProfileData;
   setProfile: React.Dispatch<React.SetStateAction<ProfileData | null>>;
@@ -17,7 +16,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
   profile,
   setProfile,
   deletedPastWorkIds,
-  setDeletedPastWorkIds
+  setDeletedPastWorkIds,
 }) => {
   return (
     <div className="space-y-6">

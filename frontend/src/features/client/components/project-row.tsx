@@ -73,7 +73,7 @@ const ProjectRowWithUpdate = ({
             "inline-block rounded-full px-2 py-0.5 text-xs font-semibold",
             isClosed
               ? "bg-destructive/10 text-destructive"
-              : "bg-emerald-100 text-emerald-700"
+              : "bg-emerald-100 text-emerald-700",
           )}
         >
           {isClosed ? "Closed" : "Open"}

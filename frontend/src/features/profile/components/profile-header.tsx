@@ -27,7 +27,7 @@ export const ProfileHeader = ({ user }: ProfileHeaderProps) => {
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full p-1">
             <div className="bg-white rounded-full p-1 w-full h-full">
               <Avatar className="w-full h-full">
-                <AvatarImage 
+                <AvatarImage
                   alt={`${user?.name}'s profile`}
                   className="object-cover w-full h-full rounded-full"
                 />
@@ -46,7 +46,7 @@ export const ProfileHeader = ({ user }: ProfileHeaderProps) => {
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 bg-clip-text text-transparent leading-tight">
             {user?.name || "Unknown User"}
           </h1>
-          
+
           <div className="flex items-center justify-center sm:justify-start gap-2 text-slate-600">
             <Mail className="w-4 h-4 flex-shrink-0" />
             <span className="text-sm sm:text-base break-all">
@@ -57,11 +57,11 @@ export const ProfileHeader = ({ user }: ProfileHeaderProps) => {
 
         {/* Role Badge */}
         <div className="flex justify-center sm:justify-start pt-2">
-          <Badge 
-            variant="outline" 
+          <Badge
+            variant="outline"
             className={`px-4 py-2 text-sm font-medium border-2 transition-all duration-200 ${
-              isFreelancer 
-                ? "border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 hover:border-emerald-300" 
+              isFreelancer
+                ? "border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 hover:border-emerald-300"
                 : "border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100 hover:border-blue-300"
             }`}
           >

@@ -41,7 +41,7 @@ export default function ChatPage() {
       } catch (err: any) {
         console.error("Error loading chat rooms:", err);
         setError(
-          err?.response?.data?.error?.message || "Failed to load chat rooms"
+          err?.response?.data?.error?.message || "Failed to load chat rooms",
         );
       } finally {
         setIsLoading(false);
@@ -161,8 +161,8 @@ export default function ChatPage() {
                         {room.chatType === "BID_NEGOTIATION"
                           ? "Bid Discussion"
                           : room.chatType === "CONTRACT"
-                          ? "Contract"
-                          : "Chat"}
+                            ? "Contract"
+                            : "Chat"}
                       </div>
                     </div>
 

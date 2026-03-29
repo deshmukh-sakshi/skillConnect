@@ -9,7 +9,7 @@ import type { ContactRequest, ContactResponse } from "@/types/contact";
  */
 export const submitContactForm = async (
   contactData: ContactRequest,
-  authToken?: string | null
+  authToken?: string | null,
 ): Promise<ContactResponse> => {
   const response = await request({
     method: "POST",
@@ -20,4 +20,3 @@ export const submitContactForm = async (
 
   return response.data;
 };
-

@@ -33,7 +33,7 @@ const BalanceChart = ({
         color: CHART_COLORS.withdrawn,
       },
     ],
-    [currentBalance, totalWithdrawn]
+    [currentBalance, totalWithdrawn],
   );
 
   return (

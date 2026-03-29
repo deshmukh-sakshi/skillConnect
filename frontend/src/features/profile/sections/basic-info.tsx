@@ -8,9 +8,12 @@ interface BasicInfoSectionProps {
   setProfile: React.Dispatch<React.SetStateAction<ProfileData | null>>;
 }
 
-const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({ profile, setProfile }) => {
+const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
+  profile,
+  setProfile,
+}) => {
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProfile(prev => prev ? { ...prev, name: e.target.value } : null);
+    setProfile((prev) => (prev ? { ...prev, name: e.target.value } : null));
   };
 
   return (
@@ -44,9 +47,7 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({ profile, setProfile
 
       {/* Rating (Read-only) */}
       <div className="space-y-2">
-        <Label className="text-sm font-medium text-gray-700">
-          Rating
-        </Label>
+        <Label className="text-sm font-medium text-gray-700">Rating</Label>
         <Input
           value={profile.rating + " " + "/ 5"}
           readOnly

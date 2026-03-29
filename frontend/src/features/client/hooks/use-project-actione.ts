@@ -10,7 +10,7 @@ interface UseProjectActionsProps {
 export interface ProjectUpdateData {
   title: string;
   description: string;
-  category: string; 
+  category: string;
   budget: number;
   deadline: string;
   clientId: number;
@@ -19,11 +19,14 @@ export interface ProjectUpdateData {
 const useProjectActions = ({ refetchProjects }: UseProjectActionsProps) => {
   const { authToken } = useAuth();
 
-  const {
-    isLoading: isUpdating,
-    mutate: updateProject,
-  } = useMutation({
-    mutationFn: ({ projectId, data }: { projectId: string; data: ProjectUpdateData }) =>
+  const { isLoading: isUpdating, mutate: updateProject } = useMutation({
+    mutationFn: ({
+      projectId,
+      data,
+    }: {
+      projectId: string;
+      data: ProjectUpdateData;
+    }) =>
       apis.updateProject({
         id: projectId,
         authToken: authToken as string,
@@ -43,10 +46,7 @@ const useProjectActions = ({ refetchProjects }: UseProjectActionsProps) => {
     retry: false,
   });
 
-  const {
-    isLoading: isDeleting,
-    mutate: deleteProject,
-  } = useMutation({
+  const { isLoading: isDeleting, mutate: deleteProject } = useMutation({
     mutationFn: (projectId: string) =>
       apis.deleteProject({
         id: projectId,

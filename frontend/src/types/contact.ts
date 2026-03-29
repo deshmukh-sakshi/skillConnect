@@ -5,7 +5,7 @@ export interface ContactFormData {
   email: string;
   subject: string;
   message: string;
-  userType: 'LOGGED_IN' | 'GUEST';
+  userType: "LOGGED_IN" | "GUEST";
 }
 
 // Contact request interface for API
@@ -13,7 +13,7 @@ export interface ContactRequest {
   email: string;
   subject: string;
   message: string;
-  userType: 'LOGGED_IN' | 'GUEST';
+  userType: "LOGGED_IN" | "GUEST";
   userId?: number;
   submittedAt: Date;
 }
@@ -21,7 +21,7 @@ export interface ContactRequest {
 // Contact response interface from API
 export interface ContactResponse {
   id: number;
-  status: 'received' | 'processing' | 'resolved';
+  status: "received" | "processing" | "resolved";
   confirmationSent: boolean;
   createdAt: Date;
 }
@@ -35,8 +35,7 @@ export interface ContactFormModalProps {
 
 // Zod validation schemas
 export const contactFormSchema = z.object({
-  email: z
-    .email("Please enter a valid email address"),
+  email: z.email("Please enter a valid email address"),
   subject: z
     .string()
     .min(3, "Subject must be at least 3 characters")
@@ -45,8 +44,7 @@ export const contactFormSchema = z.object({
     .string()
     .min(10, "Message must be at least 10 characters")
     .max(1000, "Message must be less than 1000 characters"),
-  userType: z
-    .enum(['LOGGED_IN', 'GUEST']),
+  userType: z.enum(["LOGGED_IN", "GUEST"]),
 });
 
 export type ContactFormSchema = z.infer<typeof contactFormSchema>;
@@ -56,7 +54,7 @@ export const contactRequestSchema = z.object({
   email: z.email(),
   subject: z.string().min(3).max(100),
   message: z.string().min(10).max(1000),
-  userType: z.enum(['LOGGED_IN', 'GUEST']),
+  userType: z.enum(["LOGGED_IN", "GUEST"]),
   userId: z.number().optional(),
 });
 

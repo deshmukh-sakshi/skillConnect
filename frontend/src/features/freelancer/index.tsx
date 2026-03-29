@@ -16,7 +16,7 @@ const BrowseProjects = () => {
 
   const safeProjects = Array.isArray(projects) ? projects : [];
   const openProjects = safeProjects.filter(
-    (project) => project.status === "OPEN"
+    (project) => project.status === "OPEN",
   );
 
   const sortedProjects = useMemo(() => {

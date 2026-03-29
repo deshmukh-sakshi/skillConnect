@@ -17,7 +17,7 @@ const useGetWalletDetails = () => {
       apis.getWalletDetails({
         id: user?.id as number,
         authToken: authToken as string,
-        params: {"role": "ROLE_CLIENT"}
+        params: { role: "ROLE_CLIENT" },
       }),
     enabled: !!authToken,
     onError: (err: any) => {

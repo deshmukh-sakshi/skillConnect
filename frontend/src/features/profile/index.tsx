@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Edit3 } from "lucide-react";
@@ -21,10 +20,10 @@ const Profile = () => {
   const {
     data: freelancerData,
     isLoading: freelancerLoading,
-    error: freelancerError
+    error: freelancerError,
   } = shouldFetchFreelancerData
-      ? useGetFreelancerProfile(String(user?.id), user.token)
-      : { data: null, isLoading: false, error: null };
+    ? useGetFreelancerProfile(String(user?.id), user.token)
+    : { data: null, isLoading: false, error: null };
 
   const isFreelancer = user?.role === "ROLE_FREELANCER";
 
@@ -34,7 +33,9 @@ const Profile = () => {
         {/* Header Section */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-slate-900 mb-2">Profile</h1>
-          <p className="text-slate-600">Manage your profile information and settings</p>
+          <p className="text-slate-600">
+            Manage your profile information and settings
+          </p>
         </div>
 
         {/* Profile Header Card */}
@@ -61,7 +62,9 @@ const Profile = () => {
             <CardContent className="p-6">
               <div className="flex items-center mb-5">
                 <div className="w-1 h-5 bg-gradient-to-b from-blue-500 to-indigo-600 rounded-full mr-3"></div>
-                <h2 className="text-lg font-semibold text-slate-900">Basic Information</h2>
+                <h2 className="text-lg font-semibold text-slate-900">
+                  Basic Information
+                </h2>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -70,16 +73,17 @@ const Profile = () => {
                   value={isFreelancer ? "Freelancer" : "Client"}
                   variant={isFreelancer ? "success" : "primary"}
                 />
-                <ProfileField
-                  label="Email Address"
-                  value={user?.email}
-                />
+                <ProfileField label="Email Address" value={user?.email} />
                 {isFreelancer && (
                   <ProfileField
                     label="Rating"
                     isLoading={freelancerLoading}
                     error={freelancerError}
-                    value={freelancerData?.rating ? `${freelancerData.rating} / 5` : undefined}
+                    value={
+                      freelancerData?.rating
+                        ? `${freelancerData.rating} / 5`
+                        : undefined
+                    }
                     variant="rating"
                   />
                 )}

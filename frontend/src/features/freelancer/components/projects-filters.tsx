@@ -41,7 +41,7 @@ const ProjectFilters = ({
     (text: string) => {
       debouncedSearch(text);
     },
-    [debouncedSearch]
+    [debouncedSearch],
   );
 
   const handleSortFieldChange = (sortBy: string) => {

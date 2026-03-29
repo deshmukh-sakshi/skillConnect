@@ -9,58 +9,58 @@ const apis = {
       method: "POST",
       url: urls.createProject,
       data,
-      authToken
+      authToken,
     }),
-  
+
   getProjects: ({ authToken }: RequestType) =>
     request({
       method: "GET",
       url: urls.getProjects,
-      authToken
+      authToken,
     }),
-  
+
   getProjectById: ({ params, authToken }: RequestType) =>
     request({
       method: "GET",
       url: `${urls.getProject}/${params.id}`,
-      authToken
+      authToken,
     }),
-  
+
   getProjectBids: ({ params, authToken }: RequestType) =>
     request({
       method: "GET",
       url: `${urls.getProjectBids}/${params.projectId}`,
-      authToken
+      authToken,
     }),
-  
+
   acceptBid: ({ params, authToken }: RequestType) =>
     request({
       method: "PUT",
       url: `${urls.acceptBid}/${params.projectId}/bids/${params.bidId}/accept`,
-      authToken
+      authToken,
     }),
-  
+
   rejectBid: ({ params, authToken }: RequestType) =>
     request({
       method: "PUT",
       url: `${urls.rejectBid}/${params.projectId}/bids/${params.bidId}/reject`,
-      authToken
+      authToken,
     }),
-  
+
   updateProject: ({ params, data, authToken }: RequestType) =>
     request({
       method: "PUT",
       url: `${urls.updateProject}/${params.id}`,
       data,
-      authToken
+      authToken,
     }),
-  
+
   deleteProject: ({ params, authToken }: RequestType) =>
     request({
       method: "DELETE",
       url: `${urls.deleteProject}/${params.id}`,
-      authToken
-    })
+      authToken,
+    }),
 };
 
 export default apis;

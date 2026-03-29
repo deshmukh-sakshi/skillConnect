@@ -13,7 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { resetPasswordFormSchema, type ResetPasswordFormValues } from "./reset-password-schema";
+import {
+  resetPasswordFormSchema,
+  type ResetPasswordFormValues,
+} from "./reset-password-schema";
 import useResetPassword from "./use-reset-password";
 
 interface ResetPasswordFormProps {
@@ -23,11 +26,11 @@ interface ResetPasswordFormProps {
 const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
   const { isLoading, mutate } = useResetPassword();
   const onSubmit = (data: ResetPasswordFormValues) => {
-    mutate({ 
-      data: { 
-        token, 
-        password: data.password 
-      } 
+    mutate({
+      data: {
+        token,
+        password: data.password,
+      },
     });
   };
 

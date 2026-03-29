@@ -57,7 +57,7 @@ const WithdrawMoneyDialog: React.FC<WithdrawMoneyDialogProps> = ({
         return `Minimum withdrawal amount is ₹${MINIMUM_WITHDRAWAL}`;
       return null;
     },
-    [currentBalance]
+    [currentBalance],
   );
 
   const resetForm = useCallback(() => {
@@ -97,7 +97,7 @@ const WithdrawMoneyDialog: React.FC<WithdrawMoneyDialogProps> = ({
       setWithdrawalAmount(e.target.value);
       setError("");
     },
-    []
+    [],
   );
 
   const isSubmitDisabled =

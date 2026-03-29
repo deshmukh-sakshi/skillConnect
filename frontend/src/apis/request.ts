@@ -11,7 +11,7 @@ const request = ({
   isPlainText = false,
 }: RequestType & { isPlainText?: boolean }) => {
   const headers: Record<string, string> = {};
-  
+
   // Set content type based on the request type
   if (isFormData) {
     headers["Content-Type"] = "multipart/form-data";
@@ -20,12 +20,12 @@ const request = ({
   } else {
     headers["Content-Type"] = "application/json";
   }
-  
+
   // Add auth token if provided
   if (authToken) {
     headers["Authorization"] = `Bearer ${authToken}`;
   }
-  
+
   return axios({
     baseURL: import.meta.env.VITE_BASE_URL,
     method,

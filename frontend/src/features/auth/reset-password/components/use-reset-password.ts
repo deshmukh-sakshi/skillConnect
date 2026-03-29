@@ -7,13 +7,13 @@ import type { ApiError } from "@/types";
 
 const useResetPassword = () => {
   const navigate = useNavigate();
-  
+
   const { mutate, isLoading } = useMutation({
     mutationFn: ({ data }: { data: { token: string; password: string } }) =>
       apis.resetPassword({ data }),
     onSuccess: () => {
       toast.success("Password reset successful", {
-        description: "You can now sign in with your new password"
+        description: "You can now sign in with your new password",
       });
       setTimeout(() => {
         navigate("/auth/sign-in");
@@ -21,7 +21,8 @@ const useResetPassword = () => {
     },
     onError: (err: ApiError) => {
       toast.error("Password reset failed", {
-        description: err?.response?.data?.error?.message || "Invalid or expired token"
+        description:
+          err?.response?.data?.error?.message || "Invalid or expired token",
       });
     },
     retry: false,

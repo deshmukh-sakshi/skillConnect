@@ -3,38 +3,37 @@ import type { RequestType } from "@/types";
 
 import urls from "./urls";
 
-
 const apis = {
-  login: ({data}: RequestType) => 
+  login: ({ data }: RequestType) =>
     request({
       method: "POST",
       url: urls.login,
-      data
+      data,
     }),
-  registerClient: ({data}: RequestType) =>
+  registerClient: ({ data }: RequestType) =>
     request({
       method: "POST",
       url: urls.registerClient,
-      data
+      data,
     }),
-  registerFreelancer: ({data}: RequestType) => 
+  registerFreelancer: ({ data }: RequestType) =>
     request({
       method: "POST",
       url: urls.registerFreelancer,
-      data
+      data,
     }),
-  forgotPassword: ({data}: RequestType) =>
+  forgotPassword: ({ data }: RequestType) =>
     request({
       method: "POST",
       url: urls.forgotPassword,
-      data
+      data,
     }),
-  resetPassword: ({data}: RequestType) =>
+  resetPassword: ({ data }: RequestType) =>
     request({
       method: "POST",
       url: urls.resetPassword,
-      data
-    })
-}
+      data,
+    }),
+};
 
 export default apis;

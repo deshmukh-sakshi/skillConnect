@@ -49,7 +49,7 @@ const ContractList: React.FC = () => {
   });
 
   const sortedContracts = [...filteredContracts].sort(
-    (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+    (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
   );
 
   const getOtherParty = (contract: Contract) => {

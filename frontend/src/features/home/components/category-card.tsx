@@ -34,7 +34,7 @@ const CategoryCard = ({
         "flex items-center gap-5",
         "bg-white dark:bg-slate-900",
         "border-gray-200 dark:border-gray-700",
-        "hover:shadow-lg dark:hover:shadow-primary/20"
+        "hover:shadow-lg dark:hover:shadow-primary/20",
       )}
     >
       <item.Icon className={cn(item.color)} size={40} />

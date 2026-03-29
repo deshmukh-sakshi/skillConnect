@@ -56,15 +56,15 @@ const RevenueDetail = () => {
                 currentBalance: prev.currentBalance - amount,
                 totalWithdrawn: prev.totalWithdrawn + amount,
               }
-            : null
+            : null,
         );
       } catch (error: any) {
         throw new Error(
-          error.message || "Withdrawal failed. Please try again."
+          error.message || "Withdrawal failed. Please try again.",
         );
       }
     },
-    [formatCurrency]
+    [formatCurrency],
   );
 
   if (isLoading || !revenueData) {

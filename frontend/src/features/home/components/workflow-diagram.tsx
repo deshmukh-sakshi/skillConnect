@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
-import { 
-  FileText, 
-  Users, 
-  FileCheck, 
-  CheckCircle, 
+import {
+  FileText,
+  Users,
+  FileCheck,
+  CheckCircle,
   CreditCard,
   ArrowRight,
-  ArrowDown
+  ArrowDown,
 } from "lucide-react";
 
 import type { WorkflowStep, WorkflowDiagramProps } from "@/types/workflow";
@@ -16,44 +16,53 @@ const workflowSteps: WorkflowStep[] = [
   {
     id: 1,
     title: "Project Posting",
-    description: "Clients post detailed project requirements with budget and timeline",
+    description:
+      "Clients post detailed project requirements with budget and timeline",
     icon: FileText,
-    color: "text-blue-500"
+    color: "text-blue-500",
   },
   {
     id: 2,
     title: "Bidding",
     description: "Freelancers review projects and submit competitive proposals",
     icon: Users,
-    color: "text-green-500"
+    color: "text-green-500",
   },
   {
     id: 3,
     title: "Contract Creation",
-    description: "Accepted bids create secure contracts and lock project status",
+    description:
+      "Accepted bids create secure contracts and lock project status",
     icon: FileCheck,
-    color: "text-purple-500"
+    color: "text-purple-500",
   },
   {
     id: 4,
     title: "Project Completion",
-    description: "Freelancers deliver work and clients review the final results",
+    description:
+      "Freelancers deliver work and clients review the final results",
     icon: CheckCircle,
-    color: "text-orange-500"
+    color: "text-orange-500",
   },
   {
     id: 5,
     title: "Payment",
     description: "Secure payment processing through the platform wallet system",
     icon: CreditCard,
-    color: "text-cyan-500"
-  }
+    color: "text-cyan-500",
+  },
 ];
 
 // Arrow connector component
-const ArrowConnector = ({ direction = "right", className = "" }: { direction?: "right" | "down"; className?: string }) => {
+const ArrowConnector = ({
+  direction = "right",
+  className = "",
+}: {
+  direction?: "right" | "down";
+  className?: string;
+}) => {
   const ArrowIcon = direction === "right" ? ArrowRight : ArrowDown;
-  
+
   return (
     <div className={`flex items-center justify-center ${className}`}>
       <ArrowIcon className="w-6 h-6 text-muted-foreground/60" />
@@ -62,7 +71,13 @@ const ArrowConnector = ({ direction = "right", className = "" }: { direction?: "
 };
 
 // Individual workflow step component
-const WorkflowStepComponent = ({ step, index }: { step: WorkflowStep; index: number }) => {
+const WorkflowStepComponent = ({
+  step,
+  index,
+}: {
+  step: WorkflowStep;
+  index: number;
+}) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -85,7 +100,7 @@ const WorkflowStepComponent = ({ step, index }: { step: WorkflowStep; index: num
           {step.id}
         </div>
       </motion.div>
-      
+
       {/* Content */}
       <div className="max-w-xs">
         <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-200">
@@ -99,7 +114,10 @@ const WorkflowStepComponent = ({ step, index }: { step: WorkflowStep; index: num
   );
 };
 
-const WorkflowDiagram = ({ steps = workflowSteps, className = "" }: WorkflowDiagramProps) => {
+const WorkflowDiagram = ({
+  steps = workflowSteps,
+  className = "",
+}: WorkflowDiagramProps) => {
   return (
     <div className={`w-full ${className}`}>
       {/* Desktop layout - horizontal flow */}
@@ -107,10 +125,7 @@ const WorkflowDiagram = ({ steps = workflowSteps, className = "" }: WorkflowDiag
         <div className="flex items-center justify-between max-w-6xl mx-auto">
           {steps.map((step, index) => (
             <div key={step.id} className="flex items-center">
-              <WorkflowStepComponent 
-                step={step} 
-                index={index} 
-              />
+              <WorkflowStepComponent step={step} index={index} />
               {index < steps.length - 1 && (
                 <ArrowConnector direction="right" className="mx-8" />
               )}
@@ -124,19 +139,22 @@ const WorkflowDiagram = ({ steps = workflowSteps, className = "" }: WorkflowDiag
         <div className="grid grid-cols-2 gap-8 max-w-2xl mx-auto">
           {steps.map((step, index) => (
             <div key={step.id} className="flex flex-col items-center">
-              <WorkflowStepComponent 
-                step={step} 
-                index={index} 
-              />
+              <WorkflowStepComponent step={step} index={index} />
               {/* Add arrows for flow direction */}
               {index === 0 && (
-                <ArrowConnector direction="right" className="absolute top-1/2 right-0 transform translate-x-4" />
+                <ArrowConnector
+                  direction="right"
+                  className="absolute top-1/2 right-0 transform translate-x-4"
+                />
               )}
               {index === 1 && (
                 <ArrowConnector direction="down" className="mt-4" />
               )}
               {index === 2 && (
-                <ArrowConnector direction="right" className="absolute top-1/2 right-0 transform translate-x-4" />
+                <ArrowConnector
+                  direction="right"
+                  className="absolute top-1/2 right-0 transform translate-x-4"
+                />
               )}
               {index === 3 && (
                 <ArrowConnector direction="down" className="mt-4" />
@@ -151,10 +169,7 @@ const WorkflowDiagram = ({ steps = workflowSteps, className = "" }: WorkflowDiag
         <div className="flex flex-col items-center space-y-8 max-w-sm mx-auto">
           {steps.map((step, index) => (
             <div key={step.id} className="flex flex-col items-center">
-              <WorkflowStepComponent 
-                step={step} 
-                index={index} 
-              />
+              <WorkflowStepComponent step={step} index={index} />
               {index < steps.length - 1 && (
                 <ArrowConnector direction="down" className="mt-6" />
               )}

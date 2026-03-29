@@ -17,7 +17,7 @@ const useGetFreelancerBids = () => {
     queryKey: ["GET_FREELANCER_BIDS", freelancerId],
     queryFn: () =>
       apis.getFreelancerBids({
-        id: freelancerId as string, 
+        id: freelancerId as string,
         authToken: authToken as string,
       }),
     enabled: !!freelancerId && !!authToken,

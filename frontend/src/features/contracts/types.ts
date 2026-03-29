@@ -25,7 +25,7 @@ export interface Contract {
  */
 export enum ContractStatus {
   IN_PROGRESS = "IN_PROGRESS",
-  COMPLETED = "COMPLETED"
+  COMPLETED = "COMPLETED",
 }
 
 /**

@@ -84,7 +84,7 @@ const NavMain = () => {
   const { pathname } = useLocation();
 
   const filteredNav = navMain.filter(
-    (item) => item.role === "COMMON" || item.role === user?.role
+    (item) => item.role === "COMMON" || item.role === user?.role,
   );
 
   return (
@@ -98,7 +98,7 @@ const NavMain = () => {
                 onClick={() => setOpenMobile(false)}
                 className={cn(
                   "flex items-center space-x-2 hover:bg-gray-200 p-2 rounded-lg text-foreground font-medium transition-colors",
-                  pathname.includes(item.path) && "bg-gray-300 text-active"
+                  pathname.includes(item.path) && "bg-gray-300 text-active",
                 )}
               >
                 <div className="relative">

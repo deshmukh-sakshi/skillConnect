@@ -34,7 +34,7 @@ const ContractDetails: React.FC = () => {
   useEffect(() => {
     if (authToken && contractId) {
       dispatch(
-        fetchContractById({ contractId: parseInt(contractId), authToken })
+        fetchContractById({ contractId: parseInt(contractId), authToken }),
       );
     }
   }, [dispatch, contractId, authToken]);
@@ -98,7 +98,7 @@ const ContractDetails: React.FC = () => {
                           fetchContractById({
                             contractId: parseInt(contractId),
                             authToken,
-                          })
+                          }),
                         );
                       }
                     }}

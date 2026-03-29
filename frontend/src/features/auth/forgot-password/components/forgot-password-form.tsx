@@ -13,7 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { forgotPasswordFormSchema, type ForgotPasswordFormValues } from "./forgot-password-schema";
+import {
+  forgotPasswordFormSchema,
+  type ForgotPasswordFormValues,
+} from "./forgot-password-schema";
 import useForgotPassword from "./use-forgot-password";
 
 const ForgotPasswordForm = () => {

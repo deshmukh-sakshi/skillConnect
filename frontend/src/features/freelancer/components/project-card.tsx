@@ -68,7 +68,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
           <Badge
             className={cn(
               "text-xs font-semibold px-3 py-0.5 rounded-full border shadow-sm",
-              statusInfo?.className
+              statusInfo?.className,
             )}
           >
             {project.status}
@@ -113,7 +113,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
                   "text-xs px-2 py-0.5 rounded-full font-medium border",
                   isUrgent
                     ? "bg-orange-100 text-orange-700 border-orange-300 animate-pulse"
-                    : "bg-blue-100 text-blue-700 border-blue-300"
+                    : "bg-blue-100 text-blue-700 border-blue-300",
                 )}
               >
                 <Timer className="h-3 w-3 mr-1" />

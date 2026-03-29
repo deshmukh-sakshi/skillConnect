@@ -88,7 +88,7 @@ const BidList: React.FC<BidListProps> = ({
   const handleBidAction = async (
     bidId: number,
     action: "accept" | "reject",
-    bidAmount: number
+    bidAmount: number,
   ) => {
     if (!authToken) {
       handleError("Authentication required", {
@@ -109,7 +109,7 @@ const BidList: React.FC<BidListProps> = ({
       updateBidStatusOptimistic({
         bidId,
         status: action === "accept" ? "Accepted" : "Rejected",
-      })
+      }),
     );
 
     try {
@@ -119,21 +119,21 @@ const BidList: React.FC<BidListProps> = ({
           projectId,
           bidId,
           authToken,
-        })
+        }),
       );
 
       if (actionThunk.fulfilled.match(result)) {
         handleSuccess(
           action === "accept"
             ? "Bid accepted successfully!"
-            : "Bid rejected successfully!"
+            : "Bid rejected successfully!",
         );
       } else {
         dispatch(
           updateBidStatusOptimistic({
             bidId,
             status: "Pending",
-          })
+          }),
         );
 
         handleError(error.bidAction || `Failed to ${action} bid`, {
@@ -146,7 +146,7 @@ const BidList: React.FC<BidListProps> = ({
         updateBidStatusOptimistic({
           bidId,
           status: "Pending",
-        })
+        }),
       );
 
       handleError(err as Error, {
@@ -262,7 +262,7 @@ interface BidCardProps {
   onBidAction: (
     bidId: number,
     action: "accept" | "reject",
-    bidAmount: number
+    bidAmount: number,
   ) => void;
   isActioning: boolean;
   isLoading: boolean;
@@ -407,7 +407,7 @@ interface BidActionButtonProps {
   onAction: (
     bidId: number,
     action: "accept" | "reject",
-    bidAmount: number
+    bidAmount: number,
   ) => void;
   bidAmount: number;
   isActioning: boolean;

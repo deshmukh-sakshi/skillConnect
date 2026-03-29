@@ -25,7 +25,7 @@ export const useProjectCounts = () => {
    * Fetches project counts with error handling and state management
    */
   const fetchProjectCounts = useCallback(async () => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       isLoading: true,
       error: null,
@@ -33,7 +33,7 @@ export const useProjectCounts = () => {
 
     try {
       const response = await getProjectCounts();
-      
+
       setState({
         counts: response.counts || [],
         totalActiveProjects: response.totalActiveProjects || 0,
@@ -41,16 +41,16 @@ export const useProjectCounts = () => {
         error: null,
       });
     } catch (error) {
-      const errorMessage = error instanceof Error 
-        ? error.message 
-        : "Failed to fetch project counts";
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Failed to fetch project counts";
 
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         isLoading: false,
         error: errorMessage,
       }));
-
     }
   }, []);
 
@@ -65,11 +65,16 @@ export const useProjectCounts = () => {
    * Get project count for a specific category ID
    * Returns the actual count from backend or 0 if not found
    */
-  const getCountForCategory = useCallback((categoryId: number): number => {
-    const categoryCount = state.counts.find(count => count.categoryId === categoryId);
-    // Return the actual count or 0 if not found
-    return categoryCount?.activeProjectCount || 0;
-  }, [state.counts]);
+  const getCountForCategory = useCallback(
+    (categoryId: number): number => {
+      const categoryCount = state.counts.find(
+        (count) => count.categoryId === categoryId,
+      );
+      // Return the actual count or 0 if not found
+      return categoryCount?.activeProjectCount || 0;
+    },
+    [state.counts],
+  );
 
   // Fetch project counts on component mount (single API call as specified)
   useEffect(() => {
@@ -82,7 +87,7 @@ export const useProjectCounts = () => {
     totalActiveProjects: state.totalActiveProjects,
     isLoading: state.isLoading,
     error: state.error,
-    
+
     // Utility functions
     retry,
     getCountForCategory,
