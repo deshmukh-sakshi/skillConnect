@@ -1,6 +1,7 @@
 package com.skillconnect.backend.Controller;
 
 import com.skillconnect.backend.DTO.BidResponseDTO;
+import com.skillconnect.backend.DTO.ProjectCountsResponse;
 import com.skillconnect.backend.DTO.ProjectDTO;
 import com.skillconnect.backend.Service.project.ProjectService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -74,6 +75,34 @@ public class ProjectController {
     }
 
     @Operation(
+        summary = "Get project counts by category",
+        description = "Retrieves the count of active projects grouped by category. Public endpoint."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Project counts retrieved successfully",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = com.skillconnect.backend.DTO.ApiResponse.class)
+            )
+        ),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Internal server error",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = com.skillconnect.backend.DTO.ApiResponse.class)
+            )
+        )
+    })
+    @GetMapping("/counts-by-category")
+    public ResponseEntity<com.skillconnect.backend.DTO.ApiResponse<ProjectCountsResponse>> getProjectCountsByCategory() {
+        ProjectCountsResponse counts = projectService.getProjectCountsByCategory();
+        return ResponseEntity.ok(com.skillconnect.backend.DTO.ApiResponse.success(counts));
+    }
+
+    @Operation(
         summary = "Get all projects",
         description = "Retrieves all projects with optional search functionality. Public endpoint."
     )
@@ -97,14 +126,30 @@ public class ProjectController {
     })
     @GetMapping
     public ResponseEntity<com.skillconnect.backend.DTO.ApiResponse<List<ProjectDTO>>> getAllProjects(
-        @Parameter(
-            description = "Search query to filter projects by title or description",
-            required = false,
-            example = "web development"
-        )
-        @RequestParam(value = "q", required = false) String query
+            @Parameter(
+                    description = "Search query to filter projects by title or description",
+                    required = false,
+                    example = "web development"
+            )
+            @RequestParam(value = "q", required = false) String query,
+
+            @Parameter(
+                    description = "Sort field - budget or deadline",
+                    required = false,
+                    example = "budget",
+                    schema = @Schema(allowableValues = {"budget", "deadline"})
+            )
+            @RequestParam(value = "sortBy", required = false, defaultValue = "createdAt") String sortBy,
+
+            @Parameter(
+                    description = "Sort direction - asc or desc",
+                    required = false,
+                    example = "desc",
+                    schema = @Schema(allowableValues = {"asc", "desc"})
+            )
+            @RequestParam(value = "sortDir", required = false, defaultValue = "desc") String sortDirection
     ) {
-        List<ProjectDTO> projects = projectService.getAllProjects(query);
+        List<ProjectDTO> projects = projectService.getAllProjects(query, sortBy, sortDirection);
         return ResponseEntity.status(HttpStatus.OK).body(com.skillconnect.backend.DTO.ApiResponse.success(projects));
     }
 
