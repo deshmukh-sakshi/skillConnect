@@ -8,7 +8,6 @@ import com.skillconnect.backend.Chat.Entity.ChatRoom;
 import com.skillconnect.backend.Chat.DTO.MilestoneRequest;
 import com.skillconnect.backend.Chat.DTO.MilestoneResponse;
 import com.skillconnect.backend.Chat.DTO.MilestoneStatusRequest;
-import com.skillconnect.backend.Chat.Enum.MilestoneStatus;
 import com.skillconnect.backend.Chat.Service.MilestoneService;
 import com.skillconnect.backend.Chat.Exception.ChatAccessDeniedException;
 import com.skillconnect.backend.Chat.Exception.ChatRoomNotFoundException;
