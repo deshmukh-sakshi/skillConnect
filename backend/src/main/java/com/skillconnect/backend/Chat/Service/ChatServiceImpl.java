@@ -1,38 +1,28 @@
 package com.skillconnect.backend.Chat.Service;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
+import com.skillconnect.backend.Chat.DTO.*;
+import com.skillconnect.backend.Chat.Entity.ChatMessage;
+import com.skillconnect.backend.Chat.Entity.ChatRoom;
+import com.skillconnect.backend.Chat.Repository.ChatMessageRepository;
+import com.skillconnect.backend.Chat.Repository.ChatRoomRepository;
+import com.skillconnect.backend.Entity.*;
+import com.skillconnect.backend.Repository.BidRepository;
+import com.skillconnect.backend.Repository.ClientRepository;
+import com.skillconnect.backend.Repository.ContractRepository;
+import com.skillconnect.backend.Repository.FreelancerRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.skillconnect.backend.Chat.DTO.BidDetailsResponse;
-import com.skillconnect.backend.Chat.DTO.ChatMessageRequest;
-import com.skillconnect.backend.Chat.DTO.ChatMessageResponse;
-import com.skillconnect.backend.Chat.DTO.ChatRoomResponse;
-import com.skillconnect.backend.Chat.DTO.ContractDetailsResponse;
-import com.skillconnect.backend.Chat.Entity.ChatMessage;
-import com.skillconnect.backend.Chat.Entity.ChatRoom;
-import com.skillconnect.backend.Chat.Repository.ChatMessageRepository;
-import com.skillconnect.backend.Chat.Repository.ChatRoomRepository;
-import com.skillconnect.backend.Entity.Bids;
-import com.skillconnect.backend.Entity.Client;
-import com.skillconnect.backend.Entity.Contract;
-import com.skillconnect.backend.Entity.Freelancer;
-import com.skillconnect.backend.Entity.Project;
-import com.skillconnect.backend.Repository.BidRepository;
-import com.skillconnect.backend.Repository.ClientRepository;
-import com.skillconnect.backend.Repository.ContractRepository;
-import com.skillconnect.backend.Repository.FreelancerRepository;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of ChatService for managing chat operations including room
@@ -171,7 +161,7 @@ public class ChatServiceImpl implements ChatService {
     @Override
     @Transactional(readOnly = true)
     public List<ChatMessageResponse> getNewMessages(Long chatRoomId, LocalDateTime since, Long userId,
-            String userType) {
+                                                    String userType) {
         log.info("Retrieving new messages since {} for room: {} by user: {} ({})",
                 since, chatRoomId, userId, userType);
 

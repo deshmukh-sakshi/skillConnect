@@ -10,12 +10,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -58,7 +58,7 @@ class EmailServiceTest {
 
         ArgumentCaptor<Context> contextCaptor = ArgumentCaptor.forClass(Context.class);
         verify(templateEngine).process(eq("email/password-reset-email"), contextCaptor.capture());
-        
+
         Context capturedContext = contextCaptor.getValue();
         assertEquals(userName, capturedContext.getVariable("userName"));
         assertEquals(expectedResetUrl, capturedContext.getVariable("resetUrl"));
@@ -85,7 +85,7 @@ class EmailServiceTest {
 
         ArgumentCaptor<Context> contextCaptor = ArgumentCaptor.forClass(Context.class);
         verify(templateEngine).process(eq("email/password-reset-email"), contextCaptor.capture());
-        
+
         Context capturedContext = contextCaptor.getValue();
         assertEquals(expectedResetUrl, capturedContext.getVariable("resetUrl"));
         assertEquals("Another User", capturedContext.getVariable("userName"));

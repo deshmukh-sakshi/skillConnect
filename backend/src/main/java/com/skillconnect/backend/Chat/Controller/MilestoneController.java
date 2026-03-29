@@ -1,22 +1,5 @@
 package com.skillconnect.backend.Chat.Controller;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.skillconnect.backend.Auth.DTO.AppUserDetails;
 import com.skillconnect.backend.Auth.Entity.Role;
 import com.skillconnect.backend.Chat.DTO.MilestoneRequest;
@@ -29,10 +12,18 @@ import com.skillconnect.backend.Chat.Repository.ChatRoomRepository;
 import com.skillconnect.backend.Chat.Service.ChatService;
 import com.skillconnect.backend.Chat.Service.MilestoneService;
 import com.skillconnect.backend.DTO.ApiResponse;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * REST controller for managing milestone operations including creation, status
@@ -52,7 +43,7 @@ public class MilestoneController {
      * Creates a new milestone for a contract.
      *
      * @param contractId the ID of the contract
-     * @param request the milestone creation request
+     * @param request    the milestone creation request
      * @return the created milestone response
      */
     @PostMapping("/contract/{contractId}")
@@ -82,7 +73,7 @@ public class MilestoneController {
      * Updates the status of a milestone.
      *
      * @param milestoneId the ID of the milestone
-     * @param request the milestone status update request
+     * @param request     the milestone status update request
      * @return the updated milestone response
      */
     @PutMapping("/{milestoneId}/status")
@@ -139,7 +130,7 @@ public class MilestoneController {
      * Retrieves milestones by status for a specific contract.
      *
      * @param contractId the ID of the contract
-     * @param status the milestone status to filter by
+     * @param status     the milestone status to filter by
      * @return list of milestone responses
      */
     @GetMapping("/contract/{contractId}/status/{status}")
@@ -196,7 +187,7 @@ public class MilestoneController {
      * Updates milestone details.
      *
      * @param milestoneId the ID of the milestone
-     * @param request the milestone update request
+     * @param request     the milestone update request
      * @return the updated milestone response
      */
     @PutMapping("/{milestoneId}")
@@ -338,7 +329,7 @@ public class MilestoneController {
      * Sends a custom milestone notification to the contract chat.
      *
      * @param contractId the ID of the contract
-     * @param request the notification request containing the message
+     * @param request    the notification request containing the message
      * @return success response
      */
     @PostMapping("/contract/{contractId}/notify")

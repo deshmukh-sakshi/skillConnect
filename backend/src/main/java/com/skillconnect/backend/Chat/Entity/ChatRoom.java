@@ -20,7 +20,7 @@ import java.util.List;
 @ToString
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "chat_rooms", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"chat_type", "reference_id"})
+        @UniqueConstraint(columnNames = {"chat_type", "reference_id"})
 })
 public class ChatRoom {
 
@@ -35,7 +35,7 @@ public class ChatRoom {
 
     @Column(name = "reference_id", nullable = false)
     private Long referenceId; // bidId or contractId
-    
+
     @Column(name = "original_bid_id")
     private Long originalBidId; // Stores original bid ID for reference after conversion
 

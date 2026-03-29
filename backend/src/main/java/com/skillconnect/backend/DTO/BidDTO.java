@@ -1,10 +1,12 @@
 package com.skillconnect.backend.DTO;
+
 import io.swagger.v3.oas.annotations.media.Schema;
-import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
+
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 
 @Data
 @NoArgsConstructor
@@ -13,7 +15,7 @@ import lombok.*;
 @Getter
 @Schema(description = "Bid data transfer object for creating new bids on projects")
 public class BidDTO {
-    
+
     @Schema(description = "ID of the freelancer submitting the bid", example = "1", requiredMode = RequiredMode.REQUIRED)
     @NotNull(message = "Freelancer ID cannot be null")
     private Long freelancerId;
@@ -22,8 +24,8 @@ public class BidDTO {
     @NotNull(message = "Project ID cannot be null")
     private Long projectId;
 
-    @Schema(description = "Detailed proposal explaining how the freelancer will approach the project", 
-            example = "I have 5+ years of experience in e-commerce development using React and Node.js. I can deliver a fully functional website with payment integration within the specified timeline.", 
+    @Schema(description = "Detailed proposal explaining how the freelancer will approach the project",
+            example = "I have 5+ years of experience in e-commerce development using React and Node.js. I can deliver a fully functional website with payment integration within the specified timeline.",
             requiredMode = RequiredMode.REQUIRED)
     @NotBlank(message = "Proposal cannot be blank")
     private String proposal;

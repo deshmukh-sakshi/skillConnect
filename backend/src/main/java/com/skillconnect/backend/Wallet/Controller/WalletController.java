@@ -27,26 +27,26 @@ public class WalletController {
     private final RazorpayService razorpayService;
 
     @Operation(
-        summary = "Create new wallet",
-        description = "Create a new wallet for a user with specified role (CLIENT or FREELANCER)"
+            summary = "Create new wallet",
+            description = "Create a new wallet for a user with specified role (CLIENT or FREELANCER)"
     )
     @ApiResponses(value = {
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "200", 
-            description = "Wallet created successfully - returns wallet details with initial balance"
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "400", 
-            description = "Invalid request - missing or invalid parameters"
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "409", 
-            description = "Conflict - wallet already exists for this user and role"
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "500", 
-            description = "Internal server error - wallet creation failed"
-        )
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "Wallet created successfully - returns wallet details with initial balance"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid request - missing or invalid parameters"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "409",
+                    description = "Conflict - wallet already exists for this user and role"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error - wallet creation failed"
+            )
     })
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/create")
@@ -126,26 +126,26 @@ public class WalletController {
 
 
     @Operation(
-        summary = "Get wallet details",
-        description = "Retrieve wallet information including available and frozen balances for a specific user and role"
+            summary = "Get wallet details",
+            description = "Retrieve wallet information including available and frozen balances for a specific user and role"
     )
     @ApiResponses(value = {
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "200", 
-            description = "Wallet details retrieved successfully"
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "400", 
-            description = "Invalid request - missing or invalid parameters"
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "404", 
-            description = "Wallet not found for the specified user and role"
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "403", 
-            description = "Access denied - insufficient permissions to view wallet"
-        )
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "Wallet details retrieved successfully"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid request - missing or invalid parameters"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "404",
+                    description = "Wallet not found for the specified user and role"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "403",
+                    description = "Access denied - insufficient permissions to view wallet"
+            )
     })
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{userId}")
@@ -160,30 +160,30 @@ public class WalletController {
     }
 
     @Operation(
-        summary = "Withdraw money from wallet",
-        description = "Withdraw funds from a user's wallet - typically used by freelancers to cash out earnings"
+            summary = "Withdraw money from wallet",
+            description = "Withdraw funds from a user's wallet - typically used by freelancers to cash out earnings"
     )
     @ApiResponses(value = {
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "200", 
-            description = "Withdrawal successful - returns updated wallet balance"
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "400", 
-            description = "Invalid request - validation errors, insufficient funds, or negative amount"
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "404", 
-            description = "Wallet not found for the specified user"
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "422", 
-            description = "Insufficient balance - withdrawal amount exceeds available funds"
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "500", 
-            description = "Internal server error - withdrawal transaction failed"
-        )
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "Withdrawal successful - returns updated wallet balance"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid request - validation errors, insufficient funds, or negative amount"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "404",
+                    description = "Wallet not found for the specified user"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "422",
+                    description = "Insufficient balance - withdrawal amount exceeds available funds"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error - withdrawal transaction failed"
+            )
     })
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/withdraw")
@@ -195,30 +195,30 @@ public class WalletController {
     }
 
     @Operation(
-        summary = "Freeze amount in wallet",
-        description = "Freeze a specific amount in client's wallet for a project - ensures funds are reserved for payment upon project completion"
+            summary = "Freeze amount in wallet",
+            description = "Freeze a specific amount in client's wallet for a project - ensures funds are reserved for payment upon project completion"
     )
     @ApiResponses(value = {
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "200", 
-            description = "Amount frozen successfully - funds reserved for project"
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "400", 
-            description = "Invalid request - missing parameters, negative amount, or validation errors"
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "404", 
-            description = "Wallet or project not found"
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "422", 
-            description = "Insufficient balance - cannot freeze more than available funds"
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "500", 
-            description = "Internal server error - freeze operation failed"
-        )
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "Amount frozen successfully - funds reserved for project"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid request - missing parameters, negative amount, or validation errors"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "404",
+                    description = "Wallet or project not found"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "422",
+                    description = "Insufficient balance - cannot freeze more than available funds"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error - freeze operation failed"
+            )
     })
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/freeze")
@@ -235,30 +235,30 @@ public class WalletController {
     }
 
     @Operation(
-        summary = "Release frozen payment",
-        description = "Release frozen funds from client's wallet to freelancer's wallet upon project completion - transfers money from frozen balance to freelancer's available balance"
+            summary = "Release frozen payment",
+            description = "Release frozen funds from client's wallet to freelancer's wallet upon project completion - transfers money from frozen balance to freelancer's available balance"
     )
     @ApiResponses(value = {
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "200", 
-            description = "Payment released successfully - funds transferred to freelancer"
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "400", 
-            description = "Invalid request - missing parameters, negative amount, or validation errors"
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "404", 
-            description = "Client wallet, freelancer wallet, or project not found"
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "422", 
-            description = "Insufficient frozen funds - cannot release more than frozen amount for this project"
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "500", 
-            description = "Internal server error - payment release transaction failed"
-        )
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "Payment released successfully - funds transferred to freelancer"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid request - missing parameters, negative amount, or validation errors"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "404",
+                    description = "Client wallet, freelancer wallet, or project not found"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "422",
+                    description = "Insufficient frozen funds - cannot release more than frozen amount for this project"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error - payment release transaction failed"
+            )
     })
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/release")
@@ -277,26 +277,26 @@ public class WalletController {
     }
 
     @Operation(
-        summary = "Get client's frozen amounts",
-        description = "Retrieve all frozen amounts for a specific client, showing project details and frozen fund status"
+            summary = "Get client's frozen amounts",
+            description = "Retrieve all frozen amounts for a specific client, showing project details and frozen fund status"
     )
     @ApiResponses(value = {
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "200", 
-            description = "Frozen amounts retrieved successfully - returns list of all frozen funds with project details"
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "400", 
-            description = "Invalid request - invalid client ID format"
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "404", 
-            description = "Client not found or no frozen amounts exist"
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "403", 
-            description = "Access denied - insufficient permissions to view client's frozen amounts"
-        )
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "Frozen amounts retrieved successfully - returns list of all frozen funds with project details"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid request - invalid client ID format"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "404",
+                    description = "Client not found or no frozen amounts exist"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "403",
+                    description = "Access denied - insufficient permissions to view client's frozen amounts"
+            )
     })
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/frozen-amounts/{clientId}")

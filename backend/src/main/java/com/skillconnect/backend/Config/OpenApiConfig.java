@@ -1,5 +1,6 @@
 package com.skillconnect.backend.Config;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
@@ -7,7 +8,6 @@ import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
-import io.swagger.v3.oas.models.Components;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,7 +22,7 @@ public class OpenApiConfig {
 
     /**
      * Configures the OpenAPI specification with API metadata, security schemes, and server information
-     * 
+     *
      * @return OpenAPI configuration object
      */
     @Bean
@@ -32,8 +32,8 @@ public class OpenApiConfig {
                         .title("Skill-Connect API")
                         .version("1.0.0")
                         .description("Comprehensive API for Skill-Connect freelancing platform. " +
-                                   "This API provides endpoints for user authentication, project management, " +
-                                   "bidding system, contract management, wallet operations, and freelancer services.")
+                                "This API provides endpoints for user authentication, project management, " +
+                                "bidding system, contract management, wallet operations, and freelancer services.")
                         .contact(new Contact()
                                 .name("Skill-Connect Development Team")
                                 .email("dev@skillconnect.com")
@@ -45,15 +45,15 @@ public class OpenApiConfig {
                         new Server()
                                 .url("http://localhost:10007")
                                 .description("Development server")
-                        ))
+                ))
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(new Components()
-                        .addSecuritySchemes("bearerAuth", 
+                        .addSecuritySchemes("bearerAuth",
                                 new SecurityScheme()
                                         .type(SecurityScheme.Type.HTTP)
                                         .scheme("bearer")
                                         .bearerFormat("JWT")
                                         .description("JWT Bearer token authentication. " +
-                                                   "Obtain token from /api/auth/login endpoint and include it in the Authorization header.")));
+                                                "Obtain token from /api/auth/login endpoint and include it in the Authorization header.")));
     }
 }

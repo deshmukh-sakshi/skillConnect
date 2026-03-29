@@ -16,7 +16,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Contact", description = "Contact form operations for user inquiries and support requests")
 @RestController
@@ -28,53 +31,53 @@ public class ContactController {
     private final ContactService contactService;
 
     @Operation(
-        summary = "Submit contact form",
-        description = "Submits a contact form request. Can be used by both logged-in users and guests. " +
-                     "For logged-in users, authentication is optional but recommended for better tracking."
+            summary = "Submit contact form",
+            description = "Submits a contact form request. Can be used by both logged-in users and guests. " +
+                    "For logged-in users, authentication is optional but recommended for better tracking."
     )
     @ApiResponses(value = {
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "201",
-            description = "Contact request submitted successfully",
-            content = @Content(
-                mediaType = "application/json",
-                schema = @Schema(implementation = ApiResponse.class)
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "201",
+                    description = "Contact request submitted successfully",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApiResponse.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid contact form data provided",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApiResponse.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApiResponse.class)
+                    )
             )
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "400",
-            description = "Invalid contact form data provided",
-            content = @Content(
-                mediaType = "application/json",
-                schema = @Schema(implementation = ApiResponse.class)
-            )
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "500",
-            description = "Internal server error",
-            content = @Content(
-                mediaType = "application/json",
-                schema = @Schema(implementation = ApiResponse.class)
-            )
-        )
     })
     @PostMapping
     public ResponseEntity<ApiResponse<ContactResponseDTO>> submitContactForm(
-        @Parameter(description = "Contact form data", required = true)
-        @Valid @RequestBody ContactRequestDTO contactRequestDTO,
-        HttpServletRequest request
+            @Parameter(description = "Contact form data", required = true)
+            @Valid @RequestBody ContactRequestDTO contactRequestDTO,
+            HttpServletRequest request
     ) {
         try {
             log.info("Received contact form submission from: {}", contactRequestDTO.getEmail());
-            
+
             // Extract user ID from request if available (for logged-in users)
             Long userId = extractUserIdFromRequest(request);
-            
+
             ContactResponseDTO response = contactService.submitContactRequest(contactRequestDTO, userId);
-            
+
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(ApiResponse.success(response));
-                    
+
         } catch (IllegalArgumentException e) {
             log.error("Invalid contact form data: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -93,7 +96,7 @@ public class ContactController {
             if (userIdAttr != null) {
                 return Long.valueOf(userIdAttr.toString());
             }
-            
+
             // If not found in attributes, user is likely not authenticated
             return null;
         } catch (Exception e) {

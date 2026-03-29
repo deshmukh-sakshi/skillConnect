@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Contract Created - SkillConnect</title>
     <style>
         body {
@@ -44,9 +44,17 @@
             border-radius: 50%;
         }
 
-        .dot.red { background: #ff5f56; }
-        .dot.yellow { background: #ffbd2e; }
-        .dot.green { background: #27ca3f; }
+        .dot.red {
+            background: #ff5f56;
+        }
+
+        .dot.yellow {
+            background: #ffbd2e;
+        }
+
+        .dot.green {
+            background: #27ca3f;
+        }
 
         .terminal-title {
             margin-left: 12px;
@@ -118,9 +126,11 @@
             body {
                 padding: 10px;
             }
+
             .terminal-body {
                 padding: 16px;
             }
+
             .ascii-art {
                 font-size: 8px;
             }
@@ -165,7 +175,8 @@
                     <strong>Project:</strong> <span th:text="${projectName}">Sample Project</span><br>
                     <strong>Client:</strong> <span th:text="${clientName}">Client Name</span><br>
                     <strong>Freelancer:</strong> <span th:text="${freelancerName}">Freelancer Name</span><br>
-                    <strong>Amount:</strong> Rs.<span th:text="${#numbers.formatDecimal(bidAmount, 0, 2)}">5000.00</span><br>
+                    <strong>Amount:</strong> Rs.<span
+                        th:text="${#numbers.formatDecimal(bidAmount, 0, 2)}">5000.00</span><br>
                     <strong>Status:</strong> <span class="warning">IN_PROGRESS</span>
                 </div>
             </div>
@@ -193,7 +204,8 @@
             </div>
         </div>
 
-        <div class="prompt">skillconnect@contracts:~$ <span class="command">echo "Login to SkillConnect to manage your contract"</span></div>
+        <div class="prompt">skillconnect@contracts:~$ <span class="command">echo "Login to SkillConnect to manage your contract"</span>
+        </div>
         <div class="output">
             <div style="color: #d8dee9;">
                 Login to SkillConnect to manage your contract
@@ -202,7 +214,7 @@
     </div>
 
     <div class="footer-terminal">
-        <div class="prompt" style="display: inline;">skillconnect@contracts:~$ </div>
+        <div class="prompt" style="display: inline;">skillconnect@contracts:~$</div>
         <span style="color: #666;">Visit <span th:text="${frontendUrl}">skillconnect.com</span> to get started</span>
     </div>
 </div>

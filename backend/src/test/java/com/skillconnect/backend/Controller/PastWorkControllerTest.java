@@ -1,10 +1,6 @@
 package com.skillconnect.backend.Controller;
 
-import com.skillconnect.backend.DTO.ApiResponse;
-import com.skillconnect.backend.DTO.FreelancerDTO;
-import com.skillconnect.backend.DTO.FreelancerUpdateDTO;
-import com.skillconnect.backend.DTO.PastWorkDTO;
-import com.skillconnect.backend.DTO.PastWorkUpdateDTO;
+import com.skillconnect.backend.DTO.*;
 import com.skillconnect.backend.Service.freelancer.FreelancerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class PastWorkControllerTest {

@@ -12,6 +12,7 @@ import com.skillconnect.backend.Repository.SkillRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,17 +62,17 @@ public class FreelancerServiceImpl implements FreelancerService {
 
         // Map past works to DTOs (excluding freelancerId for profile response)
         profile.setPastWorks(
-            pastWorks.stream().map(p -> {
-                PastWorkDTO dto = new PastWorkDTO();
-                dto.setId(p.getId());
-                dto.setTitle(p.getTitle());
-                dto.setLink(p.getLink());
-                dto.setDescription(p.getDescription());
-                // Map timeline fields with null-safe handling for legacy entries
-                dto.setStartDate(p.getStartDate());
-                dto.setEndDate(p.getEndDate());
-                return dto;
-            }).toList()
+                pastWorks.stream().map(p -> {
+                    PastWorkDTO dto = new PastWorkDTO();
+                    dto.setId(p.getId());
+                    dto.setTitle(p.getTitle());
+                    dto.setLink(p.getLink());
+                    dto.setDescription(p.getDescription());
+                    // Map timeline fields with null-safe handling for legacy entries
+                    dto.setStartDate(p.getStartDate());
+                    dto.setEndDate(p.getEndDate());
+                    return dto;
+                }).toList()
         );
         log.info("Past works mapped: {}", profile.getPastWorks());
         log.info("Freelancer profile created: {}", profile.getName());

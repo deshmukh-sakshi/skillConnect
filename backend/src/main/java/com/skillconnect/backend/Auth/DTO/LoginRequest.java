@@ -1,13 +1,14 @@
 package com.skillconnect.backend.Auth.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 
 @Data
 @AllArgsConstructor
@@ -16,9 +17,9 @@ import lombok.NoArgsConstructor;
 public class LoginRequest {
 
     @Schema(
-        description = "User email address used for authentication",
-        example = "john.doe@example.com",
-        requiredMode = RequiredMode.REQUIRED
+            description = "User email address used for authentication",
+            example = "john.doe@example.com",
+            requiredMode = RequiredMode.REQUIRED
     )
     @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
             flags = Pattern.Flag.CASE_INSENSITIVE,
@@ -27,9 +28,9 @@ public class LoginRequest {
     private String email;
 
     @Schema(
-        description = "User password for authentication",
-        example = "mySecurePassword123",
-        requiredMode = RequiredMode.REQUIRED
+            description = "User password for authentication",
+            example = "mySecurePassword123",
+            requiredMode = RequiredMode.REQUIRED
     )
     @NotBlank(message = "password is required")
     private String password;

@@ -13,17 +13,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class GlobalExceptionHandlerTest {
 
     private final GlobalExceptionHandler handler = new GlobalExceptionHandler();
-
-    static class ValidationTarget {
-        @SuppressWarnings("unused")
-        public void submit(String email) {
-        }
-    }
 
     @Test
     void handleRuntimeException_returnsBadRequestErrorEnvelope() {
@@ -87,6 +82,12 @@ class GlobalExceptionHandlerTest {
         @SuppressWarnings("unchecked")
         Map<String, String> errors = (Map<String, String>) response.getBody().getError();
         assertEquals("invalid email format", errors.get("email"));
+    }
+
+    static class ValidationTarget {
+        @SuppressWarnings("unused")
+        public void submit(String email) {
+        }
     }
 }
 

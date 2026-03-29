@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Contact Request Received - SkillConnect</title>
     <style>
         body {
@@ -45,9 +45,17 @@
             border-radius: 50%;
         }
 
-        .dot.red { background: #ff5f56; }
-        .dot.yellow { background: #ffbd2e; }
-        .dot.green { background: #27ca3f; }
+        .dot.red {
+            background: #ff5f56;
+        }
+
+        .dot.yellow {
+            background: #ffbd2e;
+        }
+
+        .dot.green {
+            background: #27ca3f;
+        }
 
         .terminal-title {
             margin-left: 12px;
@@ -132,8 +140,12 @@
         }
 
         @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
+            0%, 50% {
+                opacity: 1;
+            }
+            51%, 100% {
+                opacity: 0;
+            }
         }
 
         .footer-terminal {
@@ -180,7 +192,7 @@
 ╚══════╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═╝   
         </pre>
 
-        <div class="prompt">skillconnect@support:~$ </div>
+        <div class="prompt">skillconnect@support:~$</div>
         <div class="command">process-contact-request --id=<span th:text="${requestId}">12345</span></div>
         <div class="output">
             <div class="success">✓ Contact request received successfully</div>
@@ -194,7 +206,7 @@
             </div>
         </div>
 
-        <div class="prompt">skillconnect@support:~$ </div>
+        <div class="prompt">skillconnect@support:~$</div>
         <div class="command">cat original-message.txt</div>
         <div class="output">
             <div class="info">📝 Your Original Message:</div>
@@ -203,7 +215,7 @@
             </div>
         </div>
 
-        <div class="prompt">skillconnect@support:~$ </div>
+        <div class="prompt">skillconnect@support:~$</div>
         <div class="command">echo "What happens next?" | figlet</div>
         <div class="output">
             <div class="success">🚀 Next Steps:</div>
@@ -215,7 +227,7 @@
             </div>
         </div>
 
-        <div class="prompt">skillconnect@support:~$ </div>
+        <div class="prompt">skillconnect@support:~$</div>
         <div class="command">tail -f support-queue.log</div>
         <div class="output">
             <div style="color: #666; font-size: 11px;">
@@ -228,7 +240,7 @@
     </div>
 
     <div class="footer-terminal">
-        <div class="prompt" style="display: inline;">skillconnect@support:~$ </div>
+        <div class="prompt" style="display: inline;">skillconnect@support:~$</div>
         <span style="color: #666;">Thank you for contacting SkillConnect! We'll be in touch soon.</span>
     </div>
 </div>

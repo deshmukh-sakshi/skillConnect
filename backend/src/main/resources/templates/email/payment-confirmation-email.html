@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Payment Confirmation - SkillConnect</title>
     <style>
         body {
@@ -45,9 +45,17 @@
             border-radius: 50%;
         }
 
-        .dot.red { background: #ff5f56; }
-        .dot.yellow { background: #ffbd2e; }
-        .dot.green { background: #27ca3f; }
+        .dot.red {
+            background: #ff5f56;
+        }
+
+        .dot.yellow {
+            background: #ffbd2e;
+        }
+
+        .dot.green {
+            background: #27ca3f;
+        }
 
         .terminal-title {
             margin-left: 12px;
@@ -85,9 +93,20 @@
             padding-left: 16px;
         }
 
-        .success { color: #51cf66; font-weight: 500; }
-        .info { color: #74c0fc; font-weight: 500; }
-        .warning { color: #ffd43b; font-weight: 500; }
+        .success {
+            color: #51cf66;
+            font-weight: 500;
+        }
+
+        .info {
+            color: #74c0fc;
+            font-weight: 500;
+        }
+
+        .warning {
+            color: #ffd43b;
+            font-weight: 500;
+        }
 
         .message-box {
             background: #2a2a2a;
@@ -103,8 +122,12 @@
         }
 
         @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
+            0%, 50% {
+                opacity: 1;
+            }
+            51%, 100% {
+                opacity: 0;
+            }
         }
 
         .footer-terminal {
@@ -116,9 +139,17 @@
         }
 
         @media (max-width: 640px) {
-            body { padding: 10px; }
-            .terminal-body { padding: 16px; }
-            .ascii-art { font-size: 8px; }
+            body {
+                padding: 10px;
+            }
+
+            .terminal-body {
+                padding: 16px;
+            }
+
+            .ascii-art {
+                font-size: 8px;
+            }
         }
     </style>
 </head>
@@ -167,7 +198,7 @@
             <div class="message-box">
                 If you have any issues with this transaction,<br>
                 please contact us at:
-                <a th:href="'mailto:' + ${supportEmail}" th:text="${supportEmail}" style="color: #00ff88;">support@skillconnect.com</a>
+                <a style="color: #00ff88;" th:href="'mailto:' + ${supportEmail}" th:text="${supportEmail}">support@skillconnect.com</a>
             </div>
         </div>
 

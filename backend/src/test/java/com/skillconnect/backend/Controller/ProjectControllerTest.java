@@ -1,11 +1,6 @@
 package com.skillconnect.backend.Controller;
 
-import com.skillconnect.backend.DTO.ApiResponse;
-import com.skillconnect.backend.DTO.BidResponseDTO;
-import com.skillconnect.backend.DTO.ClientDTO;
-import com.skillconnect.backend.DTO.ProjectCountResponse;
-import com.skillconnect.backend.DTO.ProjectCountsResponse;
-import com.skillconnect.backend.DTO.ProjectDTO;
+import com.skillconnect.backend.DTO.*;
 import com.skillconnect.backend.Service.project.ProjectService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,9 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProjectControllerTest {

@@ -10,17 +10,17 @@ public enum MilestoneStatus {
      * Milestone has been created but work has not started yet.
      */
     PENDING,
-    
+
     /**
      * Work on the milestone has started but is not yet complete.
      */
     IN_PROGRESS,
-    
+
     /**
      * Milestone has been successfully completed.
      */
     COMPLETED,
-    
+
     /**
      * Milestone has passed its due date without being completed.
      */

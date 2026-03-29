@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class MilestoneResponse {
-    
+
     private Long id;
     private Long contractId;
     private String title;

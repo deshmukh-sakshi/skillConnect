@@ -2,7 +2,6 @@ package com.skillconnect.backend.Service.project;
 
 import com.skillconnect.backend.Chat.Service.ChatService;
 import com.skillconnect.backend.DTO.BidResponseDTO;
-import com.skillconnect.backend.DTO.ClientDTO;
 import com.skillconnect.backend.DTO.ProjectCountsResponse;
 import com.skillconnect.backend.DTO.ProjectDTO;
 import com.skillconnect.backend.Entity.Bids;

@@ -1,10 +1,11 @@
 package com.skillconnect.backend.Wallet.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 
 @Data
 @Schema(description = "Request DTO for verifying Razorpay payment and adding money to wallet")

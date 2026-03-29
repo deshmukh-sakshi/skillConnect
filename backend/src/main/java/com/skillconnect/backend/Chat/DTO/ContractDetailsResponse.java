@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ContractDetailsResponse {
-    
+
     private Long contractId;
     private Long projectId;
     private String projectTitle;

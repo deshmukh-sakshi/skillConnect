@@ -26,22 +26,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class RazorpayService {
 
-    @Value("${razorpay.api.key}")
-    private String razorpayKey;
-
-    @Value("${razorpay.api.secret}")
-    private String razorpaySecret;
-
-    @Value("${razorpay.currency:INR}")
-    private String currency;
-
-    @Value("${razorpay.company.name:SkillConnect}")
-    private String companyName;
-
     private final WalletService walletService;
     private final WalletTransactionRepository transactionRepository;
     private final EmailService emailService;
     private final ClientRepository clientRepository;
+    @Value("${razorpay.api.key}")
+    private String razorpayKey;
+    @Value("${razorpay.api.secret}")
+    private String razorpaySecret;
+    @Value("${razorpay.currency:INR}")
+    private String currency;
+    @Value("${razorpay.company.name:SkillConnect}")
+    private String companyName;
 
     public RazorpayOrderResponse createWalletTopupOrder(AddMoneyOrderRequest request) throws RazorpayException {
         log.info("Creating Razorpay order for userId: {}, amount: {}", request.getUserId(), request.getAmount());

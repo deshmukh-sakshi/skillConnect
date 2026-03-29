@@ -1,7 +1,6 @@
 package com.skillconnect.backend.Auth.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -10,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,17 +18,17 @@ import lombok.NoArgsConstructor;
 public class RegistrationRequest {
 
     @Schema(
-        description = "Full name of the user",
-        example = "John Doe",
-        requiredMode = RequiredMode.REQUIRED
+            description = "Full name of the user",
+            example = "John Doe",
+            requiredMode = RequiredMode.REQUIRED
     )
     @NotBlank(message = "name is required")
     private String name;
 
     @Schema(
-        description = "Email address for the new user account",
-        example = "john.doe@example.com",
-        requiredMode = RequiredMode.REQUIRED
+            description = "Email address for the new user account",
+            example = "john.doe@example.com",
+            requiredMode = RequiredMode.REQUIRED
     )
     @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
             flags = Pattern.Flag.CASE_INSENSITIVE,
@@ -36,11 +37,11 @@ public class RegistrationRequest {
     private String email;
 
     @Schema(
-        description = "Password for the new user account (8-20 characters)",
-        example = "mySecurePassword123",
-        requiredMode = RequiredMode.REQUIRED,
-        minLength = 8,
-        maxLength = 20
+            description = "Password for the new user account (8-20 characters)",
+            example = "mySecurePassword123",
+            requiredMode = RequiredMode.REQUIRED,
+            minLength = 8,
+            maxLength = 20
     )
     @NotBlank(message = "password is required")
     @Size(min = 8, max = 20, message = "password must be between 8 and 20 characters")

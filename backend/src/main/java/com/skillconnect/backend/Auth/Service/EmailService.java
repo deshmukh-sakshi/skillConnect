@@ -73,54 +73,54 @@ public class EmailService {
     @Async
     public void sendContractCreatedNotification(Contract contract) {
         log.info("Sending contract created notifications for contract ID: {}", contract.getContractId());
-        
+
         try {
             // Send to client
             sendContractCreatedEmail(
-                contract.getProject().getClient().getAppUser().getEmail(),
-                contract,
-                "CLIENT"
+                    contract.getProject().getClient().getAppUser().getEmail(),
+                    contract,
+                    "CLIENT"
             );
-            
+
             // Send to freelancer  
             sendContractCreatedEmail(
-                contract.getBid().getFreelancer().getAppUser().getEmail(),
-                contract,
-                "FREELANCER"
+                    contract.getBid().getFreelancer().getAppUser().getEmail(),
+                    contract,
+                    "FREELANCER"
             );
-            
+
             log.info("Contract created notifications sent successfully for contract: {}", contract.getContractId());
         } catch (Exception e) {
-            log.error("Failed to send contract created notifications for contract {}: {}", 
-                contract.getContractId(), e.getMessage());
+            log.error("Failed to send contract created notifications for contract {}: {}",
+                    contract.getContractId(), e.getMessage());
         }
     }
 
     @Async
     public void sendContractCompletedNotification(Contract contract, Double rating) {
         log.info("Sending contract completed notifications for contract ID: {}", contract.getContractId());
-        
+
         try {
             // Send to client
             sendContractCompletedEmail(
-                contract.getProject().getClient().getAppUser().getEmail(),
-                contract,
-                rating,
-                "CLIENT"
+                    contract.getProject().getClient().getAppUser().getEmail(),
+                    contract,
+                    rating,
+                    "CLIENT"
             );
-            
+
             // Send to freelancer
             sendContractCompletedEmail(
-                contract.getBid().getFreelancer().getAppUser().getEmail(),
-                contract,
-                rating,
-                "FREELANCER"
+                    contract.getBid().getFreelancer().getAppUser().getEmail(),
+                    contract,
+                    rating,
+                    "FREELANCER"
             );
-            
+
             log.info("Contract completed notifications sent successfully for contract: {}", contract.getContractId());
         } catch (Exception e) {
-            log.error("Failed to send contract completed notifications for contract {}: {}", 
-                contract.getContractId(), e.getMessage());
+            log.error("Failed to send contract completed notifications for contract {}: {}",
+                    contract.getContractId(), e.getMessage());
         }
     }
 

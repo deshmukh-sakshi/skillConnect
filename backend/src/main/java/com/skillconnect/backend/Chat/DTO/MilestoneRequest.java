@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class MilestoneRequest {
-    
+
     @NotBlank(message = "Milestone title is required")
     private String title;
-    
+
     private String description;
-    
+
     private LocalDateTime dueDate;
 }
