@@ -1,6 +1,4 @@
 package com.skillconnect.backend.Entity;
-import java.time.LocalDateTime;
-import java.util.*;
 
 import com.skillconnect.backend.Auth.Entity.AppUser;
 import jakarta.persistence.*;
@@ -8,6 +6,12 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -19,7 +23,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class Freelancer {
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -41,10 +45,10 @@ public class Freelancer {
     @ManyToMany
     @JoinTable(
             name = "freelancer_skill",
-            joinColumns= @JoinColumn(name="freelancer_id", referencedColumnName="id"),
-            inverseJoinColumns= @JoinColumn(name="skill_id", referencedColumnName="id")
+            joinColumns = @JoinColumn(name = "freelancer_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "skill_id", referencedColumnName = "id")
     )
-    private Set<Skills>freelancerSkill = new HashSet<>();
+    private Set<Skills> freelancerSkill = new HashSet<>();
 
     @OneToMany(mappedBy = "freelancer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PastWork> pastWorks = new ArrayList<>();

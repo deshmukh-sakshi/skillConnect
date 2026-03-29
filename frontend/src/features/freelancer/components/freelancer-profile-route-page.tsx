@@ -12,7 +12,9 @@ const FreelancerProfileRoutePage: React.FC = () => {
     return <div>Invalid freelancer or not authenticated.</div>;
   }
 
-  return <FreelancerProfile freelancerId={freelancerId} authToken={authToken} />;
+  return (
+    <FreelancerProfile freelancerId={freelancerId} authToken={authToken} />
+  );
 };
 
-export default FreelancerProfileRoutePage; 
+export default FreelancerProfileRoutePage;

@@ -27,8 +27,8 @@ export const SkillsList = ({ skills }: SkillsListProps) => {
   return (
     <div className="flex flex-wrap gap-3">
       {skills.map((skill, index) => (
-        <Badge 
-          key={skill} 
+        <Badge
+          key={skill}
           variant="outline"
           className={`px-4 py-2 text-sm font-medium border transition-all duration-200 hover:shadow-sm cursor-default ${
             skillColors[index % skillColors.length]

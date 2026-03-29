@@ -10,7 +10,7 @@ import lombok.*;
 @Setter
 @Getter
 public class MilestoneStatusRequest {
-    
+
     @NotNull(message = "Milestone status is required")
     private MilestoneStatus status;
 }

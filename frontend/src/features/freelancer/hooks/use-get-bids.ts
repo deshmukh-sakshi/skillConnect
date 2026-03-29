@@ -15,8 +15,9 @@ const useGetBids = () => {
     error,
   } = useQuery({
     queryKey: ["GET_PROJECT_BIDS", id],
-    queryFn: () => apis.getProjectBids({ id: id as string, authToken: authToken as string }),
-    enabled: !!id && !!authToken, 
+    queryFn: () =>
+      apis.getProjectBids({ id: id as string, authToken: authToken as string }),
+    enabled: !!id && !!authToken,
     onError: (err: any) => {
       toast.error("Failed to fetch project details", {
         description: err?.response?.data?.message || "Something went wrong.",

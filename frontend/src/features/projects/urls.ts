@@ -6,7 +6,7 @@ const urls = {
   acceptBid: "/api/projects",
   rejectBid: "/api/projects",
   updateProject: "/api/projects",
-  deleteProject: "/api/projects"
+  deleteProject: "/api/projects",
 };
 
 export default urls;

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 
 @Setter
 @Getter
@@ -24,9 +26,23 @@ public class PastWork {
     @Column(nullable = false)
     private String description;
 
+    @Column(name = "start_date")
+    private LocalDate startDate;
+
+    @Column(name = "end_date")
+    private LocalDate endDate;
+
     @ManyToOne
     @JoinColumn(name = "freelancer_id")
     @JsonIgnore
     @JsonBackReference
     private Freelancer freelancer;
+
+    @PrePersist
+    @PreUpdate
+    private void validateDates() {
+        if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
+            throw new IllegalArgumentException("Start date cannot be after end date");
+        }
+    }
 }

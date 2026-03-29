@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PasswordResponse {
-    
+
     private String message;
 }

@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BidDetailsResponse {
-    
+
     private Long bidId;
     private Long projectId;
     private String projectTitle;

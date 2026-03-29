@@ -9,7 +9,7 @@ const apis = {
       method: "GET",
       url: urls.getProjects,
       authToken,
-      params
+      params,
     }),
   getProjectDetails: ({ authToken, id }: { authToken: string; id: string }) =>
     request({
@@ -36,13 +36,27 @@ const apis = {
       url: `${urls.getFreelancerBids}/${id}`,
       authToken,
     }),
-  getFreelancerProfile: ({ authToken, id }: { authToken: string; id: string }) =>
+  getFreelancerProfile: ({
+    authToken,
+    id,
+  }: {
+    authToken: string;
+    id: string;
+  }) =>
     request({
       method: "GET",
       url: `${urls.getFreelancerProfile}/${id}`,
       authToken,
     }),
-  updateFreelancerProfile: ({ authToken, id, data }: { authToken: string; id: number; data: any }) =>
+  updateFreelancerProfile: ({
+    authToken,
+    id,
+    data,
+  }: {
+    authToken: string;
+    id: number;
+    data: any;
+  }) =>
     request({
       method: "PUT",
       url: `${urls.getFreelancerProfile}/${id}`,

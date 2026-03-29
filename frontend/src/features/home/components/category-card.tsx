@@ -9,25 +9,22 @@ interface CategoryCardProps {
   hasCountError?: boolean;
 }
 
-const CategoryCard = ({ 
-  item, 
-  activeProjectCount, 
+const CategoryCard = ({
+  item,
+  activeProjectCount,
   isCountLoading = false,
-  hasCountError = false 
+  hasCountError = false,
 }: CategoryCardProps) => {
-  // Determine what count to display
   const getDisplayCount = () => {
     if (isCountLoading) {
       return <Skeleton className="h-4 w-8 inline-block" />;
     }
-    
+
     if (hasCountError) {
-      console.log(`Using fallback count for ${item.title}: ${item.available}`);
       return item.available;
     }
-    
-  console.log(`Displaying actual count for ${item.title}: ${activeProjectCount}`);
-  return activeProjectCount || 0; // Ensure we always return a number
+
+    return activeProjectCount || 0;
   };
 
   return (
@@ -37,7 +34,7 @@ const CategoryCard = ({
         "flex items-center gap-5",
         "bg-white dark:bg-slate-900",
         "border-gray-200 dark:border-gray-700",
-        "hover:shadow-lg dark:hover:shadow-primary/20"
+        "hover:shadow-lg dark:hover:shadow-primary/20",
       )}
     >
       <item.Icon className={cn(item.color)} size={40} />

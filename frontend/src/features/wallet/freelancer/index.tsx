@@ -48,7 +48,6 @@ const RevenueDetail = () => {
     async (amount: number) => {
       try {
         await new Promise((resolve) => setTimeout(resolve, 2000));
-        console.log(`Withdrawing ${formatCurrency(amount)}`);
 
         setRevenueData((prev) =>
           prev
@@ -57,15 +56,15 @@ const RevenueDetail = () => {
                 currentBalance: prev.currentBalance - amount,
                 totalWithdrawn: prev.totalWithdrawn + amount,
               }
-            : null
+            : null,
         );
       } catch (error: any) {
         throw new Error(
-          error.message || "Withdrawal failed. Please try again."
+          error.message || "Withdrawal failed. Please try again.",
         );
       }
     },
-    [formatCurrency]
+    [formatCurrency],
   );
 
   if (isLoading || !revenueData) {

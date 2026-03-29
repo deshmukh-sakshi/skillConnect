@@ -20,11 +20,10 @@ const useSignUpClient = () => {
         setAuth({
           user: response?.data,
           authToken: response?.data?.token,
-        })
+        }),
       );
     },
     onError: (err: any) => {
-      console.log("error: ", err);
       toast.error("Something went wrong", {
         description: err?.response?.data?.error?.password,
       });

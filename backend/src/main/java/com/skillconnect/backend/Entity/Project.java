@@ -49,18 +49,15 @@ public class Project {
 
     @Enumerated(EnumType.STRING)
     private ProjectStatus status = ProjectStatus.OPEN;
+    @CreatedDate
+    private LocalDateTime createdAt;
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Bids> bids = new ArrayList<>();
 
     public enum ProjectStatus {
         OPEN,
         CLOSED
     }
-
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
-
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Bids> bids = new ArrayList<>();
 }

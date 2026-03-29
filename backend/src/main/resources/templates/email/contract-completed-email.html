@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Contract Completed - SkillConnect</title>
     <style>
         body {
@@ -44,9 +44,17 @@
             border-radius: 50%;
         }
 
-        .dot.red { background: #ff5f56; }
-        .dot.yellow { background: #ffbd2e; }
-        .dot.green { background: #27ca3f; }
+        .dot.red {
+            background: #ff5f56;
+        }
+
+        .dot.yellow {
+            background: #ffbd2e;
+        }
+
+        .dot.green {
+            background: #27ca3f;
+        }
 
         .terminal-title {
             margin-left: 12px;
@@ -124,9 +132,11 @@
             body {
                 padding: 10px;
             }
+
             .terminal-body {
                 padding: 16px;
             }
+
             .ascii-art {
                 font-size: 8px;
             }
@@ -171,12 +181,14 @@
                     <strong>Project:</strong> <span th:text="${projectName}">Sample Project</span><br>
                     <strong>Client:</strong> <span th:text="${clientName}">Client Name</span><br>
                     <strong>Freelancer:</strong> <span th:text="${freelancerName}">Freelancer Name</span><br>
-                    <strong>Final Amount:</strong> Rs.<span th:text="${#numbers.formatDecimal(bidAmount, 0, 2)}">5000.00</span><br>
+                    <strong>Final Amount:</strong> Rs.<span
+                        th:text="${#numbers.formatDecimal(bidAmount, 0, 2)}">5000.00</span><br>
                     <strong>Duration:</strong> <span th:text="${contractDuration}">7 days</span><br>
                     <div th:if="${freelancerRating != null}">
-                        <strong>Rating:</strong> 
+                        <strong>Rating:</strong>
                         <span class="rating-stars">
-                            <span th:each="star : ${#numbers.sequence(1, freelancerRating)}">★</span><span th:each="star : ${#numbers.sequence(freelancerRating + 1, 5)}">☆</span>
+                            <span th:each="star : ${#numbers.sequence(1, freelancerRating)}">★</span><span
+                                th:each="star : ${#numbers.sequence(freelancerRating + 1, 5)}">☆</span>
                         </span>
                         (<span th:text="${freelancerRating}">5</span>/5)
                     </div>
@@ -189,11 +201,13 @@
             <div class="success">✓ Payment released successfully</div>
             <div style="margin: 8px 0; color: #d8dee9;">
                 <div th:if="${userRole == 'CLIENT'}">
-                    → Payment of Rs.<span th:text="${#numbers.formatDecimal(bidAmount, 0, 2)}">5000.00</span> has been released to freelancer<br>
+                    → Payment of Rs.<span th:text="${#numbers.formatDecimal(bidAmount, 0, 2)}">5000.00</span> has been
+                    released to freelancer<br>
                     → Transaction is now complete
                 </div>
                 <div th:if="${userRole == 'FREELANCER'}">
-                    → You've received Rs.<span th:text="${#numbers.formatDecimal(bidAmount, 0, 2)}">5000.00</span> in your wallet<br>
+                    → You've received Rs.<span th:text="${#numbers.formatDecimal(bidAmount, 0, 2)}">5000.00</span> in
+                    your wallet<br>
                     → Congratulations on completing the project!
                 </div>
             </div>
@@ -219,7 +233,8 @@
             </div>
         </div>
 
-        <div class="prompt">skillconnect@completion:~$ <span class="command">echo "Thank you for using SkillConnect!"</span></div>
+        <div class="prompt">skillconnect@completion:~$ <span
+                class="command">echo "Thank you for using SkillConnect!"</span></div>
         <div class="output">
             <div style="color: #d8dee9;">
                 Thank you for using SkillConnect!
@@ -228,8 +243,9 @@
     </div>
 
     <div class="footer-terminal">
-        <div class="prompt" style="display: inline;">skillconnect@completion:~$ </div>
-        <span style="color: #666;">Visit <span th:text="${frontendUrl}">skillconnect.com</span> for more opportunities</span>
+        <div class="prompt" style="display: inline;">skillconnect@completion:~$</div>
+        <span style="color: #666;">Visit <span
+                th:text="${frontendUrl}">skillconnect.com</span> for more opportunities</span>
     </div>
 </div>
 </body>

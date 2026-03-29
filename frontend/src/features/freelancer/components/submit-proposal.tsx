@@ -174,7 +174,7 @@ const SubmitProposal = ({ projectId, refetchBids }: SubmitProposalProps) => {
                               const value = e.target.value;
                               if (value === "" || /^\d*\.?\d*$/.test(value)) {
                                 field.onChange(
-                                  value === "" ? undefined : value
+                                  value === "" ? undefined : value,
                                 );
                               }
                             }}
@@ -216,7 +216,7 @@ const SubmitProposal = ({ projectId, refetchBids }: SubmitProposalProps) => {
                               const value = e.target.value;
                               if (value === "" || /^\d*$/.test(value)) {
                                 field.onChange(
-                                  value === "" ? undefined : value
+                                  value === "" ? undefined : value,
                                 );
                               }
                             }}

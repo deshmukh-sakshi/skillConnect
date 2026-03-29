@@ -28,12 +28,11 @@ const apis = {
     data: any;
   }) =>
     request({
-      method: "PUT", 
+      method: "PUT",
       url: `${urls.updateProject}/${id}`,
       authToken,
       data,
     }),
 };
-
 
 export default apis;

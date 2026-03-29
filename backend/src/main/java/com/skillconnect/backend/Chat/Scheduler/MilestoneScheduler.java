@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class MilestoneScheduler {
 
     private final MilestoneService milestoneService;
-    
+
     /**
      * Scheduled task that runs every hour to check for overdue milestones
      * and update their status automatically.
@@ -27,7 +27,7 @@ public class MilestoneScheduler {
     @Scheduled(cron = "0 0 * * * *") // Run every hour
     public void checkOverdueMilestones() {
         log.info("Running scheduled task to check for overdue milestones");
-        
+
         try {
             milestoneService.updateMilestoneProgressTracking();
             log.info("Successfully completed milestone progress tracking update");

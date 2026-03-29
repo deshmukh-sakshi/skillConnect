@@ -7,48 +7,50 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(
-    description = "Response after successfully submitting a contact form",
-    example = """
-        {
-          "id": 123,
-          "status": "RECEIVED",
-          "confirmationSent": true,
-          "createdAt": "2025-01-08T10:30:00"
-        }
-        """
+        description = "Response after successfully submitting a contact form",
+        example = """
+                {
+                  "id": 123,
+                  "status": "RECEIVED",
+                  "confirmationSent": true,
+                  "createdAt": "2025-01-08T10:30:00"
+                }
+                """
 )
 public class ContactResponseDTO {
-    
+
     @Schema(
-        description = "Unique identifier for the contact request",
-        example = "123",
-        required = true
+            description = "Unique identifier for the contact request",
+            example = "123",
+            requiredMode = RequiredMode.REQUIRED
     )
     private Long id;
-    
+
     @Schema(
-        description = "Current status of the contact request",
-        example = "RECEIVED",
-        allowableValues = {"RECEIVED", "PROCESSING", "RESOLVED"},
-        required = true
+            description = "Current status of the contact request",
+            example = "RECEIVED",
+            allowableValues = {"RECEIVED", "PROCESSING", "RESOLVED"},
+            requiredMode = RequiredMode.REQUIRED
     )
     private String status;
-    
+
     @Schema(
-        description = "Whether a confirmation email was sent to the user",
-        example = "true",
-        required = true
+            description = "Whether a confirmation email was sent to the user",
+            example = "true",
+            requiredMode = RequiredMode.REQUIRED
     )
     private Boolean confirmationSent;
-    
+
     @Schema(
-        description = "Timestamp when the contact request was created",
-        example = "2025-01-08T10:30:00",
-        required = true
+            description = "Timestamp when the contact request was created",
+            example = "2025-01-08T10:30:00",
+            requiredMode = RequiredMode.REQUIRED
     )
     private LocalDateTime createdAt;
 }

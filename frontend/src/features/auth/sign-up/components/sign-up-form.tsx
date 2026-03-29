@@ -24,7 +24,7 @@ const SignUpForm = () => {
     useSignUpFreelancer();
 
   const [userType, setUserType] = useState<"freelancer" | "client">(
-    "freelancer"
+    "freelancer",
   );
 
   const form = useForm<SignUpFormValues>({

@@ -18,9 +18,9 @@ import java.time.LocalDateTime;
 @ToString
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "milestones", indexes = {
-    @Index(name = "idx_contract_id", columnList = "contract_id"),
-    @Index(name = "idx_status", columnList = "status"),
-    @Index(name = "idx_due_date", columnList = "due_date")
+        @Index(name = "idx_contract_id", columnList = "contract_id"),
+        @Index(name = "idx_status", columnList = "status"),
+        @Index(name = "idx_due_date", columnList = "due_date")
 })
 public class Milestone {
 

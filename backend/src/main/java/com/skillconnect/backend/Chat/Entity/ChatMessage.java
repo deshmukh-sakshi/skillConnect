@@ -15,9 +15,9 @@ import java.time.LocalDateTime;
 @ToString
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "chat_messages", indexes = {
-    @Index(name = "idx_chat_room_created_at", columnList = "chat_room_id, created_at"),
-    @Index(name = "idx_sender_type_sender_id", columnList = "sender_type, sender_id"),
-    @Index(name = "idx_is_read", columnList = "is_read")
+        @Index(name = "idx_chat_room_created_at", columnList = "chat_room_id, created_at"),
+        @Index(name = "idx_sender_type_sender_id", columnList = "sender_type, sender_id"),
+        @Index(name = "idx_is_read", columnList = "is_read")
 })
 public class ChatMessage {
 

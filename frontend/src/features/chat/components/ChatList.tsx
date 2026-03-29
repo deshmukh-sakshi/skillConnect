@@ -186,7 +186,7 @@ export const ChatList = () => {
         >
           <ChatRoomsList
             chatRooms={filteredChatRooms.filter(
-              (room) => room.status === "ACTIVE"
+              (room) => room.status === "ACTIVE",
             )}
             isLoading={loading.chatRooms}
             error={error.chatRooms}

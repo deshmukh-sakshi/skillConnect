@@ -52,7 +52,7 @@ const MetricCards = ({
         description: "Lifetime withdrawals",
       },
     ],
-    [revenueData, growthPercentage]
+    [revenueData, growthPercentage],
   );
 
   return (

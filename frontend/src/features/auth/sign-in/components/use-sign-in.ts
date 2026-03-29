@@ -11,17 +11,17 @@ const useSignIn = () => {
     mutationFn: ({ data }: { data: { email: string; password: string } }) =>
       apis.login({ data }),
     onSuccess: ({ data: response }) => {
-      toast.success("Logged in successfully")
-       dispatch(
+      toast.success("Logged in successfully");
+      dispatch(
         setAuth({
           user: response?.data,
-          authToken: response?.data?.token
-        })
-       )
+          authToken: response?.data?.token,
+        }),
+      );
     },
     onError: (err: any) => {
-      toast.error("Something went wrong",{
-        description: err?.response?.data?.error?.message
+      toast.error("Something went wrong", {
+        description: err?.response?.data?.error?.message,
       });
     },
     retry: false,

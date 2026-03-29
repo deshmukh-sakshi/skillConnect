@@ -41,12 +41,12 @@ const apis = {
       params: params,
     }),
 
-  createAddMoneyOrder: ({ 
-    data, 
-    authToken 
-  }: { 
-    data: AddMoneyOrderRequest; 
-    authToken: string; 
+  createAddMoneyOrder: ({
+    data,
+    authToken,
+  }: {
+    data: AddMoneyOrderRequest;
+    authToken: string;
   }) =>
     request({
       method: "POST",
@@ -55,12 +55,12 @@ const apis = {
       url: urls.addMoney,
     }),
 
-  verifyPayment: ({ 
-    data, 
-    authToken 
-  }: { 
-    data: VerifyPaymentRequest; 
-    authToken: string; 
+  verifyPayment: ({
+    data,
+    authToken,
+  }: {
+    data: VerifyPaymentRequest;
+    authToken: string;
   }) =>
     request({
       method: "POST",

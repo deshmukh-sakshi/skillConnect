@@ -1,65 +1,74 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { MessageCircle, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useErrorHandler } from '@/hooks/use-error-handler';
-import { chatApis } from '../apis';
-import { fetchUserChatRooms } from '@/store/slices/chat-slice';
-import type { RootState, AppDispatch } from '@/store';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { MessageCircle, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useErrorHandler } from "@/hooks/use-error-handler";
+import { chatApis } from "../apis";
+import { fetchUserChatRooms } from "@/store/slices/chat-slice";
+import type { RootState, AppDispatch } from "@/store";
 
 interface ChatButtonProps {
   bidId: number;
-  variant?: 'default' | 'outline' | 'secondary' | 'ghost' | 'link' | 'destructive';
-  size?: 'default' | 'sm' | 'lg' | 'icon';
+  variant?:
+    | "default"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "link"
+    | "destructive";
+  size?: "default" | "sm" | "lg" | "icon";
   className?: string;
   showLabel?: boolean;
 }
 
 export const ChatButton = ({
   bidId,
-  variant = 'outline',
-  size = 'sm',
-  className = '',
-  showLabel = true
+  variant = "outline",
+  size = "sm",
+  className = "",
+  showLabel = true,
 }: ChatButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const { authToken } = useSelector((state: RootState) => state.auth);
   const { handleError } = useErrorHandler();
-  
+
   const handleClick = async () => {
     if (!authToken) {
-      handleError('Authentication required', {
-        toastTitle: 'Authentication Error',
-        showToast: true
+      handleError("Authentication required", {
+        toastTitle: "Authentication Error",
+        showToast: true,
       });
       return;
     }
-    
+
     setIsLoading(true);
-    
+
     try {
       // Create or get chat room for this bid
       const response = await chatApis.createBidChatRoom(bidId, authToken);
       const chatRoomId = response.data.data.id;
-      
+
       // Refresh chat rooms to update the list with the new chat
       dispatch(fetchUserChatRooms({ authToken }));
-      
+
       // Navigate to the chat room
       navigate(`/dashboard/chats/${chatRoomId}`);
     } catch (err: any) {
-      handleError(err?.response?.data?.error?.message || 'Failed to open chat', {
-        toastTitle: 'Chat Error',
-        showToast: true
-      });
+      handleError(
+        err?.response?.data?.error?.message || "Failed to open chat",
+        {
+          toastTitle: "Chat Error",
+          showToast: true,
+        },
+      );
     } finally {
       setIsLoading(false);
     }
   };
-  
+
   return (
     <Button
       variant={variant}
@@ -71,9 +80,9 @@ export const ChatButton = ({
       {isLoading ? (
         <Loader2 className="h-4 w-4 animate-spin" />
       ) : (
-        <MessageCircle className={`h-4 w-4 ${showLabel ? 'mr-2' : ''}`} />
+        <MessageCircle className={`h-4 w-4 ${showLabel ? "mr-2" : ""}`} />
       )}
-      {showLabel && 'Chat'}
+      {showLabel && "Chat"}
     </Button>
   );
 };

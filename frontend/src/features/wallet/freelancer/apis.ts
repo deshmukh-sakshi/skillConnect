@@ -1,7 +1,6 @@
 import { request } from "@/apis";
 import urls from "./urls";
 
-
 const apis = {
   getRevenue: ({ authToken, id }: { authToken: string; id: number }) =>
     request({
@@ -9,6 +8,6 @@ const apis = {
       url: `${urls.getRevenue}/${id}`,
       authToken,
     }),
-}
+};
 
-export default apis
+export default apis;

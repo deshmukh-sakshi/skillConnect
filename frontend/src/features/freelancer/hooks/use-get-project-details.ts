@@ -15,8 +15,12 @@ const useGetProjectDetails = () => {
     error,
   } = useQuery({
     queryKey: ["GET_PROJECT_DETAILS", id],
-    queryFn: () => apis.getProjectDetails({ id: id as string, authToken: authToken as string }),
-    enabled: !!id && !!authToken, 
+    queryFn: () =>
+      apis.getProjectDetails({
+        id: id as string,
+        authToken: authToken as string,
+      }),
+    enabled: !!id && !!authToken,
     onError: (err: any) => {
       toast.error("Failed to fetch project details", {
         description: err?.response?.data?.message || "Something went wrong.",

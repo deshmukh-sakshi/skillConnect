@@ -19,33 +19,6 @@ public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
 
-    @Override
-    public ClientDTO getClientDTOById(Long id) {
-        log.info("Fetching client by ID: {}", id);
-        Client client = clientRepository.findById(id).orElse(null);
-
-        if (client == null) {
-            log.error("Client not found with ID: {}", id);
-            return null;
-        }
-        log.info("Client found: {}", client.getName());
-
-        log.info("Fetching projects for client: {}", client.getName());
-        List<ProjectDTO> projectDTOs = new ArrayList<>();
-
-        for (Project p : client.getProjects()) {
-            log.info("Project found: {}", p.getTitle());
-            ProjectDTO dto = getProjectDTO(p);
-            log.info("Project DTO created: {}", dto.getTitle());
-            projectDTOs.add(dto);
-        }
-        log.info("Projects mapped: {}", projectDTOs);
-
-        String email = client.getAppUser() != null ? client.getAppUser().getEmail() : null;
-        log.info("Client email: {}", email);
-        return new ClientDTO(client.getName(), email, projectDTOs);
-    }
-
     // ✅ Fixed getProjectDTO method with correct constructor parameters
     private static ProjectDTO getProjectDTO(Project p) {
         Long clientId = (p.getClient() != null) ? p.getClient().getId() : null;
@@ -75,6 +48,33 @@ public class ClientServiceImpl implements ClientService {
                 p.getUpdatedAt(),         // updatedAt
                 bidCount                  // bidCount
         );
+    }
+
+    @Override
+    public ClientDTO getClientDTOById(Long id) {
+        log.info("Fetching client by ID: {}", id);
+        Client client = clientRepository.findById(id).orElse(null);
+
+        if (client == null) {
+            log.error("Client not found with ID: {}", id);
+            return null;
+        }
+        log.info("Client found: {}", client.getName());
+
+        log.info("Fetching projects for client: {}", client.getName());
+        List<ProjectDTO> projectDTOs = new ArrayList<>();
+
+        for (Project p : client.getProjects()) {
+            log.info("Project found: {}", p.getTitle());
+            ProjectDTO dto = getProjectDTO(p);
+            log.info("Project DTO created: {}", dto.getTitle());
+            projectDTOs.add(dto);
+        }
+        log.info("Projects mapped: {}", projectDTOs);
+
+        String email = client.getAppUser() != null ? client.getAppUser().getEmail() : null;
+        log.info("Client email: {}", email);
+        return new ClientDTO(client.getName(), email, projectDTOs);
     }
 
     @Override

@@ -28,13 +28,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class WalletService {
 
+    private final WalletRepository walletRepository;
+    private final WalletFreezeRepository walletFreezeRepository;
     @Autowired
     private WalletTransactionRepository transactionRepository;
     @Autowired
     private ProjectRepository projectRepository;
-
-    private final WalletRepository walletRepository;
-    private final WalletFreezeRepository walletFreezeRepository;
 
     private String normalizeRole(String role) {
         if (role.equalsIgnoreCase("ROLE_CLIENT")) return "CLIENT";

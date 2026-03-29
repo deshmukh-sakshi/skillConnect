@@ -1,11 +1,6 @@
 package com.skillconnect.backend.Controller;
 
-import com.skillconnect.backend.DTO.ApiResponse;
-import com.skillconnect.backend.DTO.BidResponseDTO;
-import com.skillconnect.backend.DTO.ClientDTO;
-import com.skillconnect.backend.DTO.ProjectCountResponse;
-import com.skillconnect.backend.DTO.ProjectCountsResponse;
-import com.skillconnect.backend.DTO.ProjectDTO;
+import com.skillconnect.backend.DTO.*;
 import com.skillconnect.backend.Service.project.ProjectService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,9 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProjectControllerTest {
@@ -73,9 +66,9 @@ class ProjectControllerTest {
     void getAllProjects_returnsList() {
         ProjectDTO dto = new ProjectDTO();
         dto.setId(1L);
-        when(projectService.getAllProjects(null, "createdAt", "desc")).thenReturn(List.of(dto));
+        when(projectService.getAllProjects(null)).thenReturn(List.of(dto));
 
-        ResponseEntity<ApiResponse<List<ProjectDTO>>> response = projectController.getAllProjects(null, "createdAt", "desc");
+        ResponseEntity<ApiResponse<List<ProjectDTO>>> response = projectController.getAllProjects(null);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -89,9 +82,9 @@ class ProjectControllerTest {
     void getAllProjects_withSortParams_returnsSortedList() {
         ProjectDTO dto = new ProjectDTO();
         dto.setId(2L);
-        when(projectService.getAllProjects("web", "budget", "asc")).thenReturn(List.of(dto));
+        when(projectService.getAllProjects("web")).thenReturn(List.of(dto));
 
-        ResponseEntity<ApiResponse<List<ProjectDTO>>> response = projectController.getAllProjects("web", "budget", "asc");
+        ResponseEntity<ApiResponse<List<ProjectDTO>>> response = projectController.getAllProjects("web");
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());

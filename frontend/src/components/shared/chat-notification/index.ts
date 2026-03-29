@@ -1,1 +1,1 @@
-export { ChatNotification } from './chat-notification';
+export { ChatNotification } from "./chat-notification";

@@ -1,7 +1,10 @@
 package com.skillconnect.backend.Entity;
-import java.util.*;
+
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Setter

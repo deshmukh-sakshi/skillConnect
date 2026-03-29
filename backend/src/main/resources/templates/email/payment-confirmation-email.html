@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Contract Created - SkillConnect</title>
+    <title>Payment Confirmation - SkillConnect</title>
     <style>
         body {
             margin: 0;
@@ -15,11 +15,12 @@
         }
 
         .terminal {
-            max-width: 600px;
+            max-width: 720px;
             margin: 0 auto;
             background: #1a1a1a;
             border-radius: 8px;
             border: 1px solid #333;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.1);
             overflow: hidden;
             font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
         }
@@ -67,6 +68,15 @@
             line-height: 1.6;
         }
 
+        .ascii-art {
+            color: #00ff88;
+            font-size: 10px;
+            line-height: 1;
+            margin: 20px 0;
+            text-align: center;
+            white-space: pre;
+        }
+
         .prompt {
             color: #00ff88;
             font-weight: 600;
@@ -88,30 +98,36 @@
             font-weight: 500;
         }
 
-        .warning {
-            color: #ffd43b;
-            font-weight: 500;
-        }
-
         .info {
             color: #74c0fc;
             font-weight: 500;
         }
 
-        .contract-box {
-            border: 1px solid #00ff88;
-            padding: 12px;
-            margin: 16px 0;
-            background: rgba(0, 255, 136, 0.05);
+        .warning {
+            color: #ffd43b;
+            font-weight: 500;
         }
 
-        .ascii-art {
-            color: #00ff88;
-            font-size: 10px;
-            line-height: 1;
-            margin: 20px 0;
-            text-align: center;
-            white-space: pre;
+        .message-box {
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
+            color: #d8dee9;
+        }
+
+        .blink {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% {
+                opacity: 1;
+            }
+            51%, 100% {
+                opacity: 0;
+            }
         }
 
         .footer-terminal {
@@ -145,10 +161,11 @@
             <div class="dot yellow"></div>
             <div class="dot green"></div>
         </div>
-        <div class="terminal-title">skillconnect-contracts@terminal</div>
+        <div class="terminal-title">wallet@skillconnect</div>
     </div>
 
     <div class="terminal-body">
+
         <pre class="ascii-art">
 ███████╗██╗  ██╗██╗██╗     ██╗      ██████╗ ██████╗ ███╗   ██╗███╗   ██╗███████╗ ██████╗████████╗
 ██╔════╝██║ ██╔╝██║██║     ██║     ██╔════╝██╔═══██╗████╗  ██║████╗  ██║██╔════╝██╔════╝╚══██╔══╝
@@ -158,64 +175,47 @@
 ╚══════╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═╝   
         </pre>
 
-        <div class="prompt">skillconnect@contracts:~$ <span class="command">cat contract-created.log</span></div>
+        <div class="prompt">skillconnect@wallet:~$</div>
+        <div class="command">confirm-payment --txn=<span th:text="${transactionId}">txn_ABC123</span></div>
         <div class="output">
-            <div class="success">🎉 CONTRACT CREATED SUCCESSFULLY</div>
+            <div class="success">✓ Payment successfully received</div>
+            <div class="success">✓ Wallet balance updated</div>
+            <div class="success">✓ Confirmation email generated</div>
+
             <div style="margin: 12px 0;">
-                Hi <span class="success" th:text="${userName}">User Name</span>,<br><br>
-                Great news! A new contract has been created for your project.
+                User: <span class="info" th:text="${userName}">User Name</span><br>
+                Amount: ₹<span class="success" th:text="${amount}">0.00</span><br>
+                Transaction ID: <span class="warning" th:text="${transactionId}">txn_ABC123</span><br>
+                Payment Method: <span class="info" th:text="${paymentMethod}">Razorpay</span><br>
+                Date & Time: <span class="info" th:text="${dateTime}">2024-04-12 12:00</span>
             </div>
         </div>
 
-        <div class="prompt">skillconnect@contracts:~$ <span class="command">display-contract-details</span></div>
+        <div class="prompt">skillconnect@wallet:~$</div>
+        <div class="command">echo "Need help?" | figlet</div>
         <div class="output">
-            <div class="contract-box">
-                <div class="success">✓ Contract Details</div>
-                <div style="margin: 8px 0; font-size: 13px;">
-                    <strong>Project:</strong> <span th:text="${projectName}">Sample Project</span><br>
-                    <strong>Client:</strong> <span th:text="${clientName}">Client Name</span><br>
-                    <strong>Freelancer:</strong> <span th:text="${freelancerName}">Freelancer Name</span><br>
-                    <strong>Amount:</strong> Rs.<span
-                        th:text="${#numbers.formatDecimal(bidAmount, 0, 2)}">5000.00</span><br>
-                    <strong>Status:</strong> <span class="warning">IN_PROGRESS</span>
-                </div>
+            <div class="info">🛠️ Support Contact:</div>
+            <div class="message-box">
+                If you have any issues with this transaction,<br>
+                please contact us at:
+                <a style="color: #00ff88;" th:href="'mailto:' + ${supportEmail}" th:text="${supportEmail}">support@skillconnect.com</a>
             </div>
         </div>
 
-        <div class="prompt">skillconnect@contracts:~$ <span class="command">show-next-steps</span></div>
+        <div class="prompt">skillconnect@wallet:~$</div>
+        <div class="command">tail -f wallet-transactions.log</div>
         <div class="output">
-            <div th:if="${userRole == 'CLIENT'}">
-                <div class="info">What happens next:</div>
-                <div style="margin: 8px 0; color: #d8dee9;">
-                    → Payment is secured in escrow<br>
-                    → Freelancer will begin work<br>
-                    → You can communicate via the contract chat<br>
-                    → Mark as completed when work is done
-                </div>
-            </div>
-            <div th:if="${userRole == 'FREELANCER'}">
-                <div class="info">What happens next:</div>
-                <div style="margin: 8px 0; color: #d8dee9;">
-                    → Payment is secured and waiting for you<br>
-                    → Begin work on the project<br>
-                    → Communicate with client via chat<br>
-                    → Request completion when work is done
-                </div>
-            </div>
-        </div>
-
-        <div class="prompt">skillconnect@contracts:~$ <span class="command">echo "Login to SkillConnect to manage your contract"</span>
-        </div>
-        <div class="output">
-            <div style="color: #d8dee9;">
-                Login to SkillConnect to manage your contract
+            <div style="color: #666; font-size: 11px;">
+                [INFO] Payment received<br>
+                [INFO] Balance updated<br>
+                [INFO] Confirmation email sent to <span th:text="${userName}">User</span><span class="blink">_</span>
             </div>
         </div>
     </div>
 
     <div class="footer-terminal">
-        <div class="prompt" style="display: inline;">skillconnect@contracts:~$</div>
-        <span style="color: #666;">Visit <span th:text="${frontendUrl}">skillconnect.com</span> to get started</span>
+        <div class="prompt" style="display: inline;">skillconnect@wallet:~$</div>
+        <span style="color: #666;">Thank you for using SkillConnect Wallet 🚀</span>
     </div>
 </div>
 </body>

@@ -1,10 +1,7 @@
 package com.skillconnect.backend.Service.project;
 
-import com.skillconnect.backend.DTO.BidResponseDTO;
-import com.skillconnect.backend.DTO.ClientDTO;
-import com.skillconnect.backend.DTO.ProjectCountResponse;
-import com.skillconnect.backend.DTO.ProjectCountsResponse;
-import com.skillconnect.backend.DTO.ProjectDTO;
+import com.skillconnect.backend.Chat.Service.ChatService;
+import com.skillconnect.backend.DTO.*;
 import com.skillconnect.backend.Entity.Bids;
 import com.skillconnect.backend.Entity.Client;
 import com.skillconnect.backend.Entity.Project;
@@ -13,13 +10,15 @@ import com.skillconnect.backend.Repository.ClientRepository;
 import com.skillconnect.backend.Repository.ProjectRepository;
 import com.skillconnect.backend.Service.contract.ContractService;
 import com.skillconnect.backend.Wallet.Service.WalletService;
-import com.skillconnect.backend.Chat.Service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -56,24 +55,17 @@ public class ProjectServiceImpl implements ProjectService {
         return toDTO(saved);
     }
 
+    // ProjectServiceImpl.java
+
     @Override
-    public List<ProjectDTO> getAllProjects(String query, String sortBy, String sortDirection) {
-        log.info("Fetching all projects with query: '{}', sortBy: '{}', sortDirection: '{}'",
-                query, sortBy, sortDirection);
-
-        String validatedSortBy = validateSortField(sortBy);
-        Sort.Direction direction = validateSortDirection(sortDirection);
-
-
-        Sort sort = Sort.by(direction, validatedSortBy);
+    public List<ProjectDTO> getAllProjects(String query) {
+        log.info("Fetching all projects with query: '{}'", query);
 
         List<Project> projects;
-
         if (query == null || query.trim().isEmpty()) {
-            projects = projectRepository.findAll(sort);
+            projects = projectRepository.findAll();
         } else {
-
-            projects = projectRepository.findProjectsWithSearch(query.trim(), sort);
+            projects = projectRepository.findProjectsWithSearch(query.trim());
         }
 
         log.info("Found {} projects", projects.size());
@@ -274,10 +266,10 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectCountsResponse getProjectCountsByCategory() {
         log.info("Fetching project counts by category");
-        
+
         List<Object[]> categoryCountsRaw = projectRepository.countActiveProjectsByCategory();
         Long totalActiveProjects = projectRepository.countTotalActiveProjects();
-        
+
         LocalDateTime now = LocalDateTime.now();
         List<ProjectCountResponse> counts = categoryCountsRaw.stream()
                 .map(row -> {
@@ -287,7 +279,7 @@ public class ProjectServiceImpl implements ProjectService {
                     return new ProjectCountResponse(category, categoryId, count, now);
                 })
                 .toList();
-        
+
         log.info("Found {} categories with active projects, total: {}", counts.size(), totalActiveProjects);
         return new ProjectCountsResponse(counts, totalActiveProjects);
     }

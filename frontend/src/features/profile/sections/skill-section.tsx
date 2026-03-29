@@ -10,24 +10,35 @@ interface SkillsSectionProps {
   setProfile: React.Dispatch<React.SetStateAction<ProfileData | null>>;
 }
 
-const SkillsSection: React.FC<SkillsSectionProps> = ({ profile, setProfile }) => {
+const SkillsSection: React.FC<SkillsSectionProps> = ({
+  profile,
+  setProfile,
+}) => {
   const [newSkill, setNewSkill] = useState("");
 
   const handleAddSkill = () => {
     if (newSkill.trim() && !profile.skills.includes(newSkill.trim())) {
-      setProfile(prev => prev ? {
-        ...prev,
-        skills: [...prev.skills, newSkill.trim()]
-      } : null);
+      setProfile((prev) =>
+        prev
+          ? {
+              ...prev,
+              skills: [...prev.skills, newSkill.trim()],
+            }
+          : null,
+      );
       setNewSkill("");
     }
   };
 
   const handleRemoveSkill = (skillToRemove: string) => {
-    setProfile(prev => prev ? {
-      ...prev,
-      skills: prev.skills.filter(skill => skill !== skillToRemove)
-    } : null);
+    setProfile((prev) =>
+      prev
+        ? {
+            ...prev,
+            skills: prev.skills.filter((skill) => skill !== skillToRemove),
+          }
+        : null,
+    );
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

@@ -8,7 +8,7 @@ interface NavLinksProps {
 }
 const NavLinks = ({ links }: NavLinksProps) => {
   const { isAuth } = useAuth();
-  
+
   return (
     <div className="items-center justify-center space-x-4 hidden md:flex">
       {links.map((link) => {
@@ -23,14 +23,14 @@ const NavLinks = ({ links }: NavLinksProps) => {
               key={link.id}
               onClick={link.action}
               className={cn(
-                "hover:text-primary transition-all space-x-1 flex items-center text-muted-foreground justify-center"
+                "hover:text-primary transition-all space-x-1 flex items-center text-muted-foreground justify-center",
               )}
             >
               <span className="text-sm">{link.title}</span>
             </button>
           );
         }
-        
+
         return (
           <NavLink
             key={link.id}
@@ -38,7 +38,7 @@ const NavLinks = ({ links }: NavLinksProps) => {
             className={({ isActive }) =>
               cn(
                 "hover:text-primary transition-all space-x-1 flex items-center text-muted-foreground justify-center",
-                isActive && "text-primary font-semibold"
+                isActive && "text-primary font-semibold",
               )
             }
           >

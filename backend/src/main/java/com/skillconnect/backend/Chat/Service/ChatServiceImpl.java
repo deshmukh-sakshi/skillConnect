@@ -6,15 +6,17 @@ import com.skillconnect.backend.Chat.Entity.ChatRoom;
 import com.skillconnect.backend.Chat.Repository.ChatMessageRepository;
 import com.skillconnect.backend.Chat.Repository.ChatRoomRepository;
 import com.skillconnect.backend.Entity.*;
-import com.skillconnect.backend.Repository.*;
-
+import com.skillconnect.backend.Repository.BidRepository;
+import com.skillconnect.backend.Repository.ClientRepository;
+import com.skillconnect.backend.Repository.ContractRepository;
+import com.skillconnect.backend.Repository.FreelancerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -24,8 +26,7 @@ import java.util.stream.Collectors;
 
 /**
  * Implementation of ChatService for managing chat operations including room
- * creation,
- * message handling, and real-time communication integration.
+ * creation, message handling, and real-time communication integration.
  */
 @Slf4j
 @Service
@@ -140,7 +141,6 @@ public class ChatServiceImpl implements ChatService {
         chatRoomRepository.save(chatRoom);
 
         // Real-time message delivery will be handled by polling mechanism
-
         return mapToMessageResponse(savedMessage);
     }
 
@@ -161,7 +161,7 @@ public class ChatServiceImpl implements ChatService {
     @Override
     @Transactional(readOnly = true)
     public List<ChatMessageResponse> getNewMessages(Long chatRoomId, LocalDateTime since, Long userId,
-            String userType) {
+                                                    String userType) {
         log.info("Retrieving new messages since {} for room: {} by user: {} ({})",
                 since, chatRoomId, userId, userType);
 
@@ -359,8 +359,8 @@ public class ChatServiceImpl implements ChatService {
     }
 
     /**
-     * Legacy method maintained for backward compatibility.
-     * Now delegates to convertToContractChat.
+     * Legacy method maintained for backward compatibility. Now delegates to
+     * convertToContractChat.
      */
     @Override
     @Transactional
@@ -388,9 +388,9 @@ public class ChatServiceImpl implements ChatService {
 
         // Determine if user can accept/reject (only clients can, and only for pending
         // bids)
-        boolean canAccept = "CLIENT".equals(userType) &&
-                bid.getStatus() == Bids.bidStatus.Pending &&
-                bid.getProject().getClient().getId().equals(userId);
+        boolean canAccept = "CLIENT".equals(userType)
+                && bid.getStatus() == Bids.bidStatus.Pending
+                && bid.getProject().getClient().getId().equals(userId);
         boolean canReject = canAccept; // Same conditions for reject
 
         return BidDetailsResponse.builder()

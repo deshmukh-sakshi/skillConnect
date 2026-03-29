@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class ChatMessageResponse {
-    
+
     private Long id;
     private Long chatRoomId;
     private SenderType senderType;

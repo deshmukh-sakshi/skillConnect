@@ -53,7 +53,7 @@ const ProjectDetails: React.FC = () => {
         fetchProjectDetails({
           projectId: Number(projectId),
           authToken,
-        })
+        }),
       ).catch((err) => {
         handleError(err as Error, {
           toastTitle: "Failed to load project details",
@@ -77,7 +77,7 @@ const ProjectDetails: React.FC = () => {
         fetchProjectDetails({
           projectId: Number(projectId),
           authToken,
-        })
+        }),
       ).catch((err) => {
         handleError(err as Error, {
           toastTitle: "Retry failed",

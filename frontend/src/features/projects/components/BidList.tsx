@@ -83,14 +83,12 @@ const BidList: React.FC<BidListProps> = ({
   const { handleError, handleSuccess } = useErrorHandler();
   const { walletDetails } = useGetWalletDetails();
 
-  console.log("BIDS: ", bids);
-
   const [actioningBidId, setActioningBidId] = useState<number | null>(null);
 
   const handleBidAction = async (
     bidId: number,
     action: "accept" | "reject",
-    bidAmount: number
+    bidAmount: number,
   ) => {
     if (!authToken) {
       handleError("Authentication required", {
@@ -111,7 +109,7 @@ const BidList: React.FC<BidListProps> = ({
       updateBidStatusOptimistic({
         bidId,
         status: action === "accept" ? "Accepted" : "Rejected",
-      })
+      }),
     );
 
     try {
@@ -121,21 +119,21 @@ const BidList: React.FC<BidListProps> = ({
           projectId,
           bidId,
           authToken,
-        })
+        }),
       );
 
       if (actionThunk.fulfilled.match(result)) {
         handleSuccess(
           action === "accept"
             ? "Bid accepted successfully!"
-            : "Bid rejected successfully!"
+            : "Bid rejected successfully!",
         );
       } else {
         dispatch(
           updateBidStatusOptimistic({
             bidId,
             status: "Pending",
-          })
+          }),
         );
 
         handleError(error.bidAction || `Failed to ${action} bid`, {
@@ -148,7 +146,7 @@ const BidList: React.FC<BidListProps> = ({
         updateBidStatusOptimistic({
           bidId,
           status: "Pending",
-        })
+        }),
       );
 
       handleError(err as Error, {
@@ -264,7 +262,7 @@ interface BidCardProps {
   onBidAction: (
     bidId: number,
     action: "accept" | "reject",
-    bidAmount: number
+    bidAmount: number,
   ) => void;
   isActioning: boolean;
   isLoading: boolean;
@@ -323,12 +321,12 @@ const BidCard: React.FC<BidCardProps> = ({
             <Eye className="w-4 h-4 text-green-700" />
             View Freelancer
           </Button>
-                    <ChatButton 
-                        bidId={bid.bidId}
-                        variant="ghost"
-                        size="sm"
-                        className="text-muted-foreground hover:text-foreground"
-                    />
+          <ChatButton
+            bidId={bid.bidId}
+            variant="ghost"
+            size="sm"
+            className="text-muted-foreground hover:text-foreground"
+          />
         </div>
       </CardHeader>
 
@@ -409,7 +407,7 @@ interface BidActionButtonProps {
   onAction: (
     bidId: number,
     action: "accept" | "reject",
-    bidAmount: number
+    bidAmount: number,
   ) => void;
   bidAmount: number;
   isActioning: boolean;

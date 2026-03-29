@@ -24,7 +24,7 @@ const NavSecondary = () => {
           className={({ isActive }) =>
             cn(
               "flex items-center space-x-2 hover:bg-gray-200 p-2 rounded-lg text-foreground font-medium transition-colors",
-              isActive && "bg-gray-300 text-active"
+              isActive && "bg-gray-300 text-active",
             )
           }
         >
@@ -35,7 +35,7 @@ const NavSecondary = () => {
         </NavLink>
         <button
           className={cn(
-            "flex items-center space-x-2 hover:bg-gray-200 p-2 rounded-lg text-foreground font-medium transition-colors cursor-pointer"
+            "flex items-center space-x-2 hover:bg-gray-200 p-2 rounded-lg text-foreground font-medium transition-colors cursor-pointer",
           )}
           onClick={logout}
         >

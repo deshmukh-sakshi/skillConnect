@@ -71,8 +71,8 @@ const FrozenAmountsTable = ({ frozenAmounts }: FrozenAmountsTableProps) => {
                         item.status === "FROZEN"
                           ? "default"
                           : item.status === "RELEASED"
-                          ? "secondary"
-                          : "outline"
+                            ? "secondary"
+                            : "outline"
                       }
                     >
                       {item.status}

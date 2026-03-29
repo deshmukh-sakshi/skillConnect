@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class ChatRoomResponse {
-    
+
     private Long id;
     private ChatType chatType;
     private Long referenceId;
@@ -22,7 +22,7 @@ public class ChatRoomResponse {
     private ChatStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    
+
     @Data
     @NoArgsConstructor
     @AllArgsConstructor

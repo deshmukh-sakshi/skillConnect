@@ -2,7 +2,6 @@ package com.skillconnect.backend.Service.project;
 
 import com.skillconnect.backend.Chat.Service.ChatService;
 import com.skillconnect.backend.DTO.BidResponseDTO;
-import com.skillconnect.backend.DTO.ClientDTO;
 import com.skillconnect.backend.DTO.ProjectCountsResponse;
 import com.skillconnect.backend.DTO.ProjectDTO;
 import com.skillconnect.backend.Entity.Bids;
@@ -162,9 +161,9 @@ class ProjectServiceImplTest {
         project.setStatus(Project.ProjectStatus.OPEN);
         project.setClient(client);
 
-        when(projectRepository.findAll(any(org.springframework.data.domain.Sort.class))).thenReturn(List.of(project));
+        when(projectRepository.findAll()).thenReturn(List.of(project));
 
-        List<ProjectDTO> result = projectService.getAllProjects(null, "createdAt", "desc");
+        List<ProjectDTO> result = projectService.getAllProjects(null);
 
         assertEquals(1, result.size());
         assertEquals(21L, result.get(0).getId());
@@ -187,15 +186,15 @@ class ProjectServiceImplTest {
         project.setStatus(Project.ProjectStatus.OPEN);
         project.setClient(client);
 
-        when(projectRepository.findProjectsWithSearch(eq("design"), any(org.springframework.data.domain.Sort.class)))
+        when(projectRepository.findProjectsWithSearch("design"))
                 .thenReturn(List.of(project));
 
-        List<ProjectDTO> result = projectService.getAllProjects("  design ", "createdAt", "desc");
+        List<ProjectDTO> result = projectService.getAllProjects("  design ");
 
         assertEquals(1, result.size());
         assertEquals(31L, result.getFirst().getId());
-        verify(projectRepository).findProjectsWithSearch(eq("design"), any(org.springframework.data.domain.Sort.class));
-        verify(projectRepository, never()).findAll(any(org.springframework.data.domain.Sort.class));
+        verify(projectRepository).findProjectsWithSearch("design");
+        verify(projectRepository, never()).findAll();
     }
 
     @Test
@@ -464,13 +463,13 @@ class ProjectServiceImplTest {
         project.setStatus(Project.ProjectStatus.OPEN);
         project.setClient(client);
 
-        when(projectRepository.findAll(any(org.springframework.data.domain.Sort.class))).thenReturn(List.of(project));
+        when(projectRepository.findAll()).thenReturn(List.of(project));
 
-        List<ProjectDTO> result = projectService.getAllProjects(null, "budget", "asc");
+        List<ProjectDTO> result = projectService.getAllProjects(null);
 
         assertEquals(1, result.size());
         assertEquals(50L, result.getFirst().getId());
-        verify(projectRepository).findAll(any(org.springframework.data.domain.Sort.class));
+        verify(projectRepository).findAll();
     }
 
     @Test
@@ -488,12 +487,12 @@ class ProjectServiceImplTest {
         project.setStatus(Project.ProjectStatus.OPEN);
         project.setClient(client);
 
-        when(projectRepository.findAll(any(org.springframework.data.domain.Sort.class))).thenReturn(List.of(project));
+        when(projectRepository.findAll()).thenReturn(List.of(project));
 
-        List<ProjectDTO> result = projectService.getAllProjects(null, "invalidField", "desc");
+        List<ProjectDTO> result = projectService.getAllProjects(null);
 
         assertEquals(1, result.size());
-        verify(projectRepository).findAll(any(org.springframework.data.domain.Sort.class));
+        verify(projectRepository).findAll();
     }
 
     @Test
@@ -511,12 +510,12 @@ class ProjectServiceImplTest {
         project.setStatus(Project.ProjectStatus.OPEN);
         project.setClient(client);
 
-        when(projectRepository.findAll(any(org.springframework.data.domain.Sort.class))).thenReturn(List.of(project));
+        when(projectRepository.findAll()).thenReturn(List.of(project));
 
-        List<ProjectDTO> result = projectService.getAllProjects(null, "deadline", "random");
+        List<ProjectDTO> result = projectService.getAllProjects(null);
 
         assertEquals(1, result.size());
-        verify(projectRepository).findAll(any(org.springframework.data.domain.Sort.class));
+        verify(projectRepository).findAll();
     }
 
     @Test

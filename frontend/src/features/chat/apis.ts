@@ -1,5 +1,5 @@
-import request from '@/apis/request';
-import { CHAT_URLS } from './urls';
+import request from "@/apis/request";
+import { CHAT_URLS } from "./urls";
 
 interface SendMessageParams {
   chatRoomId: number;
@@ -31,19 +31,19 @@ export const chatApis = {
    */
   createBidChatRoom: (bidId: number, authToken: string) => {
     return request({
-      method: 'POST',
+      method: "POST",
       url: CHAT_URLS.CREATE_BID_CHAT_ROOM,
       data: { bidId },
       authToken,
     });
   },
-  
+
   /**
    * Get or create a chat room for a contract
    */
   getContractChatRoom: (contractId: number, authToken: string) => {
     return request({
-      method: 'POST',
+      method: "POST",
       url: CHAT_URLS.CREATE_CONTRACT_CHAT_ROOM,
       data: { contractId },
       authToken,
@@ -55,7 +55,7 @@ export const chatApis = {
    */
   getUserChatRooms: (authToken: string) => {
     return request({
-      method: 'GET',
+      method: "GET",
       url: CHAT_URLS.GET_USER_CHAT_ROOMS,
       authToken,
     });
@@ -66,7 +66,7 @@ export const chatApis = {
    */
   getActiveChatRooms: (authToken: string) => {
     return request({
-      method: 'GET',
+      method: "GET",
       url: CHAT_URLS.GET_ACTIVE_CHAT_ROOMS,
       authToken,
     });
@@ -75,11 +75,16 @@ export const chatApis = {
   /**
    * Get chat history for a specific chat room
    */
-  getChatHistory: ({ chatRoomId, page = 0, size = 50, authToken }: GetChatHistoryParams) => {
+  getChatHistory: ({
+    chatRoomId,
+    page = 0,
+    size = 50,
+    authToken,
+  }: GetChatHistoryParams) => {
     return request({
-      method: 'GET',
+      method: "GET",
       url: CHAT_URLS.GET_CHAT_HISTORY(chatRoomId),
-      params: { page, size, sort: 'createdAt,desc' },
+      params: { page, size, sort: "createdAt,desc" },
       authToken,
     });
   },
@@ -89,7 +94,7 @@ export const chatApis = {
    */
   sendMessage: ({ chatRoomId, content, authToken }: SendMessageParams) => {
     return request({
-      method: 'POST',
+      method: "POST",
       url: CHAT_URLS.SEND_MESSAGE,
       data: { chatRoomId, content },
       authToken,
@@ -101,18 +106,18 @@ export const chatApis = {
    */
   markAsRead: ({ chatRoomId, authToken }: MarkAsReadParams) => {
     return request({
-      method: 'POST',
+      method: "POST",
       url: CHAT_URLS.MARK_AS_READ(chatRoomId),
       authToken,
     });
   },
-  
+
   /**
    * Get new messages since a specific timestamp
    */
   getNewMessages: ({ chatRoomId, since, authToken }: GetNewMessagesParams) => {
     return request({
-      method: 'GET',
+      method: "GET",
       url: CHAT_URLS.GET_NEW_MESSAGES(chatRoomId),
       params: { since },
       authToken,
@@ -124,7 +129,7 @@ export const chatApis = {
    */
   getBidDetailsForChat: (chatRoomId: number, authToken: string) => {
     return request({
-      method: 'GET',
+      method: "GET",
       url: CHAT_URLS.GET_BID_DETAILS(chatRoomId),
       authToken,
     });
@@ -135,7 +140,7 @@ export const chatApis = {
    */
   getContractDetailsForChat: (chatRoomId: number, authToken: string) => {
     return request({
-      method: 'GET',
+      method: "GET",
       url: CHAT_URLS.GET_CONTRACT_DETAILS(chatRoomId),
       authToken,
     });
@@ -146,7 +151,7 @@ export const chatApis = {
    */
   acceptBidInChat: (bidId: number, authToken: string) => {
     return request({
-      method: 'POST',
+      method: "POST",
       url: CHAT_URLS.ACCEPT_BID(bidId),
       authToken,
     });
@@ -157,122 +162,151 @@ export const chatApis = {
    */
   rejectBidInChat: (bidId: number, authToken: string) => {
     return request({
-      method: 'POST',
+      method: "POST",
       url: CHAT_URLS.REJECT_BID(bidId),
       authToken,
     });
   },
-  
+
   /**
    * Get milestones for a contract chat
    */
   getMilestonesForChat: (chatRoomId: number, authToken: string) => {
     return request({
-      method: 'GET',
+      method: "GET",
       url: CHAT_URLS.GET_MILESTONES(chatRoomId),
       authToken,
     });
   },
-  
+
   /**
    * Get milestone completion percentage for a contract chat
    */
   getMilestoneCompletionForChat: (chatRoomId: number, authToken: string) => {
     return request({
-      method: 'GET',
+      method: "GET",
       url: CHAT_URLS.GET_MILESTONE_COMPLETION(chatRoomId),
       authToken,
     });
   },
-  
+
   /**
    * Get overdue milestones for a contract chat
    */
   getOverdueMilestonesForChat: (chatRoomId: number, authToken: string) => {
     return request({
-      method: 'GET',
+      method: "GET",
       url: CHAT_URLS.GET_OVERDUE_MILESTONES(chatRoomId),
       authToken,
     });
   },
-  
+
   /**
    * Send a milestone notification to a contract chat
    */
-  sendMilestoneNotification: (chatRoomId: number, notification: string, authToken: string) => {
+  sendMilestoneNotification: (
+    chatRoomId: number,
+    notification: string,
+    authToken: string,
+  ) => {
     return request({
-      method: 'POST',
+      method: "POST",
       url: CHAT_URLS.SEND_MILESTONE_NOTIFICATION(chatRoomId),
       data: { notification },
       authToken,
     });
   },
-  
+
   /**
    * Create a milestone from a contract chat
    */
-  createMilestoneFromChat: (chatRoomId: number, milestoneData: any, authToken: string) => {
+  createMilestoneFromChat: (
+    chatRoomId: number,
+    milestoneData: any,
+    authToken: string,
+  ) => {
     return request({
-      method: 'POST',
+      method: "POST",
       url: CHAT_URLS.CREATE_MILESTONE(chatRoomId),
       data: milestoneData,
       authToken,
     });
   },
-  
+
   /**
    * Update a milestone status from a contract chat
    */
-  updateMilestoneStatusFromChat: (chatRoomId: number, milestoneId: number, status: string, authToken: string) => {
+  updateMilestoneStatusFromChat: (
+    chatRoomId: number,
+    milestoneId: number,
+    status: string,
+    authToken: string,
+  ) => {
     return request({
-      method: 'PUT',
+      method: "PUT",
       url: CHAT_URLS.UPDATE_MILESTONE_STATUS(chatRoomId, milestoneId),
       data: { status },
       authToken,
     });
   },
-  
+
   /**
    * Delete a milestone from a contract chat
    */
-  deleteMilestoneFromChat: (_chatRoomId: number, milestoneId: number, authToken: string) => {
+  deleteMilestoneFromChat: (
+    _chatRoomId: number,
+    milestoneId: number,
+    authToken: string,
+  ) => {
     return request({
-      method: 'DELETE',
+      method: "DELETE",
       url: CHAT_URLS.DELETE_MILESTONE(milestoneId),
       authToken,
     });
   },
-  
+
   /**
    * Update a milestone directly (not through chat)
    */
-  updateMilestoneDirect: (milestoneId: number, milestoneData: any, authToken: string) => {
+  updateMilestoneDirect: (
+    milestoneId: number,
+    milestoneData: any,
+    authToken: string,
+  ) => {
     return request({
-      method: 'PUT',
+      method: "PUT",
       url: CHAT_URLS.UPDATE_MILESTONE(milestoneId),
       data: milestoneData,
       authToken,
     });
   },
-  
+
   /**
    * Create a milestone directly (not through chat)
    */
-  createMilestoneDirect: (contractId: number, milestoneData: any, authToken: string) => {
+  createMilestoneDirect: (
+    contractId: number,
+    milestoneData: any,
+    authToken: string,
+  ) => {
     return request({
-      method: 'POST',
+      method: "POST",
       url: CHAT_URLS.CREATE_MILESTONE_DIRECT(contractId),
       data: milestoneData,
       authToken,
     });
   },
-  
+
   /**
    * Update milestone status directly (not through chat)
    */
-  updateMilestoneStatusDirect: (milestoneId: number, status: string, authToken: string) => {
+  updateMilestoneStatusDirect: (
+    milestoneId: number,
+    status: string,
+    authToken: string,
+  ) => {
     return request({
-      method: 'PUT',
+      method: "PUT",
       url: CHAT_URLS.UPDATE_MILESTONE_STATUS_DIRECT(milestoneId),
       data: { status },
       authToken,

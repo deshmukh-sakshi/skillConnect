@@ -1,5 +1,6 @@
 package com.skillconnect.backend.Service.bid;
 
+import com.skillconnect.backend.Chat.Service.ChatService;
 import com.skillconnect.backend.DTO.BidDTO;
 import com.skillconnect.backend.DTO.BidResponseDTO;
 import com.skillconnect.backend.DTO.ClientDTO;
@@ -10,10 +11,8 @@ import com.skillconnect.backend.Entity.Project;
 import com.skillconnect.backend.Repository.BidRepository;
 import com.skillconnect.backend.Repository.FreelancerRepository;
 import com.skillconnect.backend.Repository.ProjectRepository;
-import com.skillconnect.backend.Chat.Service.ChatService;
 import com.skillconnect.backend.Service.contract.ContractService;
 import com.skillconnect.backend.Wallet.Service.WalletService;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,6 +32,50 @@ public class BidServiceImpl implements BidService {
     private final ChatService chatService;
     private final ContractService contractService;
     private final WalletService walletService;
+
+    public static BidResponseDTO getBidResponseDTO(Bids bid) {
+        BidResponseDTO dto = new BidResponseDTO();
+        dto.setBidId(bid.getId());
+        dto.setFreelancerId(bid.getFreelancer().getId());
+        // ✅ FIXED: Removed the problematic setProjectId line
+        dto.setFreelancerName(bid.getFreelancer().getName());
+        dto.setProject(toProjectDTO(bid.getProject()));
+        dto.setProposal(bid.getProposal());
+        dto.setBidAmount(bid.getBidAmount());
+        dto.setDurationDays(bid.getDurationDays());
+        dto.setTeamSize(bid.getTeamSize());
+        dto.setStatus(bid.getStatus().toString());
+        dto.setCreatedAt(bid.getCreatedAt());
+        return dto;
+    }
+
+    private static ProjectDTO toProjectDTO(Project project) {
+        if (project == null)
+            return null;
+
+        ClientDTO clientDTO = null;
+
+        if (project.getClient() != null && project.getClient().getAppUser() != null) {
+            clientDTO = new ClientDTO(
+                    project.getClient().getName(),
+                    project.getClient().getAppUser().getEmail(),
+                    null // prevent circular reference
+            );
+        }
+
+        return new ProjectDTO(
+                project.getId(),
+                project.getTitle(),
+                project.getDescription(),
+                project.getCategory(),
+                project.getDeadline(),
+                project.getBudget(),
+                project.getStatus(),
+                clientDTO,
+                project.getClient() != null ? project.getClient().getId() : null,
+                project.getCreatedAt(),
+                project.getUpdatedAt());
+    }
 
     @Override
     @Transactional
@@ -295,49 +338,5 @@ public class BidServiceImpl implements BidService {
 
         log.info("Bid updated successfully: {}", existingBid.getId());
         return bidRepo.save(existingBid);
-    }
-
-    public static BidResponseDTO getBidResponseDTO(Bids bid) {
-        BidResponseDTO dto = new BidResponseDTO();
-        dto.setBidId(bid.getId());
-        dto.setFreelancerId(bid.getFreelancer().getId());
-        // ✅ FIXED: Removed the problematic setProjectId line
-        dto.setFreelancerName(bid.getFreelancer().getName());
-        dto.setProject(toProjectDTO(bid.getProject()));
-        dto.setProposal(bid.getProposal());
-        dto.setBidAmount(bid.getBidAmount());
-        dto.setDurationDays(bid.getDurationDays());
-        dto.setTeamSize(bid.getTeamSize());
-        dto.setStatus(bid.getStatus().toString());
-        dto.setCreatedAt(bid.getCreatedAt());
-        return dto;
-    }
-
-    private static ProjectDTO toProjectDTO(Project project) {
-        if (project == null)
-            return null;
-
-        ClientDTO clientDTO = null;
-
-        if (project.getClient() != null && project.getClient().getAppUser() != null) {
-            clientDTO = new ClientDTO(
-                    project.getClient().getName(),
-                    project.getClient().getAppUser().getEmail(),
-                    null // prevent circular reference
-            );
-        }
-
-        return new ProjectDTO(
-                project.getId(),
-                project.getTitle(),
-                project.getDescription(),
-                project.getCategory(),
-                project.getDeadline(),
-                project.getBudget(),
-                project.getStatus(),
-                clientDTO,
-                project.getClient() != null ? project.getClient().getId() : null,
-                project.getCreatedAt(),
-                project.getUpdatedAt());
     }
 }

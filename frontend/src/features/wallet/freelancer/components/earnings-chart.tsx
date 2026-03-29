@@ -33,7 +33,7 @@ const EarningsChart = ({
       { period: "Last Month", amount: monthlyBreakdown.lastMonth },
       { period: "This Year", amount: monthlyBreakdown.currentYear },
     ],
-    [monthlyBreakdown]
+    [monthlyBreakdown],
   );
 
   return (

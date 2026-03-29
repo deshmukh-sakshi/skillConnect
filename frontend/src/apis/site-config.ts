@@ -1,7 +1,7 @@
 const siteConfigs = {
   name: "Skill Connect",
   links: {
-    github: "https://github.com/deshmukh-sakshi/skillConnect"
+    github: "https://github.com/deshmukh-sakshi/skillConnect",
   },
 };
 

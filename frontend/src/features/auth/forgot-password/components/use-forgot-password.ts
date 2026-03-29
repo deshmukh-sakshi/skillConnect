@@ -8,15 +8,16 @@ const useForgotPassword = () => {
   const { mutate, isLoading } = useMutation({
     mutationFn: ({ data }: { data: { email: string } }) =>
       apis.forgotPassword({ data }),
-    onSuccess: ({ data: response }) => {
+    onSuccess: () => {
       toast.success("Password reset email sent", {
-        description: "Check your email for password reset instructions"
+        description: "Check your email for password reset instructions",
       });
-      console.log("FORGOT PASSWORD DATA -> ", response);
     },
     onError: (err: ApiError) => {
       toast.error("Something went wrong", {
-        description: err?.response?.data?.error?.message || "Failed to send password reset email"
+        description:
+          err?.response?.data?.error?.message ||
+          "Failed to send password reset email",
       });
     },
     retry: false,

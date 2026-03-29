@@ -1,27 +1,22 @@
 package com.skillconnect.backend.Service.contract;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skillconnect.backend.Auth.Service.EmailService;
 import com.skillconnect.backend.Chat.Scheduler.ChatScheduler;
-import com.skillconnect.backend.Entity.Client;
-import com.skillconnect.backend.Entity.Freelancer;
+import com.skillconnect.backend.Chat.Service.ChatService;
+import com.skillconnect.backend.DTO.ApiResponse;
+import com.skillconnect.backend.DTO.ContractResponse;
+import com.skillconnect.backend.Entity.*;
+import com.skillconnect.backend.Repository.ContractRepository;
 import com.skillconnect.backend.Wallet.Service.WalletService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.skillconnect.backend.DTO.ApiResponse;
-import com.skillconnect.backend.DTO.ContractResponse;
-import com.skillconnect.backend.Entity.Bids;
-import com.skillconnect.backend.Entity.Contract;
-import com.skillconnect.backend.Entity.Project;
-import com.skillconnect.backend.Repository.ContractRepository;
-import com.skillconnect.backend.Chat.Service.ChatService;
-import lombok.*;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -194,7 +189,7 @@ public class ContractServiceImpl implements ContractService {
             if (newStatus != null) {
                 try {
                     String notification = String.format("Contract status changed from %s to %s",
-                            oldStatus.toString(), newStatus.toString());
+                            oldStatus.toString(), newStatus);
                     chatService.sendSystemNotification(updated.getContractId(), notification);
                     log.info("System notification sent for contract status change: {}", updated.getContractId());
                 } catch (Exception e) {

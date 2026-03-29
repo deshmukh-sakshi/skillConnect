@@ -84,7 +84,7 @@ const ProjectDetails = () => {
     {
       month: "short",
       day: "numeric",
-    }
+    },
   );
 
   return (
@@ -110,9 +110,9 @@ const ProjectDetails = () => {
             </div>
 
             <div className="flex items-center gap-2">
-              <Button 
-                variant="ghost" 
-                size="sm" 
+              <Button
+                variant="ghost"
+                size="sm"
                 className="hidden sm:flex"
                 onClick={handleShare}
               >
@@ -120,9 +120,9 @@ const ProjectDetails = () => {
                 Share
               </Button>
               {/* Mobile share button */}
-              <Button 
-                variant="ghost" 
-                size="sm" 
+              <Button
+                variant="ghost"
+                size="sm"
                 className="sm:hidden"
                 onClick={handleShare}
               >
