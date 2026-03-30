@@ -199,21 +199,28 @@ export class ChatService {
    */
   private async executeWithRetry<T>(fn: () => Promise<T>): Promise<T> {
     let retries = 0;
-    let lastError: any;
+    let lastError: Error | null = null;
 
     while (retries < this.maxRetries) {
       try {
         return await fn();
-      } catch (error: any) {
-        lastError = error;
+      } catch (error) {
+        lastError =
+          error instanceof Error ? error : new Error("Unknown chat error");
+
+        const statusCode =
+          typeof error === "object" &&
+          error !== null &&
+          "response" in error &&
+          typeof (error as { response?: { status?: number } }).response
+            ?.status === "number"
+            ? (error as { response?: { status?: number } }).response?.status
+            : undefined;
 
         // Check if we should retry based on error type
-        if (
-          error.response &&
-          (error.response.status === 401 || error.response.status === 403)
-        ) {
+        if (statusCode === 401 || statusCode === 403) {
           // Authentication error - don't retry
-          throw error;
+          throw lastError;
         }
 
         // Exponential backoff
@@ -225,7 +232,7 @@ export class ChatService {
     }
 
     // If we've exhausted all retries, throw the last error
-    throw lastError;
+    throw lastError ?? new Error("Failed to execute chat request");
   }
 }
 

@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import apis from "../../apis";
 import { toast } from "sonner";
 import { setAuth } from "@/store/slices/auth-slice";
+import type { ApiError } from "@/types";
 
 const useSignIn = () => {
   const dispatch = useDispatch();
@@ -19,9 +20,13 @@ const useSignIn = () => {
         }),
       );
     },
-    onError: (err: any) => {
+    onError: (err) => {
+      const apiError = err as ApiError;
       toast.error("Something went wrong", {
-        description: err?.response?.data?.error?.message,
+        description:
+          apiError?.response?.data?.error?.message ||
+          apiError?.response?.data?.message ||
+          "Login failed",
       });
     },
     retry: false,

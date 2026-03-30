@@ -19,7 +19,7 @@ import {
 import useAuth from "@/hooks/use-auth";
 import { ChatIndicator } from "@/features/chat/components";
 
-export const navMain = [
+const navMain = [
   {
     id: 1,
     title: "Projects",

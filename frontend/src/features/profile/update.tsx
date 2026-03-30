@@ -18,6 +18,19 @@ const ProfileUpdate = () => {
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [deletedPastWorkIds, setDeletedPastWorkIds] = useState<number[]>([]);
 
+  const freelancerId = user?.id ? user.id.toString() : "";
+  const freelancerToken = user?.token ?? "";
+
+  const {
+    data: freelancerData,
+    isLoading,
+    error,
+  } = useGetFreelancerProfile(freelancerId, freelancerToken);
+
+  useEffect(() => {
+    if (freelancerData) setProfile(freelancerData);
+  }, [freelancerData]);
+
   if (!user || !user.id || !user.token) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -29,16 +42,6 @@ const ProfileUpdate = () => {
       </div>
     );
   }
-
-  const {
-    data: freelancerData,
-    isLoading,
-    error,
-  } = useGetFreelancerProfile(user.id.toString(), user.token);
-
-  useEffect(() => {
-    if (freelancerData) setProfile(freelancerData);
-  }, [freelancerData]);
 
   if (isLoading || !profile) {
     return (
@@ -97,7 +100,7 @@ const ProfileUpdate = () => {
 
       // Auto-hide success message after 3 seconds
       setTimeout(() => setSaveSuccess(false), 3000);
-    } catch (err: any) {
+    } catch (err) {
       // Use the timeline API error handler for better error messages
       setSaveError(handleTimelineApiError(err));
     } finally {
@@ -106,13 +109,11 @@ const ProfileUpdate = () => {
   };
 
   const preparePastWorksPayload = () => {
-    const isRealBackendId = (id: any) => typeof id === "number" && id < 1e6;
+    const isRealBackendId = (id: number) => Number.isInteger(id) && id < 1e6;
 
     const updatedExisting = profile.pastWorks
-      .filter(
-        (w: any) => isRealBackendId(w.id) && !deletedPastWorkIds.includes(w.id),
-      )
-      .map((w: any) => ({
+      .filter((w) => isRealBackendId(w.id) && !deletedPastWorkIds.includes(w.id))
+      .map((w) => ({
         id: w.id,
         title: w.title,
         link: w.link,
@@ -122,8 +123,8 @@ const ProfileUpdate = () => {
       }));
 
     const newWorks = profile.pastWorks
-      .filter((w: any) => !isRealBackendId(w.id))
-      .map((w: any) => ({
+      .filter((w) => !isRealBackendId(w.id))
+      .map((w) => ({
         title: w.title,
         link: w.link,
         description: w.description,

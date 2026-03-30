@@ -31,7 +31,7 @@ const ProjectDetails = () => {
       toast.info("Link copied to clipboard!", {
         description: "You can now share this project with others.",
       });
-    } catch (err) {
+    } catch {
       toast.error("Failed to copy link", {
         description: "Please try again or copy the URL manually.",
       });

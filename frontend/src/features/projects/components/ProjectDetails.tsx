@@ -19,7 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
 
-import type { Project } from "../types";
+import type { Project, BidResponse } from "../types";
 import BidList from "./BidList";
 import {
   fetchProjectDetails,
@@ -126,7 +126,7 @@ const ProjectDetails: React.FC = () => {
 
 interface ProjectDetailsContentProps {
   project: Project;
-  bids: any[];
+  bids: BidResponse[];
 }
 
 const ProjectDetailsContent: React.FC<ProjectDetailsContentProps> = ({

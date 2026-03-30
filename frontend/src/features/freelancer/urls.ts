@@ -1,12 +1,12 @@
 const urls = {
-  getProjects: "/api/projects",
-  getProjectDetails: "/api/projects",
-  getProjectBids: "/api/projects/bid",
-  raiseBid: "/api/bids",
-  getFreelancerBids: "/api/bids/freelancer",
-  deleteBid: "/api/bids",
-  updateBid: "/api/bids",
-  getFreelancerProfile: "/api/freelancers",
+  getProjects: "/projects",
+  getProjectDetails: "/projects",
+  getProjectBids: "/projects/bid",
+  raiseBid: "/bids",
+  getFreelancerBids: "/bids/freelancer",
+  deleteBid: "/bids",
+  updateBid: "/bids",
+  getFreelancerProfile: "/freelancers",
 };
 
 export default urls;

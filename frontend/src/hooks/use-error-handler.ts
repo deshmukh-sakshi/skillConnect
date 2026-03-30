@@ -4,7 +4,7 @@ import { toast } from "sonner";
 interface ErrorHandlerOptions {
   showToast?: boolean;
   toastTitle?: string;
-  onError?: (error: any) => void;
+  onError?: (error: ApiError | string) => void;
   retryAction?: () => void;
 }
 

@@ -1,7 +1,7 @@
 const urls = {
-  getClientProjects: "/api/client",
-  deleteProject: "/api/projects",
-  updateProject: "/api/projects",
+  getClientProjects: "/client",
+  deleteProject: "/projects",
+  updateProject: "/projects",
 };
 
 export default urls;

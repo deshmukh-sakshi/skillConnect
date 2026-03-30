@@ -2,6 +2,7 @@ import useAuth from "@/hooks/use-auth";
 import { useMutation } from "react-query";
 import apis from "../apis";
 import { toast } from "sonner";
+import type { ApiError } from "@/types";
 
 interface UseProjectActionsProps {
   refetchProjects: () => void;
@@ -38,9 +39,11 @@ const useProjectActions = ({ refetchProjects }: UseProjectActionsProps) => {
         description: "Your project has been updated with the new details.",
       });
     },
-    onError: (err: any) => {
+    onError: (err) => {
+      const apiError = err as ApiError;
       toast.error("Failed to update project", {
-        description: err?.response?.data?.message || "Something went wrong.",
+        description:
+          apiError?.response?.data?.message || "Something went wrong.",
       });
     },
     retry: false,
@@ -58,9 +61,11 @@ const useProjectActions = ({ refetchProjects }: UseProjectActionsProps) => {
         description: "The project has been removed from your list.",
       });
     },
-    onError: (err: any) => {
+    onError: (err) => {
+      const apiError = err as ApiError;
       toast.error("Failed to delete project", {
-        description: err?.response?.data?.message || "Something went wrong.",
+        description:
+          apiError?.response?.data?.message || "Something went wrong.",
       });
     },
     retry: false,

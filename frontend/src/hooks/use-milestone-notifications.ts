@@ -14,6 +14,12 @@ interface UseMilestoneNotificationsProps {
   chatRoomId: number;
 }
 
+interface MilestonePayload {
+  title: string;
+  description?: string;
+  dueDate: string;
+}
+
 /**
  * Hook for managing milestone notifications in chat
  */
@@ -70,9 +76,13 @@ export const useMilestoneNotifications = ({
         setTimeout(() => {
           setCurrentNotification(null);
         }, 3000);
-      } catch (err: any) {
+      } catch (err) {
         console.error("Failed to send milestone notification:", err);
-        setError(err?.message || "Failed to send milestone notification");
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Failed to send milestone notification",
+        );
       } finally {
         setIsLoading(false);
       }
@@ -107,9 +117,13 @@ export const useMilestoneNotifications = ({
           status,
           action: "status_change",
         });
-      } catch (err: any) {
+      } catch (err) {
         console.error("Failed to update milestone status:", err);
-        setError(err?.message || "Failed to update milestone status");
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Failed to update milestone status",
+        );
       } finally {
         setIsLoading(false);
       }
@@ -119,7 +133,7 @@ export const useMilestoneNotifications = ({
 
   // Create milestone with notification
   const createMilestone = useCallback(
-    async (milestoneData: any) => {
+    async (milestoneData: MilestonePayload) => {
       if (!authToken || !chatRoomId) {
         setError("Authentication or chat room ID missing");
         return null;
@@ -152,9 +166,11 @@ export const useMilestoneNotifications = ({
           );
           return null;
         }
-      } catch (err: any) {
+      } catch (err) {
         console.error("Failed to create milestone:", err);
-        setError(err?.message || "Failed to create milestone");
+        setError(
+          err instanceof Error ? err.message : "Failed to create milestone",
+        );
         return null;
       } finally {
         setIsLoading(false);

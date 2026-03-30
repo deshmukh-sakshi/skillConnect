@@ -19,35 +19,67 @@ const apis = {
       authToken,
     }),
 
-  getProjectById: ({ params, authToken }: RequestType) =>
+  getProjectById: ({
+    params,
+    authToken,
+  }: {
+    params: { id: number };
+    authToken: string;
+  }) =>
     request({
       method: "GET",
       url: `${urls.getProject}/${params.id}`,
       authToken,
     }),
 
-  getProjectBids: ({ params, authToken }: RequestType) =>
+  getProjectBids: ({
+    params,
+    authToken,
+  }: {
+    params: { projectId: number };
+    authToken: string;
+  }) =>
     request({
       method: "GET",
       url: `${urls.getProjectBids}/${params.projectId}`,
       authToken,
     }),
 
-  acceptBid: ({ params, authToken }: RequestType) =>
+  acceptBid: ({
+    params,
+    authToken,
+  }: {
+    params: { projectId: number; bidId: number };
+    authToken: string;
+  }) =>
     request({
       method: "PUT",
       url: `${urls.acceptBid}/${params.projectId}/bids/${params.bidId}/accept`,
       authToken,
     }),
 
-  rejectBid: ({ params, authToken }: RequestType) =>
+  rejectBid: ({
+    params,
+    authToken,
+  }: {
+    params: { projectId: number; bidId: number };
+    authToken: string;
+  }) =>
     request({
       method: "PUT",
       url: `${urls.rejectBid}/${params.projectId}/bids/${params.bidId}/reject`,
       authToken,
     }),
 
-  updateProject: ({ params, data, authToken }: RequestType) =>
+  updateProject: ({
+    params,
+    data,
+    authToken,
+  }: {
+    params: { id: number };
+    data: unknown;
+    authToken: string;
+  }) =>
     request({
       method: "PUT",
       url: `${urls.updateProject}/${params.id}`,
@@ -55,7 +87,13 @@ const apis = {
       authToken,
     }),
 
-  deleteProject: ({ params, authToken }: RequestType) =>
+  deleteProject: ({
+    params,
+    authToken,
+  }: {
+    params: { id: number };
+    authToken: string;
+  }) =>
     request({
       method: "DELETE",
       url: `${urls.deleteProject}/${params.id}`,

@@ -12,7 +12,7 @@ import {
 type Client = {
   name: string;
   email: string;
-  projects: any | null;
+  projects: Project[] | null;
 };
 
 type Project = {

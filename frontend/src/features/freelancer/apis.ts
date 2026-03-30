@@ -3,6 +3,23 @@ import type { RequestType } from "@/types";
 
 import urls from "./urls";
 
+interface FreelancerPastWorkPayload {
+  id?: number;
+  title: string;
+  link: string;
+  description: string;
+  startDate: string | null;
+  endDate: string | null;
+  toDelete?: boolean;
+}
+
+interface FreelancerProfileUpdateRequest {
+  name: string;
+  rating: number;
+  skills: string[];
+  pastWorks: FreelancerPastWorkPayload[];
+}
+
 const apis = {
   getProjects: ({ authToken, params }: RequestType) =>
     request({
@@ -55,7 +72,7 @@ const apis = {
   }: {
     authToken: string;
     id: number;
-    data: any;
+    data: FreelancerProfileUpdateRequest;
   }) =>
     request({
       method: "PUT",

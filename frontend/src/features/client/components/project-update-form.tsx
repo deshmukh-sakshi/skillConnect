@@ -73,7 +73,7 @@ export const ProjectUpdateForm = ({
       description: project.description || "",
       category: project.category,
       budget: project.budget,
-      deadline: new Date(project.deadline) || null,
+      deadline: project.deadline ? new Date(project.deadline) : null,
     },
   });
 

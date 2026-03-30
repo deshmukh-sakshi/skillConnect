@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useErrorHandler } from "@/hooks/use-error-handler";
 import { chatApis } from "../apis";
 import type { RootState } from "@/store";
+import type { ApiError } from "@/types";
 
 interface ContractChatButtonProps {
   contractId: number;
@@ -54,9 +55,12 @@ export const ContractChatButton = ({
 
       // Navigate to the chat room
       navigate(`/dashboard/chats/${chatRoomId}`);
-    } catch (err: any) {
+    } catch (err) {
+      const apiError = err as ApiError;
       handleError(
-        err?.response?.data?.error?.message || "Failed to open chat",
+        apiError?.response?.data?.error?.message ||
+          apiError?.message ||
+          "Failed to open chat",
         {
           toastTitle: "Chat Error",
           showToast: true,

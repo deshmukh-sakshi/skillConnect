@@ -3,6 +3,7 @@ import { useMutation } from "react-query";
 import { useDispatch } from "react-redux";
 
 import { setAuth } from "@/store/slices/auth-slice";
+import type { ApiError } from "@/types";
 
 import apis from "../../apis";
 
@@ -23,9 +24,14 @@ const useSignUpFreelancer = () => {
         }),
       );
     },
-    onError: (err: any) => {
+    onError: (err) => {
+      const apiError = err as ApiError;
       toast.error("Something went wrong", {
-        description: err?.response?.data?.error?.password,
+        description:
+          apiError?.response?.data?.error?.password ||
+          apiError?.response?.data?.error?.message ||
+          apiError?.response?.data?.message ||
+          "Signup failed",
       });
     },
     retry: false,

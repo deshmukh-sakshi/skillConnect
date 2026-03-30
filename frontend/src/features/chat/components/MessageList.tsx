@@ -59,7 +59,7 @@ const groupMessagesByDate = (messages: EnhancedChatMessage[]) => {
       }
 
       groups[dateKey].push(message);
-    } catch (error) {
+    } catch {
       // Use current date as fallback for any errors
       const fallbackDate = new Date();
       const dateKey = fallbackDate.toLocaleDateString();
@@ -77,7 +77,7 @@ const groupMessagesByDate = (messages: EnhancedChatMessage[]) => {
         return (
           new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         );
-      } catch (error) {
+      } catch {
         return 0;
       }
     }),
@@ -147,7 +147,7 @@ export const MessageList = ({
 
     container.addEventListener("scroll", handleScroll);
     return () => container.removeEventListener("scroll", handleScroll);
-  }, [autoScroll]);
+  }, [autoScroll, messages.length]);
 
   // Handle infinite scrolling
   useEffect(() => {
@@ -431,7 +431,7 @@ export const MessageList = ({
                     </div>
                   </div>
                 );
-              } catch (error) {
+              } catch {
                 // Return a fallback message display instead of null
                 return (
                   <div key={message.id} className="flex justify-center my-2">

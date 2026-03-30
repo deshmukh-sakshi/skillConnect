@@ -17,6 +17,8 @@ interface VerifyPaymentRequest {
   amount: number;
 }
 
+type WalletQueryParams = Record<string, string | number | boolean | undefined>;
+
 const apis = {
   getFrozanAmount: ({ authToken, id }: { authToken: string; id: number }) =>
     request({
@@ -30,7 +32,7 @@ const apis = {
     authToken,
     id,
   }: {
-    params: any;
+    params: WalletQueryParams;
     authToken: string;
     id: number;
   }) =>

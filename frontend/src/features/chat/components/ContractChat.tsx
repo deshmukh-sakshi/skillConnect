@@ -18,6 +18,7 @@ import { MilestonePanel } from "./MilestonePanel";
 import { chatApis } from "../apis";
 import type { RootState } from "@/store";
 import { cn } from "@/lib/utils";
+import type { ApiError } from "@/types";
 
 interface ContractDetailsResponse {
   contractId: number;
@@ -125,9 +126,11 @@ export const ContractChat = ({ chatRoomId, className }: ContractChatProps) => {
             console.error("Failed to fetch milestone information:", err);
           }
         }
-      } catch (err: any) {
+      } catch (err) {
+        const apiError = err as ApiError;
         setError(
-          err?.response?.data?.error?.message ||
+          apiError?.response?.data?.error?.message ||
+            apiError?.message ||
             "Failed to load contract details",
         );
       } finally {
@@ -184,7 +187,7 @@ export const ContractChat = ({ chatRoomId, className }: ContractChatProps) => {
         setError("Failed to send milestone notification to chat");
       }
     },
-    [chatRoomId, authToken],
+    [chatRoomId, authToken, refreshMilestoneData],
   );
 
   // Handle milestone status update

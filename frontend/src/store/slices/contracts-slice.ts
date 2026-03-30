@@ -6,6 +6,7 @@ import {
 import type { RootState } from "../index";
 import type { ApiResponse, Contract } from "@/features/contracts/types";
 import apis from "@/features/contracts/apis";
+import type { ApiError } from "@/types";
 
 // Note: Removed incorrect import for "@/utils/error-handler"
 
@@ -43,16 +44,42 @@ const initialState: ContractsState = {
   },
 };
 
+const getApiErrorMessage = (error: unknown, fallback: string): string => {
+  const apiError = error as ApiError;
+  const responseError = apiError.response?.data?.error;
+
+  if (typeof responseError === "string") {
+    return responseError;
+  }
+
+  if (
+    responseError &&
+    typeof responseError === "object" &&
+    "message" in responseError &&
+    typeof responseError.message === "string"
+  ) {
+    return responseError.message;
+  }
+
+  if (typeof apiError.response?.data?.message === "string") {
+    return apiError.response.data.message;
+  }
+
+  if (typeof apiError.message === "string" && apiError.message.length > 0) {
+    return apiError.message;
+  }
+
+  return fallback;
+};
+
 export const fetchContracts = createAsyncThunk(
   "contracts/fetchContracts",
   async (authToken: string, { rejectWithValue }) => {
     try {
       const response = await apis.getContracts({ authToken });
       return response.data as ApiResponse<Contract[]>;
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.error || "Failed to fetch contracts",
-      );
+    } catch (error) {
+      return rejectWithValue(getApiErrorMessage(error, "Failed to fetch contracts"));
     }
   },
 );
@@ -69,9 +96,9 @@ export const fetchContractById = createAsyncThunk(
         authToken,
       });
       return response.data as ApiResponse<Contract>;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue(
-        error.response?.data?.error || "Failed to fetch contract details",
+        getApiErrorMessage(error, "Failed to fetch contract details"),
       );
     }
   },
@@ -99,13 +126,9 @@ export const updateContractStatus = createAsyncThunk(
         isPlainText: false,
       });
       return response.data as ApiResponse<Contract>;
-    } catch (error: any) {
-      const errorMessage =
-        error.response?.data?.error || "Failed to update contract status";
+    } catch (error) {
       return rejectWithValue(
-        typeof errorMessage === "string"
-          ? errorMessage
-          : "An unknown error occurred",
+        getApiErrorMessage(error, "Failed to update contract status"),
       );
     }
   },
@@ -120,10 +143,8 @@ export const deleteContract = createAsyncThunk(
     try {
       await apis.deleteContract({ params: { id: contractId }, authToken });
       return contractId; // Return ID for optimistic update
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.error || "Failed to delete contract",
-      );
+    } catch (error) {
+      return rejectWithValue(getApiErrorMessage(error, "Failed to delete contract"));
     }
   },
 );

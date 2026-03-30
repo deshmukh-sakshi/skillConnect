@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import {
   IndianRupee,
   CalendarIcon,
@@ -32,6 +31,7 @@ import { ChatInterface } from "./ChatInterface";
 import { chatApis } from "../apis";
 import type { RootState } from "@/store";
 import { cn } from "@/lib/utils";
+import type { ApiError } from "@/types";
 
 interface BidDetailsResponse {
   bidId: number;
@@ -67,7 +67,6 @@ export const BidNegotiationChat = ({
   >("none");
   const [transitionError, setTransitionError] = useState<string | null>(null);
   const authToken = useSelector((state: RootState) => state.auth?.authToken);
-  const navigate = useNavigate();
 
   // Fetch bid details only once
   useEffect(() => {
@@ -81,9 +80,12 @@ export const BidNegotiationChat = ({
           authToken,
         );
         setBidDetails(response.data.data);
-      } catch (err: any) {
+      } catch (err) {
+        const apiError = err as ApiError;
         setError(
-          err?.response?.data?.error?.message || "Failed to load bid details",
+          apiError?.response?.data?.error?.message ||
+            apiError?.message ||
+            "Failed to load bid details",
         );
       } finally {
         setIsLoading(false);
@@ -121,16 +123,19 @@ export const BidNegotiationChat = ({
       setTransitionState("accepted");
 
       // The backend should have converted the bid chat to a contract chat
-    } catch (err: any) {
+    } catch (err) {
+      const apiError = err as ApiError;
       const errorMessage =
-        err?.response?.data?.error?.message || "Failed to accept bid";
+        apiError?.response?.data?.error?.message ||
+        apiError?.message ||
+        "Failed to accept bid";
       setError(errorMessage);
       setTransitionError(errorMessage);
       setTransitionState("none");
     } finally {
       setIsProcessing(false);
     }
-  }, [authToken, bidDetails, navigate]);
+  }, [authToken, bidDetails]);
 
   // Handle bid rejection with proper transition state management
   const handleRejectBid = useCallback(async () => {
@@ -158,9 +163,12 @@ export const BidNegotiationChat = ({
 
       // Set transition state to rejected
       setTransitionState("rejected");
-    } catch (err: any) {
+    } catch (err) {
+      const apiError = err as ApiError;
       const errorMessage =
-        err?.response?.data?.error?.message || "Failed to reject bid";
+        apiError?.response?.data?.error?.message ||
+        apiError?.message ||
+        "Failed to reject bid";
       setError(errorMessage);
       setTransitionError(errorMessage);
       setTransitionState("none");
@@ -173,7 +181,7 @@ export const BidNegotiationChat = ({
   const formatDate = (dateString: string) => {
     try {
       return format(new Date(dateString), "MMM d, yyyy");
-    } catch (e) {
+    } catch {
       return dateString;
     }
   };

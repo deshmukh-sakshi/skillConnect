@@ -7,6 +7,7 @@ import { useErrorHandler } from "@/hooks/use-error-handler";
 import { chatApis } from "../apis";
 import { fetchUserChatRooms } from "@/store/slices/chat-slice";
 import type { RootState, AppDispatch } from "@/store";
+import type { ApiError } from "@/types";
 
 interface ChatButtonProps {
   bidId: number;
@@ -56,9 +57,12 @@ export const ChatButton = ({
 
       // Navigate to the chat room
       navigate(`/dashboard/chats/${chatRoomId}`);
-    } catch (err: any) {
+    } catch (err) {
+      const apiError = err as ApiError;
       handleError(
-        err?.response?.data?.error?.message || "Failed to open chat",
+        apiError?.response?.data?.error?.message ||
+          apiError?.message ||
+          "Failed to open chat",
         {
           toastTitle: "Chat Error",
           showToast: true,

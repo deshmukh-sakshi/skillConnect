@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store";
 import { chatApis } from "@/features/chat/apis";
-import type { ChatMessage } from "@/types";
+import type { ApiError, ChatMessage } from "@/types";
 import { useErrorHandler } from "./use-error-handler";
 
 interface UseChatHistoryParams {
@@ -40,10 +40,20 @@ export const useChatHistory = ({
 
   const authToken = useSelector((state: RootState) => state.auth?.authToken);
 
+  // Reset history state
+  const resetHistory = useCallback(() => {
+    setMessages([]);
+    setIsLoading(false);
+    setIsLoadingMore(false);
+    setError(null);
+    setPage(0);
+    setHasMore(true);
+  }, []);
+
   // Reset state when chat room changes
   useEffect(() => {
     resetHistory();
-  }, [chatRoomId]);
+  }, [chatRoomId, resetHistory]);
 
   // Load initial messages
   useEffect(() => {
@@ -65,9 +75,12 @@ export const useChatHistory = ({
         setMessages(data.content);
         setHasMore(data.totalPages > 1);
         setPage(0);
-      } catch (err: any) {
+      } catch (err) {
+        const apiError = err as ApiError;
         const errorMsg =
-          err?.response?.data?.error?.message || "Failed to load messages";
+          apiError?.response?.data?.error?.message ||
+          apiError?.message ||
+          "Failed to load messages";
         setError(errorMsg);
         handleError(errorMsg, { showToast: false });
       } finally {
@@ -100,9 +113,12 @@ export const useChatHistory = ({
       setMessages((prev) => [...prev, ...data.content]);
       setHasMore(nextPage < data.totalPages - 1);
       setPage(nextPage);
-    } catch (err: any) {
+    } catch (err) {
+      const apiError = err as ApiError;
       const errorMsg =
-        err?.response?.data?.error?.message || "Failed to load more messages";
+        apiError?.response?.data?.error?.message ||
+        apiError?.message ||
+        "Failed to load more messages";
       setError(errorMsg);
       handleError(errorMsg, { showToast: false });
     } finally {
@@ -129,16 +145,6 @@ export const useChatHistory = ({
       // Add new message at the beginning (newest messages first)
       return [message, ...prev];
     });
-  }, []);
-
-  // Reset history state
-  const resetHistory = useCallback(() => {
-    setMessages([]);
-    setIsLoading(false);
-    setIsLoadingMore(false);
-    setError(null);
-    setPage(0);
-    setHasMore(true);
   }, []);
 
   return {

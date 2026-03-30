@@ -14,18 +14,15 @@ const Profile = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const shouldFetchFreelancerData =
-    user?.role === "ROLE_FREELANCER" && user?.id && user?.token;
+  const isFreelancer = user?.role === "ROLE_FREELANCER";
+  const freelancerId = isFreelancer && user?.id ? String(user.id) : "";
+  const freelancerToken = isFreelancer ? (user?.token ?? "") : "";
 
   const {
     data: freelancerData,
     isLoading: freelancerLoading,
     error: freelancerError,
-  } = shouldFetchFreelancerData
-    ? useGetFreelancerProfile(String(user?.id), user.token)
-    : { data: null, isLoading: false, error: null };
-
-  const isFreelancer = user?.role === "ROLE_FREELANCER";
+  } = useGetFreelancerProfile(freelancerId, freelancerToken);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40 py-8">

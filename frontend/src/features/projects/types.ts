@@ -30,7 +30,7 @@ export interface BidResponse {
 export interface ApiResponse<T> {
   status: "success" | "error";
   data?: T;
-  error?: any;
+  error?: string;
 }
 
 export interface ProjectCreateRequest {

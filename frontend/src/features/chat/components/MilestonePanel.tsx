@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { format } from "date-fns";
 import { chatApis } from "../apis";
@@ -52,6 +52,7 @@ import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import type { ApiError } from "@/types";
 
 interface MilestoneResponse {
   id: number;
@@ -77,7 +78,7 @@ interface MilestonePanelProps {
   onMilestoneStatusUpdate?: (
     milestoneId: number,
     title: string,
-    status: string,
+    status: MilestoneResponse["status"],
   ) => void;
 }
 
@@ -124,7 +125,7 @@ export const MilestonePanel = ({
   });
 
   // Fetch milestones
-  const fetchMilestones = async () => {
+  const fetchMilestones = useCallback(async () => {
     if (!authToken || !chatRoomId) return;
 
     try {
@@ -139,19 +140,22 @@ export const MilestonePanel = ({
       } else {
         setError(response.data.error?.message || "Failed to load milestones");
       }
-    } catch (err: any) {
+    } catch (err) {
+      const apiError = err as ApiError;
       setError(
-        err?.response?.data?.error?.message || "Failed to load milestones",
+        apiError?.response?.data?.error?.message ||
+          apiError?.message ||
+          "Failed to load milestones",
       );
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [authToken, chatRoomId]);
 
   // Initial fetch
   useEffect(() => {
     fetchMilestones();
-  }, [chatRoomId, authToken]);
+  }, [fetchMilestones]);
 
   // Reset form when editing milestone changes
   useEffect(() => {
@@ -240,15 +244,19 @@ export const MilestonePanel = ({
       } else {
         setError(data.error?.message || "Failed to save milestone");
       }
-    } catch (err: any) {
-      setError(err?.message || "Failed to save milestone");
+    } catch (err) {
+      const apiError = err as ApiError;
+      setError(apiError?.message || "Failed to save milestone");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   // Update milestone status
-  const updateMilestoneStatus = async (milestoneId: number, status: string) => {
+  const updateMilestoneStatus = async (
+    milestoneId: number,
+    status: MilestoneResponse["status"],
+  ) => {
     if (!authToken) return;
 
     try {
@@ -267,7 +275,7 @@ export const MilestonePanel = ({
         // Update local state
         setMilestones((prev) =>
           prev.map((m) =>
-            m.id === milestoneId ? { ...m, status: status as any } : m,
+            m.id === milestoneId ? { ...m, status } : m,
           ),
         );
       } else {
@@ -281,7 +289,7 @@ export const MilestonePanel = ({
           // Update local state
           setMilestones((prev) =>
             prev.map((m) =>
-              m.id === milestoneId ? { ...m, status: status as any } : m,
+              m.id === milestoneId ? { ...m, status } : m,
             ),
           );
 
@@ -300,8 +308,9 @@ export const MilestonePanel = ({
           );
         }
       }
-    } catch (err: any) {
-      setError(err?.message || "Failed to update milestone status");
+    } catch (err) {
+      const apiError = err as ApiError;
+      setError(apiError?.message || "Failed to update milestone status");
     } finally {
       setIsSubmitting(false);
     }
@@ -342,8 +351,9 @@ export const MilestonePanel = ({
       } else {
         setError(response.data.error?.message || "Failed to delete milestone");
       }
-    } catch (err: any) {
-      setError(err?.message || "Failed to delete milestone");
+    } catch (err) {
+      const apiError = err as ApiError;
+      setError(apiError?.message || "Failed to delete milestone");
     } finally {
       setIsSubmitting(false);
     }
@@ -353,7 +363,7 @@ export const MilestonePanel = ({
   const formatDate = (dateString: string) => {
     try {
       return format(new Date(dateString), "MMM d, yyyy");
-    } catch (e) {
+    } catch {
       return dateString;
     }
   };

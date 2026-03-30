@@ -1,4 +1,13 @@
 // Project count API response interfaces
+import type { LucideIcon } from "lucide-react";
+
+type ApiErrorDetailValue =
+  | string
+  | number
+  | boolean
+  | null
+  | ApiErrorDetailValue[]
+  | { [key: string]: ApiErrorDetailValue };
 
 export interface ProjectCountResponse {
   categoryId: number;
@@ -16,7 +25,7 @@ export interface CategoryWithCount {
   id: number;
   title: string;
   available: number;
-  Icon: any; // LucideIcon type from existing CategoryType
+  Icon: LucideIcon;
   color: string;
   activeProjectCount?: number;
   isLoading?: boolean;
@@ -27,7 +36,7 @@ export interface ApiErrorResponse {
   error: {
     message: string;
     code?: string;
-    details?: any;
+    details?: { [key: string]: ApiErrorDetailValue };
   };
   timestamp: string;
   status: number;

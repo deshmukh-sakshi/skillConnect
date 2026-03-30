@@ -34,7 +34,7 @@ export enum ContractStatus {
 export interface ApiResponse<T> {
   status: "success" | "error";
   data?: T;
-  error?: any;
+  error?: string;
 }
 
 /**
