@@ -2,7 +2,7 @@ import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { Loader2, Mail, MessageSquare, User } from "lucide-react";
+import { Loader2, Mail, MessageSquare, User, Send } from "lucide-react";
 
 import {
   Dialog,
@@ -140,16 +140,17 @@ export function ContactFormModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md bg-[#FAF8F5] border-[#E5E0D8] rounded-2xl shadow-2xl">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <MessageSquare className="size-5" />
-            Contact Us
+          <DialogTitle className="flex items-center gap-3 text-[#1A1A2E]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            <div className="w-10 h-10 rounded-xl bg-[#FF6B47]/10 flex items-center justify-center">
+              <MessageSquare className="size-5 text-[#FF6B47]" />
+            </div>
+            Get in Touch
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-[#1A1A2E]/50">
             Have a question, found an issue, or need help? We're here to assist
-            you. Fill out the form below and we'll get back to you as soon as
-            possible.
+            you. Fill out the form below and we'll get back to you soon.
           </DialogDescription>
         </DialogHeader>
 
@@ -160,8 +161,8 @@ export function ContactFormModal({
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center gap-2">
-                    <Mail className="size-4" />
+                  <FormLabel className="flex items-center gap-2 text-[#1A1A2E]/70 text-sm font-medium">
+                    <Mail className="size-3.5" />
                     Email Address
                   </FormLabel>
                   <FormControl>
@@ -169,12 +170,13 @@ export function ContactFormModal({
                       placeholder="your.email@example.com"
                       type="email"
                       disabled={isSubmitting || !!effectiveUserEmail}
+                      className="h-11 bg-white border-[#E5E0D8] rounded-xl focus:border-[#FF6B47] focus:ring-[#FF6B47]/20 focus-visible:ring-[#FF6B47]/20 transition-all placeholder:text-[#1A1A2E]/30"
                       {...field}
                     />
                   </FormControl>
                   <FormMessage />
                   {effectiveUserEmail && (
-                    <p className="text-xs text-muted-foreground flex items-center gap-1">
+                    <p className="text-xs text-[#2EC4B6] flex items-center gap-1">
                       <User className="size-3" />
                       Using your account email
                     </p>
@@ -188,11 +190,12 @@ export function ContactFormModal({
               name="subject"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Subject</FormLabel>
+                  <FormLabel className="text-[#1A1A2E]/70 text-sm font-medium">Subject</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Brief description of your inquiry"
                       disabled={isSubmitting}
+                      className="h-11 bg-white border-[#E5E0D8] rounded-xl focus:border-[#FF6B47] focus:ring-[#FF6B47]/20 focus-visible:ring-[#FF6B47]/20 transition-all placeholder:text-[#1A1A2E]/30"
                       {...field}
                     />
                   </FormControl>
@@ -206,11 +209,11 @@ export function ContactFormModal({
               name="message"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Message</FormLabel>
+                  <FormLabel className="text-[#1A1A2E]/70 text-sm font-medium">Message</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Please provide details about your question, issue, or feedback..."
-                      className="min-h-24 resize-none"
+                      className="min-h-24 resize-none bg-white border-[#E5E0D8] rounded-xl focus:border-[#FF6B47] focus:ring-[#FF6B47]/20 focus-visible:ring-[#FF6B47]/20 transition-all placeholder:text-[#1A1A2E]/30"
                       disabled={isSubmitting}
                       {...field}
                     />
@@ -223,14 +226,20 @@ export function ContactFormModal({
             <div className="flex justify-end gap-3 pt-2">
               <Button
                 type="button"
-                variant="outline"
+                variant="ghost"
                 onClick={handleClose}
                 disabled={isSubmitting}
+                className="text-[#1A1A2E]/50 hover:text-[#1A1A2E] hover:bg-[#E5E0D8]/50 rounded-xl"
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isSubmitting}>
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="shimmer-btn text-white rounded-xl px-6 shadow-md hover:shadow-lg transition-all duration-300 inline-flex items-center gap-2"
+              >
                 {isSubmitting && <Loader2 className="size-4 animate-spin" />}
+                <Send className="size-4" />
                 Send Message
               </Button>
             </div>

@@ -1,52 +1,39 @@
-import { FilePlus, PencilLine, Handshake } from "lucide-react";
-
+import useScrollReveal from "@/hooks/use-scroll-reveal";
 import WorkflowDiagram from "./workflow-diagram";
 
 const WorkSection = () => {
+  const { ref: titleRef, isVisible: titleVisible } = useScrollReveal();
+
   return (
-    <section className="py-8 md:py-10 container mx-auto">
-      <div className="px-4 sm:px-0">
-        <div className="text-center mb-16">
+    <section className="py-20 md:py-32 relative">
+      {/* Section header */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
+        <div
+          ref={titleRef}
+          className={`text-center mb-20 scroll-reveal ${titleVisible ? "visible" : ""}`}
+        >
           <span
-            className="
-              inline-block px-4 py-1 rounded-full 
-              bg-primary/10 dark:bg-primary/60 
-              text-primary dark:text-primary-foreground 
-              text-sm font-medium mb-4
-            "
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full mb-6
+              bg-[#2EC4B6]/10 text-[#2EC4B6] text-sm font-semibold uppercase tracking-widest"
           >
+            <div className="w-1.5 h-1.5 rounded-full bg-[#2EC4B6]" />
             How It Works
           </span>
-          <h1
-            className="
-              text-4xl md:text-5xl font-bold tracking-tight 
-              text-primary dark:text-primary-foreground 
-              mb-4
-            "
+
+          <h2
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#1A1A2E] mb-4"
+            style={{ fontFamily: "'Space Grotesk', sans-serif" }}
           >
-            It's Easy to Get Work Done
-          </h1>
-          <p className="text-sm sm:text-md text-muted-foreground dark:text-gray-400 mb-6">
+            It's Easy to Get{" "}
+            <span className="text-[#FF6B47]">Work Done</span>
+          </h2>
+
+          <p className="text-lg text-[#1A1A2E]/60 max-w-xl mx-auto">
             Connect with clients, submit bids, and get paid — all in one place.
           </p>
-          <div className="flex flex-col sm:flex-row text-foreground dark:text-gray-300 items-center justify-center gap-4 text-sm">
-            <div className="flex items-center space-x-2">
-              <FilePlus className="h-4 w-4 text-primary dark:text-primary-foreground" />
-              <span>Clients post projects</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <PencilLine className="h-4 w-4 text-primary dark:text-primary-foreground" />
-              <span>Freelancers place bids</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Handshake className="h-4 w-4 text-primary dark:text-primary-foreground" />
-              <span>Contracts & payments secured</span>
-            </div>
-          </div>
         </div>
-      </div>
-      {/* New workflow diagram component */}
-      <div className="px-4 md:px-0">
+
+        {/* Workflow timeline */}
         <WorkflowDiagram className="mt-8" />
       </div>
     </section>

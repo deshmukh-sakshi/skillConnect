@@ -1,17 +1,16 @@
-import { motion } from "framer-motion";
 import {
   FileText,
   Users,
   FileCheck,
   CheckCircle,
   CreditCard,
-  ArrowRight,
-  ArrowDown,
 } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+import useScrollReveal from "@/hooks/use-scroll-reveal";
 
 import type { WorkflowStep, WorkflowDiagramProps } from "@/types/workflow";
 
-// Workflow steps data following the requirements: Project Posting → Bidding → Contract Creation → Project Completion → Payment
 const workflowSteps: WorkflowStep[] = [
   {
     id: 1,
@@ -19,14 +18,14 @@ const workflowSteps: WorkflowStep[] = [
     description:
       "Clients post detailed project requirements with budget and timeline",
     icon: FileText,
-    color: "text-blue-500",
+    color: "#FF6B47",
   },
   {
     id: 2,
     title: "Bidding",
     description: "Freelancers review projects and submit competitive proposals",
     icon: Users,
-    color: "text-green-500",
+    color: "#2EC4B6",
   },
   {
     id: 3,
@@ -34,7 +33,7 @@ const workflowSteps: WorkflowStep[] = [
     description:
       "Accepted bids create secure contracts and lock project status",
     icon: FileCheck,
-    color: "text-purple-500",
+    color: "#6C63FF",
   },
   {
     id: 4,
@@ -42,75 +41,105 @@ const workflowSteps: WorkflowStep[] = [
     description:
       "Freelancers deliver work and clients review the final results",
     icon: CheckCircle,
-    color: "text-orange-500",
+    color: "#FFB900",
   },
   {
     id: 5,
     title: "Payment",
     description: "Secure payment processing through the platform wallet system",
     icon: CreditCard,
-    color: "text-cyan-500",
+    color: "#FF6B47",
   },
 ];
 
-// Arrow connector component
-const ArrowConnector = ({
-  direction = "right",
-  className = "",
-}: {
-  direction?: "right" | "down";
-  className?: string;
-}) => {
-  const ArrowIcon = direction === "right" ? ArrowRight : ArrowDown;
-
-  return (
-    <div className={`flex items-center justify-center ${className}`}>
-      <ArrowIcon className="w-6 h-6 text-muted-foreground/60" />
-    </div>
-  );
-};
-
-// Individual workflow step component
-const WorkflowStepComponent = ({
+const TimelineStep = ({
   step,
   index,
+  isLast,
 }: {
   step: WorkflowStep;
   index: number;
+  isLast: boolean;
 }) => {
+  const { ref, isVisible } = useScrollReveal({
+    threshold: 0.3,
+    rootMargin: "0px 0px -80px 0px",
+  });
+  const isLeft = index % 2 === 0;
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
-      whileHover={{ scale: 1.02 }}
-      className="flex flex-col items-center text-center group"
+    <div
+      ref={ref}
+      className={`relative flex items-center ${
+        isLeft ? "md:flex-row" : "md:flex-row-reverse"
+      } flex-row gap-6 md:gap-12`}
     >
-      {/* Icon container */}
-      <motion.div
-        whileHover={{ scale: 1.1 }}
-        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-        className="relative mb-4"
+      {/* Content card */}
+      <div
+        className={`flex-1 ${isLeft ? "md:text-right" : "md:text-left"} ${
+          isLeft ? "scroll-reveal-right" : "scroll-reveal-left"
+        } ${isVisible ? "visible" : ""}`}
+        style={{ transitionDelay: `${index * 100}ms` }}
       >
-        <div className="w-16 h-16 rounded-full bg-background border-2 border-border flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-300">
-          <step.icon className={`w-8 h-8 ${step.color}`} />
+        <div
+          className="glass-card rounded-2xl p-6 md:p-8 inline-block hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
+        >
+          <div
+            className={`flex items-center gap-3 mb-3 ${
+              isLeft ? "md:justify-end" : "md:justify-start"
+            }`}
+          >
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center"
+              style={{ background: `${step.color}15` }}
+            >
+              <step.icon className="w-5 h-5" style={{ color: step.color }} />
+            </div>
+            <h3
+              className="text-xl font-bold text-[#1A1A2E]"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              {step.title}
+            </h3>
+          </div>
+          <p className="text-[#1A1A2E]/60 text-sm leading-relaxed max-w-sm">
+            {step.description}
+          </p>
         </div>
-        {/* Step number badge */}
-        <div className="absolute -top-2 -right-2 w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold">
+      </div>
+
+      {/* Timeline center line + circle */}
+      <div className="relative flex flex-col items-center z-10">
+        <div
+          className={`w-14 h-14 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-lg
+            transition-all duration-700 ${
+              isVisible ? "scale-100 opacity-100" : "scale-50 opacity-0"
+            }`}
+          style={{
+            background: step.color,
+            fontFamily: "'Space Grotesk', sans-serif",
+            transitionDelay: `${index * 100 + 200}ms`,
+          }}
+        >
           {step.id}
         </div>
-      </motion.div>
-
-      {/* Content */}
-      <div className="max-w-xs">
-        <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-200">
-          {step.title}
-        </h3>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          {step.description}
-        </p>
+        {/* Connecting line */}
+        {!isLast && (
+          <div
+            className={`w-[2px] h-20 md:hidden transition-all duration-1000 ${
+              isVisible ? "opacity-100" : "opacity-0"
+            }`}
+            style={{
+              background: `linear-gradient(to bottom, ${step.color}, ${workflowSteps[index + 1]?.color || step.color})`,
+              transitionDelay: `${index * 100 + 400}ms`,
+            }}
+          />
+        )}
       </div>
-    </motion.div>
+
+      {/* Empty space for alternating layout - only on md+ */}
+      <div className="flex-1 hidden md:block" />
+    </div>
   );
 };
 
@@ -118,64 +147,29 @@ const WorkflowDiagram = ({
   steps = workflowSteps,
   className = "",
 }: WorkflowDiagramProps) => {
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ["start 80%", "end 30%"],
+  });
+  const lineScaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
+  const lineOpacity = useTransform(scrollYProgress, [0, 0.05], [0.25, 1]);
+
   return (
-    <div className={`w-full ${className}`}>
-      {/* Desktop layout - horizontal flow */}
-      <div className="hidden lg:block">
-        <div className="flex items-center justify-between max-w-6xl mx-auto">
-          {steps.map((step, index) => (
-            <div key={step.id} className="flex items-center">
-              <WorkflowStepComponent step={step} index={index} />
-              {index < steps.length - 1 && (
-                <ArrowConnector direction="right" className="mx-8" />
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Tablet layout - 2x3 grid with arrows */}
-      <div className="hidden md:block lg:hidden">
-        <div className="grid grid-cols-2 gap-8 max-w-2xl mx-auto">
-          {steps.map((step, index) => (
-            <div key={step.id} className="flex flex-col items-center">
-              <WorkflowStepComponent step={step} index={index} />
-              {/* Add arrows for flow direction */}
-              {index === 0 && (
-                <ArrowConnector
-                  direction="right"
-                  className="absolute top-1/2 right-0 transform translate-x-4"
-                />
-              )}
-              {index === 1 && (
-                <ArrowConnector direction="down" className="mt-4" />
-              )}
-              {index === 2 && (
-                <ArrowConnector
-                  direction="right"
-                  className="absolute top-1/2 right-0 transform translate-x-4"
-                />
-              )}
-              {index === 3 && (
-                <ArrowConnector direction="down" className="mt-4" />
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Mobile layout - vertical flow */}
-      <div className="block md:hidden">
-        <div className="flex flex-col items-center space-y-8 max-w-sm mx-auto">
-          {steps.map((step, index) => (
-            <div key={step.id} className="flex flex-col items-center">
-              <WorkflowStepComponent step={step} index={index} />
-              {index < steps.length - 1 && (
-                <ArrowConnector direction="down" className="mt-6" />
-              )}
-            </div>
-          ))}
-        </div>
+    <div className={`w-full max-w-4xl mx-auto ${className}`}>
+      <div ref={timelineRef} className="relative">
+        <motion.div
+          className="hidden md:block absolute left-1/2 top-7 bottom-7 w-[2px] -translate-x-1/2 origin-top bg-gradient-to-b from-[#FF6B47]/80 via-[#2EC4B6]/70 to-[#FF6B47]/80"
+          style={{ scaleY: lineScaleY, opacity: lineOpacity }}
+        />
+        {steps.map((step, index) => (
+          <TimelineStep
+            key={step.id}
+            step={step}
+            index={index}
+            isLast={index === steps.length - 1}
+          />
+        ))}
       </div>
     </div>
   );

@@ -42,15 +42,16 @@ const SignUpForm = () => {
 
   return (
     <div className="space-y-6">
+      {/* User type toggle */}
       <div className="w-full">
-        <div className="p-1 rounded-sm flex w-full border border-gray-400 shadow-sm">
+        <div className="p-1 rounded-xl flex w-full bg-white border border-[#E5E0D8] shadow-sm">
           <button
             type="button"
             onClick={() => setUserType("freelancer")}
-            className={`flex-1 px-4 py-2 cursor-pointer rounded-sm text-sm font-medium transition-all duration-200 ${
+            className={`flex-1 px-4 py-2.5 cursor-pointer rounded-lg text-sm font-semibold transition-all duration-300 ${
               userType === "freelancer"
-                ? "bg-primary text-primary-foreground shadow"
-                : "text-gray-700 hover:bg-gray-100"
+                ? "bg-[#FF6B47] text-white shadow-md"
+                : "text-[#1A1A2E]/50 hover:text-[#1A1A2E]/70 hover:bg-[#FAF8F5]"
             }`}
           >
             💼 &nbsp; Freelancer
@@ -58,10 +59,10 @@ const SignUpForm = () => {
           <button
             type="button"
             onClick={() => setUserType("client")}
-            className={`flex-1 px-4 cursor-pointer py-2 rounded-sm text-sm font-medium transition-all duration-200 ${
+            className={`flex-1 px-4 cursor-pointer py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${
               userType === "client"
-                ? "bg-primary text-white shadow"
-                : "text-gray-700 hover:bg-gray-100"
+                ? "bg-[#2EC4B6] text-white shadow-md"
+                : "text-[#1A1A2E]/50 hover:text-[#1A1A2E]/70 hover:bg-[#FAF8F5]"
             }`}
           >
             👤 &nbsp; Client
@@ -71,7 +72,7 @@ const SignUpForm = () => {
 
       <Form {...form}>
         <form
-          className="flex flex-col space-y-6 md:px-0"
+          className="flex flex-col space-y-5 md:px-0"
           onSubmit={form.handleSubmit(onSubmit)}
         >
           <FormField
@@ -79,11 +80,11 @@ const SignUpForm = () => {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Full Name</FormLabel>
+                <FormLabel className="text-[#1A1A2E]/70 text-sm font-medium">Full Name</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="jon doe"
-                    className="focus-visible:ring-1 border-black"
+                    placeholder="Jon Doe"
+                    className="h-12 bg-white border-[#E5E0D8] rounded-xl focus:border-[#FF6B47] focus:ring-[#FF6B47]/20 focus-visible:ring-[#FF6B47]/20 transition-all placeholder:text-[#1A1A2E]/30"
                     {...field}
                   />
                 </FormControl>
@@ -97,12 +98,12 @@ const SignUpForm = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel className="text-[#1A1A2E]/70 text-sm font-medium">Email</FormLabel>
                 <FormControl>
                   <Input
                     type="email"
-                    placeholder="example@skillconnect.com"
-                    className="focus-visible:ring-1 border-black"
+                    placeholder="you@example.com"
+                    className="h-12 bg-white border-[#E5E0D8] rounded-xl focus:border-[#FF6B47] focus:ring-[#FF6B47]/20 focus-visible:ring-[#FF6B47]/20 transition-all placeholder:text-[#1A1A2E]/30"
                     {...field}
                   />
                 </FormControl>
@@ -116,12 +117,12 @@ const SignUpForm = () => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel className="text-[#1A1A2E]/70 text-sm font-medium">Password</FormLabel>
                 <FormControl>
                   <Input
                     type="password"
-                    placeholder="Enter your password"
-                    className="focus-visible:ring-1 border-black"
+                    placeholder="••••••••"
+                    className="h-12 bg-white border-[#E5E0D8] rounded-xl focus:border-[#FF6B47] focus:ring-[#FF6B47]/20 focus-visible:ring-[#FF6B47]/20 transition-all placeholder:text-[#1A1A2E]/30"
                     {...field}
                   />
                 </FormControl>
@@ -131,16 +132,16 @@ const SignUpForm = () => {
           />
 
           <Button
-            className="cursor-pointer"
+            className="cursor-pointer h-12 rounded-xl shimmer-btn text-white font-semibold text-base shadow-lg hover:shadow-xl transition-all duration-300"
             type="submit"
             disabled={loading || isLoading}
           >
-            Create An Account
+            Create Account
             {isLoading || loading ? (
               <LoaderCircle className="ml-2 size-4 animate-spin" />
             ) : (
               <ArrowRight className="ml-2 size-4" />
-            )}{" "}
+            )}
           </Button>
         </form>
       </Form>
