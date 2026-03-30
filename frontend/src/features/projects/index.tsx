@@ -43,9 +43,9 @@ const ProjectsListView: React.FC = () => {
   };
 
   return (
-    <div className="container py-6 space-y-6 max-w-7xl mx-auto">
-      <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm border">
-        <h1 className="text-2xl font-bold">My Projects</h1>
+    <div className="container py-6 space-y-6 max-w-7xl mx-auto min-h-screen bg-background">
+      <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm border border-[#E5E0D8]">
+        <h1 className="text-2xl font-bold text-[#1A1A2E]">My Projects</h1>
         <Button
           onClick={handleCreateProject}
           className="bg-primary hover:bg-primary/90 cursor-pointer"
@@ -55,28 +55,28 @@ const ProjectsListView: React.FC = () => {
         </Button>
       </div>
 
-      <div className="bg-white p-4 rounded-lg shadow-sm border">
+      <div className="bg-white p-4 rounded-lg shadow-sm border border-[#E5E0D8]">
         <Tabs
           defaultValue="open"
           value={activeTab}
           onValueChange={setActiveTab}
         >
-          <TabsList className="mb-4 bg-slate-100 p-1">
+          <TabsList className="mb-4 bg-[#F0EDE8] p-1">
             <TabsTrigger
               value="open"
-              className="cursor-pointer data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-primary hover:bg-slate-200 transition-all"
+              className="cursor-pointer data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-primary hover:bg-[#E5E0D8]/80 transition-all"
             >
               Open Projects
             </TabsTrigger>
             <TabsTrigger
               value="closed"
-              className="cursor-pointer data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-primary hover:bg-slate-200 transition-all"
+              className="cursor-pointer data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-primary hover:bg-[#E5E0D8]/80 transition-all"
             >
               Closed Projects
             </TabsTrigger>
             <TabsTrigger
               value="list"
-              className="cursor-pointer data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-primary hover:bg-slate-200 transition-all"
+              className="cursor-pointer data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-primary hover:bg-[#E5E0D8]/80 transition-all"
             >
               All Projects
             </TabsTrigger>

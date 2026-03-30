@@ -24,8 +24,8 @@ const FrozenAmountsTable = ({ frozenAmounts }: FrozenAmountsTableProps) => {
   const safeAmounts = Array.isArray(frozenAmounts) ? frozenAmounts : [];
 
   return (
-    <div className="bg-white dark:bg-zinc-900 p-6 rounded-lg shadow-sm border">
-      <h2 className="text-xl font-semibold mb-4 text-zinc-800 dark:text-zinc-100">
+    <div className="bg-white dark:bg-zinc-900 p-6 rounded-lg shadow-sm border border-[#E5E0D8] dark:border-zinc-700">
+      <h2 className="text-xl font-semibold mb-4 text-[#1A1A2E] dark:text-zinc-100">
         Frozen Amounts
       </h2>
 
@@ -56,13 +56,13 @@ const FrozenAmountsTable = ({ frozenAmounts }: FrozenAmountsTableProps) => {
                   key={item.projectId}
                   className="hover:bg-muted/30 transition-colors"
                 >
-                  <TableCell className="font-medium text-zinc-800 dark:text-zinc-100">
+                  <TableCell className="font-medium text-[#1A1A2E] dark:text-zinc-100">
                     {item.projectTitle}
                   </TableCell>
-                  <TableCell className="text-zinc-700 dark:text-zinc-300">
+                  <TableCell className="text-[#1A1A2E]/80 dark:text-zinc-300">
                     {item.freelancerName}
                   </TableCell>
-                  <TableCell className="text-zinc-700 dark:text-zinc-300">
+                  <TableCell className="text-[#1A1A2E]/80 dark:text-zinc-300">
                     {formatCurrency(item.frozenAmount)}
                   </TableCell>
                   <TableCell>

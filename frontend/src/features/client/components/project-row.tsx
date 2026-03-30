@@ -74,8 +74,8 @@ const ProjectRowWithUpdate = ({
           className={cn(
             "inline-block rounded-full px-2 py-0.5 text-xs font-semibold",
             isClosed
-              ? "bg-destructive/10 text-destructive"
-              : "bg-emerald-100 text-emerald-700",
+              ? "bg-[#FF6B47]/15 text-[#1A1A2E]"
+              : "bg-[#2EC4B6]/15 text-[#1A1A2E]",
           )}
         >
           {isClosed ? "Closed" : "Open"}

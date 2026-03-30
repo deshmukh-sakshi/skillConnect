@@ -141,7 +141,7 @@ export const AddMoneyDialog = ({ userId, refetchDetails }: Props) => {
         email: "user@example.com",
       },
       theme: {
-        color: "#3B82F6",
+        color: "#FF6B47",
       },
       modal: {
         ondismiss: function () {
@@ -209,7 +209,7 @@ export const AddMoneyDialog = ({ userId, refetchDetails }: Props) => {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Wallet className="h-5 w-5 text-blue-600" />
+            <Wallet className="h-5 w-5 text-[#FF6B47]" />
             Add Money to Wallet
           </DialogTitle>
           <DialogDescription>
@@ -280,9 +280,9 @@ export const AddMoneyDialog = ({ userId, refetchDetails }: Props) => {
           )}
 
           {/* Payment Security Info */}
-          <Card className="bg-blue-50 border-blue-200">
+          <Card className="bg-[#2EC4B6]/10 border-[#2EC4B6]/30">
             <CardContent className="p-3">
-              <div className="flex items-center gap-2 text-blue-700">
+              <div className="flex items-center gap-2 text-[#1A1A2E]">
                 <Shield className="h-4 w-4" />
                 <span className="text-xs font-medium">
                   Secure payment powered by Razorpay

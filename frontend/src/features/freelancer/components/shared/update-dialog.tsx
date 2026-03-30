@@ -109,7 +109,7 @@ const UpdateProposalDialog = ({
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <FileText className="h-5 w-5 text-blue-600" />
+            <FileText className="h-5 w-5 text-[#FF6B47]" />
             Update Proposal
           </DialogTitle>
           <DialogDescription>
@@ -161,7 +161,7 @@ const UpdateProposalDialog = ({
             {/* Duration */}
             <div className="space-y-2">
               <Label htmlFor="duration" className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-orange-600" />
+                <Clock className="h-4 w-4 text-[#FF6B47]" />
                 Duration (Days)
               </Label>
               <Input
@@ -179,7 +179,7 @@ const UpdateProposalDialog = ({
             {/* Team Size */}
             <div className="space-y-2">
               <Label htmlFor="teamSize" className="flex items-center gap-2">
-                <Users className="h-4 w-4 text-purple-600" />
+                <Users className="h-4 w-4 text-[#2EC4B6]" />
                 Team Size
               </Label>
               <Input
@@ -199,7 +199,7 @@ const UpdateProposalDialog = ({
           {/* Proposal */}
           <div className="space-y-2">
             <Label htmlFor="proposal" className="flex items-center gap-2">
-              <FileText className="h-4 w-4 text-blue-600" />
+              <FileText className="h-4 w-4 text-[#FF6B47]" />
               Proposal
             </Label>
             <Textarea

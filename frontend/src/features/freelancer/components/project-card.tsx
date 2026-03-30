@@ -23,10 +23,10 @@ type Project = {
 
 const statusConfig = {
   OPEN: {
-    className: "bg-emerald-100 text-emerald-700 border-emerald-200",
+    className: "bg-[#2EC4B6]/15 text-[#1A1A2E] border-[#2EC4B6]/35",
   },
   CLOSED: {
-    className: "bg-red-100 text-red-700 border-red-200",
+    className: "bg-[#FF6B47]/15 text-[#1A1A2E] border-[#FF6B47]/35",
   },
 };
 
@@ -59,7 +59,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
   const statusInfo = statusConfig[project.status as keyof typeof statusConfig];
 
   return (
-    <Card className="w-full max-w-sm flex flex-col border border-blue-100 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-blue-50 via-white to-sky-50">
+    <Card className="w-full max-w-sm flex flex-col border border-[#E5E0D8] rounded-xl shadow-md hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-[#FAF8F5] via-white to-[#FAF8F5]">
       <CardHeader className="p-5 pb-3 space-y-3">
         <div className="flex items-start justify-between gap-3">
           <CardTitle className="text-lg font-semibold text-gray-900 leading-snug line-clamp-2 flex-1">
@@ -82,12 +82,12 @@ const ProjectCard = ({ project }: { project: Project }) => {
 
       <CardContent className="px-5 flex-1 space-y-4">
         {/* Budget Section */}
-        <div className="flex items-center justify-between p-3 bg-emerald-50 rounded-md border border-emerald-100">
+        <div className="flex items-center justify-between p-3 bg-[#2EC4B6]/10 rounded-md border border-[#2EC4B6]/25">
           <div className="flex items-center gap-2.5">
             <div className="p-1.5 bg-white rounded-md shadow">
-              <IndianRupee className="h-4 w-4 text-emerald-600" />
+              <IndianRupee className="h-4 w-4 text-[#2EC4B6]" />
             </div>
-            <span className="text-sm font-medium text-emerald-800">Budget</span>
+            <span className="text-sm font-medium text-[#1A1A2E]">Budget</span>
           </div>
           <span className="text-base font-bold text-gray-900">
             ₹{project.budget.toLocaleString()}
@@ -95,12 +95,12 @@ const ProjectCard = ({ project }: { project: Project }) => {
         </div>
 
         {/* Deadline Section */}
-        <div className="flex items-center justify-between p-3 bg-blue-50 rounded-md border border-blue-100">
+        <div className="flex items-center justify-between p-3 bg-[#FF6B47]/10 rounded-md border border-[#FF6B47]/25">
           <div className="flex items-center gap-2.5">
             <div className="p-1.5 bg-white rounded-md shadow">
-              <Calendar className="h-4 w-4 text-blue-600" />
+              <Calendar className="h-4 w-4 text-[#FF6B47]" />
             </div>
-            <span className="text-sm font-medium text-blue-800">Deadline</span>
+            <span className="text-sm font-medium text-[#1A1A2E]">Deadline</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="text-sm font-semibold text-gray-800">
@@ -112,8 +112,8 @@ const ProjectCard = ({ project }: { project: Project }) => {
                 className={cn(
                   "text-xs px-2 py-0.5 rounded-full font-medium border",
                   isUrgent
-                    ? "bg-orange-100 text-orange-700 border-orange-300 animate-pulse"
-                    : "bg-blue-100 text-blue-700 border-blue-300",
+                    ? "bg-[#FF6B47]/20 text-[#1A1A2E] border-[#FF6B47]/40 animate-pulse"
+                    : "bg-[#2EC4B6]/20 text-[#1A1A2E] border-[#2EC4B6]/40",
                 )}
               >
                 <Timer className="h-3 w-3 mr-1" />
@@ -126,7 +126,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
 
       <CardFooter className="p-5 pt-3 mt-auto">
         <Button
-          className="w-full h-10 font-medium text-sm bg-gradient-to-r from-gray-900 to-gray-800 hover:from-gray-800 hover:to-gray-700 text-white group rounded-lg shadow-sm"
+          className="w-full h-10 font-medium text-sm bg-gradient-to-r from-[#1A1A2E] to-[#2D2D44] hover:from-[#2D2D44] hover:to-[#1A1A2E] text-white group rounded-lg shadow-sm"
           onClick={handleViewAndBid}
           aria-label="View and bid on project"
         >

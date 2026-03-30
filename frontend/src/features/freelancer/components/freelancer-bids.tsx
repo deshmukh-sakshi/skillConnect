@@ -24,7 +24,7 @@ const FreelancerBids = () => {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-6 min-h-screen bg-background">
       <div className="mb-6">
         <h1 className="text-2xl font-semibold text-gray-900 mb-1">My Bids</h1>
         <p className="text-gray-600">Track and manage your project proposals</p>

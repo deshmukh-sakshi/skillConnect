@@ -26,7 +26,7 @@ const FreelancerProfile: React.FC<FreelancerProfileProps> = ({
   if (!freelancerData) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40 py-8">
+    <div className="min-h-screen bg-background py-8">
       <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
         <div className="mb-8">
@@ -56,7 +56,7 @@ const FreelancerProfile: React.FC<FreelancerProfileProps> = ({
           <Card className="border-0 shadow-md bg-white/90 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
             <CardContent className="p-6">
               <div className="flex items-center mb-5">
-                <div className="w-1 h-5 bg-gradient-to-b from-blue-500 to-indigo-600 rounded-full mr-3"></div>
+                <div className="w-1 h-5 bg-gradient-to-b from-[#FF6B47] to-[#E55A38] rounded-full mr-3"></div>
                 <h2 className="text-lg font-semibold text-slate-900">
                   Basic Information
                 </h2>
@@ -88,7 +88,7 @@ const FreelancerProfile: React.FC<FreelancerProfileProps> = ({
           <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
             <CardContent className="p-8">
               <h2 className="text-xl font-semibold text-slate-900 mb-6 flex items-center">
-                <div className="w-1 h-6 bg-gradient-to-b from-emerald-500 to-teal-600 rounded-full mr-3"></div>
+                <div className="w-1 h-6 bg-gradient-to-b from-[#2EC4B6] to-[#23A89C] rounded-full mr-3"></div>
                 Skills & Expertise
               </h2>
               <SkillsList skills={freelancerData?.skills} />
@@ -99,7 +99,7 @@ const FreelancerProfile: React.FC<FreelancerProfileProps> = ({
           <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
             <CardContent className="p-8">
               <h2 className="text-xl font-semibold text-slate-900 mb-6 flex items-center">
-                <div className="w-1 h-6 bg-gradient-to-b from-purple-500 to-pink-600 rounded-full mr-3"></div>
+                <div className="w-1 h-6 bg-gradient-to-b from-[#FF6B47] to-[#2EC4B6] rounded-full mr-3"></div>
                 Portfolio & Past Work
               </h2>
               <PastWorksList pastWorks={freelancerData?.pastWorks} />

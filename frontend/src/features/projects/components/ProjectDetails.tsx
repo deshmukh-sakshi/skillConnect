@@ -90,8 +90,8 @@ const ProjectDetails: React.FC = () => {
   const projectToDisplay = currentProject || projectFromStore;
 
   return (
-    <div className="container py-6 space-y-6 max-w-7xl mx-auto">
-      <div className="bg-white p-4 rounded-lg shadow-sm border">
+    <div className="container py-6 space-y-6 max-w-7xl mx-auto min-h-screen bg-background">
+      <div className="bg-white p-4 rounded-lg shadow-sm border border-[#E5E0D8]">
         <Button
           variant="outline"
           size="sm"
@@ -116,7 +116,7 @@ const ProjectDetails: React.FC = () => {
           bids={currentProjectBids}
         />
       ) : (
-        <div className="py-8 text-center text-muted-foreground bg-white rounded-lg shadow-sm border p-4">
+        <div className="py-8 text-center text-muted-foreground bg-white rounded-lg shadow-sm border border-[#E5E0D8] p-4">
           No project data available
         </div>
       )}
@@ -151,7 +151,7 @@ const ProjectDetailsContent: React.FC<ProjectDetailsContentProps> = ({
 
   return (
     <div className="space-y-8">
-      <div className="bg-white rounded-lg shadow-sm border p-6">
+      <div className="bg-white rounded-lg shadow-sm border border-[#E5E0D8] p-6">
         <h1 className="text-2xl font-bold mb-2">{project.title}</h1>
         <div className="flex items-center gap-2">
           <Badge
@@ -160,7 +160,7 @@ const ProjectDetailsContent: React.FC<ProjectDetailsContentProps> = ({
           >
             {project.status.toLowerCase()}
           </Badge>
-          <Badge variant="outline" className="text-xs bg-slate-50">
+          <Badge variant="outline" className="text-xs bg-[#F0EDE8] border-[#E5E0D8]">
             {project.category}
           </Badge>
         </div>
@@ -174,8 +174,8 @@ const ProjectDetailsContent: React.FC<ProjectDetailsContentProps> = ({
           <Card className="overflow-hidden">
             <CardContent className="p-0">
               <div className="flex items-center gap-3 p-6 h-full">
-                <div className="bg-blue-50 p-3 rounded-full">
-                  <IndianRupee className="h-6 w-6 text-blue-500" />
+                <div className="bg-[#2EC4B6]/15 p-3 rounded-full">
+                  <IndianRupee className="h-6 w-6 text-[#2EC4B6]" />
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Budget</p>
@@ -190,8 +190,8 @@ const ProjectDetailsContent: React.FC<ProjectDetailsContentProps> = ({
           <Card className="overflow-hidden">
             <CardContent className="p-0">
               <div className="flex items-center gap-3 p-6 h-full">
-                <div className="bg-green-50 p-3 rounded-full">
-                  <CalendarIcon className="h-6 w-6 text-green-500" />
+                <div className="bg-[#FF6B47]/15 p-3 rounded-full">
+                  <CalendarIcon className="h-6 w-6 text-[#FF6B47]" />
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Deadline</p>
@@ -206,8 +206,8 @@ const ProjectDetailsContent: React.FC<ProjectDetailsContentProps> = ({
           <Card className="overflow-hidden">
             <CardContent className="p-0">
               <div className="flex items-center gap-3 p-6 h-full">
-                <div className="bg-purple-50 p-3 rounded-full">
-                  <TagIcon className="h-6 w-6 text-purple-500" />
+                <div className="bg-[#F0EDE8] p-3 rounded-full">
+                  <TagIcon className="h-6 w-6 text-[#1A1A2E]" />
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Category</p>
@@ -237,8 +237,8 @@ const ProjectDetailsContent: React.FC<ProjectDetailsContentProps> = ({
           <h3 className="text-lg font-semibold">Timeline</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex items-center gap-4">
-              <div className="bg-gray-100 p-3 rounded-full">
-                <ClockIcon className="h-5 w-5 text-gray-500" />
+              <div className="bg-[#F0EDE8] p-3 rounded-full">
+                <ClockIcon className="h-5 w-5 text-[#1A1A2E]/60" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Created</p>
@@ -247,8 +247,8 @@ const ProjectDetailsContent: React.FC<ProjectDetailsContentProps> = ({
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="bg-gray-100 p-3 rounded-full">
-                <ClockIcon className="h-5 w-5 text-gray-500" />
+              <div className="bg-[#F0EDE8] p-3 rounded-full">
+                <ClockIcon className="h-5 w-5 text-[#1A1A2E]/60" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Last Updated</p>

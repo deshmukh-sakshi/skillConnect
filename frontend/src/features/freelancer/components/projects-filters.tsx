@@ -55,9 +55,9 @@ const ProjectFilters = ({
 
   const getSortIcon = () => {
     if (currentSort.sortDir === "asc") {
-      return <ArrowUp className="h-4 w-4 text-blue-600" />;
+      return <ArrowUp className="h-4 w-4 text-[#FF6B47]" />;
     } else if (currentSort.sortDir === "desc") {
-      return <ArrowDown className="h-4 w-4 text-blue-600" />;
+      return <ArrowDown className="h-4 w-4 text-[#FF6B47]" />;
     }
     return <ArrowUpDown className="h-4 w-4 text-gray-500" />;
   };
@@ -85,7 +85,7 @@ const ProjectFilters = ({
           value={currentSort.sortBy}
           onValueChange={handleSortFieldChange}
         >
-          <SelectTrigger className="w-[140px] bg-white border border-gray-200 text-gray-800 shadow-sm hover:border-blue-300 focus:ring-blue-100">
+          <SelectTrigger className="w-[140px] bg-white border border-gray-200 text-gray-800 shadow-sm hover:border-[#FF6B47]/50 focus:ring-[#FF6B47]/20">
             <SelectValue placeholder="Sort by">
               {getCurrentSortLabel()}
             </SelectValue>
@@ -103,7 +103,7 @@ const ProjectFilters = ({
           variant="outline"
           size="sm"
           onClick={toggleSortDirection}
-          className="px-3 border-gray-200 text-gray-700 hover:border-blue-300 hover:text-blue-600 shadow-sm"
+          className="px-3 border-gray-200 text-gray-700 hover:border-[#FF6B47]/50 hover:text-[#FF6B47] shadow-sm"
           title={`Sort ${
             currentSort.sortDir === "asc" ? "Descending" : "Ascending"
           }`}
