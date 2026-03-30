@@ -32,10 +32,10 @@ const useGetFreelancerProfile = (id: string, authToken: string) => {
       .getFreelancerProfile({ id, authToken })
       .then((res) => {
         // Ensure timeline data is properly handled in response
-        const profileData = res.data.data;
+        const profileData = res.data.data as FreelancerProfile;
         if (profileData && profileData.pastWorks) {
           // Process past work data to ensure timeline fields are properly typed
-          profileData.pastWorks = profileData.pastWorks.map((work: any) => ({
+          profileData.pastWorks = profileData.pastWorks.map((work: PastWork) => ({
             ...work,
             startDate: work.startDate || undefined,
             endDate: work.endDate || undefined,

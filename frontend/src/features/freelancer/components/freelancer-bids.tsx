@@ -4,6 +4,7 @@ import { FullscreenLoader } from "@/components/shared/full-screen-loader";
 import BidStatusFilter from "./bid-filter";
 import EmptyBidsState from "./shared/empty-bid";
 import BidCard from "./shared/bid-card";
+import type { BidType } from "@/types";
 
 const FreelancerBids = () => {
   const [statusFilter, setStatusFilter] = useState<
@@ -11,11 +12,12 @@ const FreelancerBids = () => {
   >("All");
 
   const { freelancerBids, refetch, isLoading } = useGetFreelancerBids();
+  const bidList = (freelancerBids ?? []) as BidType[];
 
   const filteredBids =
     statusFilter === "All"
-      ? freelancerBids
-      : freelancerBids?.filter((bid: any) => bid.status === statusFilter);
+      ? bidList
+      : bidList.filter((bid) => bid.status === statusFilter);
 
   if (isLoading) {
     return <FullscreenLoader lable="Loading bids..." />;
@@ -34,7 +36,7 @@ const FreelancerBids = () => {
         <EmptyBidsState />
       ) : (
         <div className="space-y-4">
-          {filteredBids.map((bid: any) => (
+          {filteredBids.map((bid) => (
             <BidCard key={bid.bidId} bid={bid} onRefetch={refetch} />
           ))}
         </div>

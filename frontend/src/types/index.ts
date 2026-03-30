@@ -1,5 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 
+type QueryValue = string | number | boolean | null | undefined;
+
 export interface CategoryType {
   id: number;
   title: string;
@@ -11,8 +13,8 @@ export interface CategoryType {
 export interface RequestType {
   method?: "GET" | "POST" | "PUT" | "DELETE" | "OPTIONS" | "PATCH";
   authToken?: string | null;
-  data?: any;
-  params?: any;
+  data?: unknown;
+  params?: Record<string, QueryValue> | null;
   url?: string;
   isFormData?: boolean;
 }
@@ -41,9 +43,14 @@ export interface ApiError {
     data?: {
       error?: {
         message?: string;
+        password?: string;
       };
+      message?: string;
     };
+    status?: number;
   };
+  message?: string;
+  code?: string;
 }
 
 export type ProjectStatus = "OPEN" | "CLOSED";

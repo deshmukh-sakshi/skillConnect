@@ -2,6 +2,7 @@ import useAuth from "@/hooks/use-auth";
 import { useQuery } from "react-query";
 import apis from "../apis";
 import { toast } from "sonner";
+import type { ApiError } from "@/types";
 
 const useGetClientProjects = () => {
   const { authToken, user } = useAuth();
@@ -19,9 +20,11 @@ const useGetClientProjects = () => {
         authToken: authToken as string,
       }),
     enabled: !!authToken,
-    onError: (err: any) => {
+    onError: (err) => {
+      const apiError = err as ApiError;
       toast.error("Failed to fetch projects", {
-        description: err?.response?.data?.message || "Something went wrong.",
+        description:
+          apiError?.response?.data?.message || "Something went wrong.",
       });
     },
     retry: false,

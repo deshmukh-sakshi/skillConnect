@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { chatApis } from "@/features/chat/apis";
 import type { RootState } from "@/store";
+import type { ApiError } from "@/types";
 
 interface ChatRoom {
   id: number;
@@ -35,6 +36,13 @@ interface ChatState {
   };
 }
 
+interface IncomingMessagePayload {
+  id: number;
+  content: string;
+  createdAt: string;
+  senderType: string;
+}
+
 const initialState: ChatState = {
   chatRooms: [],
   totalUnreadCount: 0,
@@ -46,6 +54,34 @@ const initialState: ChatState = {
   },
 };
 
+const getApiErrorMessage = (error: unknown, fallback: string): string => {
+  const apiError = error as ApiError;
+  const responseError = apiError.response?.data?.error;
+
+  if (typeof responseError === "string") {
+    return responseError;
+  }
+
+  if (
+    responseError &&
+    typeof responseError === "object" &&
+    "message" in responseError &&
+    typeof responseError.message === "string"
+  ) {
+    return responseError.message;
+  }
+
+  if (typeof apiError.response?.data?.message === "string") {
+    return apiError.response.data.message;
+  }
+
+  if (typeof apiError.message === "string" && apiError.message.length > 0) {
+    return apiError.message;
+  }
+
+  return fallback;
+};
+
 // Async thunks
 export const fetchUserChatRooms = createAsyncThunk(
   "chat/fetchUserChatRooms",
@@ -53,10 +89,8 @@ export const fetchUserChatRooms = createAsyncThunk(
     try {
       const response = await chatApis.getUserChatRooms(authToken);
       return response.data.data;
-    } catch (error: any) {
-      return rejectWithValue(
-        error?.response?.data?.error?.message || "Failed to fetch chat rooms",
-      );
+    } catch (error) {
+      return rejectWithValue(getApiErrorMessage(error, "Failed to fetch chat rooms"));
     }
   },
 );
@@ -67,10 +101,12 @@ export const fetchActiveChatRooms = createAsyncThunk(
     try {
       const response = await chatApis.getActiveChatRooms(authToken);
       return response.data.data;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue(
-        error?.response?.data?.error?.message ||
+        getApiErrorMessage(
+          error,
           "Failed to fetch active chat rooms",
+        ),
       );
     }
   },
@@ -85,10 +121,8 @@ export const markChatAsRead = createAsyncThunk(
     try {
       await chatApis.markAsRead({ chatRoomId, authToken });
       return chatRoomId;
-    } catch (error: any) {
-      return rejectWithValue(
-        error?.response?.data?.error?.message || "Failed to mark chat as read",
-      );
+    } catch (error) {
+      return rejectWithValue(getApiErrorMessage(error, "Failed to mark chat as read"));
     }
   },
 );
@@ -124,7 +158,7 @@ const chatSlice = createSlice({
       state,
       action: PayloadAction<{
         chatRoomId: number;
-        message: any;
+        message: IncomingMessagePayload;
         isCurrentUser: boolean;
       }>,
     ) => {

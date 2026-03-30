@@ -6,7 +6,7 @@ interface ProfileFieldProps {
   value?: string | number;
   variant?: "default" | "success" | "primary" | "rating";
   isLoading?: boolean;
-  error?: any;
+  error?: unknown;
 }
 
 export const ProfileField = ({

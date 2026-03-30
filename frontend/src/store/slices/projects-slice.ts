@@ -3,6 +3,7 @@ import {
   createSlice,
   type PayloadAction,
 } from "@reduxjs/toolkit";
+import type { RootState } from "../index";
 import type {
   Project,
   BidResponse,
@@ -11,7 +12,7 @@ import type {
   BidActionRequest,
 } from "@/features/projects/types";
 import projectApis from "@/features/projects/apis";
-import type { RootState } from "../index";
+import type { ApiError } from "@/types";
 
 interface ProjectsState {
   projects: Project[];
@@ -49,16 +50,42 @@ const initialState: ProjectsState = {
   },
 };
 
+const getApiErrorMessage = (error: unknown, fallback: string): string => {
+  const apiError = error as ApiError;
+  const responseError = apiError.response?.data?.error;
+
+  if (typeof responseError === "string") {
+    return responseError;
+  }
+
+  if (
+    responseError &&
+    typeof responseError === "object" &&
+    "message" in responseError &&
+    typeof responseError.message === "string"
+  ) {
+    return responseError.message;
+  }
+
+  if (typeof apiError.response?.data?.message === "string") {
+    return apiError.response.data.message;
+  }
+
+  if (typeof apiError.message === "string" && apiError.message.length > 0) {
+    return apiError.message;
+  }
+
+  return fallback;
+};
+
 export const fetchProjects = createAsyncThunk(
   "projects/fetchProjects",
   async (authToken: string, { rejectWithValue }) => {
     try {
       const response = await projectApis.getProjects({ authToken });
       return response.data as ApiResponse<Project[]>;
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.error || "Failed to fetch projects",
-      );
+    } catch (error) {
+      return rejectWithValue(getApiErrorMessage(error, "Failed to fetch projects"));
     }
   },
 );
@@ -72,10 +99,8 @@ export const createProject = createAsyncThunk(
     try {
       const response = await projectApis.createProject({ data, authToken });
       return response.data as ApiResponse<Project>;
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.error || "Failed to create project",
-      );
+    } catch (error) {
+      return rejectWithValue(getApiErrorMessage(error, "Failed to create project"));
     }
   },
 );
@@ -96,9 +121,9 @@ export const fetchProjectDetails = createAsyncThunk(
         project: projectResponse.data as ApiResponse<Project>,
         bids: bidsResponse.data as ApiResponse<BidResponse[]>,
       };
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue(
-        error.response?.data?.error || "Failed to fetch project details",
+        getApiErrorMessage(error, "Failed to fetch project details"),
       );
     }
   },
@@ -120,10 +145,8 @@ export const acceptBid = createAsyncThunk(
         projectId,
         bidId,
       };
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.error || "Failed to accept bid",
-      );
+    } catch (error) {
+      return rejectWithValue(getApiErrorMessage(error, "Failed to accept bid"));
     }
   },
 );
@@ -144,10 +167,8 @@ export const rejectBid = createAsyncThunk(
         projectId,
         bidId,
       };
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.error || "Failed to reject bid",
-      );
+    } catch (error) {
+      return rejectWithValue(getApiErrorMessage(error, "Failed to reject bid"));
     }
   },
 );

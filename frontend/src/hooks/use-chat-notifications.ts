@@ -2,9 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store";
 import { chatApis } from "@/features/chat/apis";
-import type { ChatRoom } from "@/types";
-
-interface UseChatNotificationsParams {}
+import type { ApiError, ChatRoom } from "@/types";
 
 interface UseChatNotificationsReturn {
   unreadCount: number;
@@ -21,7 +19,6 @@ interface UseChatNotificationsReturn {
  * Hook for managing chat notifications and unread message counts
  */
 export const useChatNotifications = (
-  _params: UseChatNotificationsParams = {},
 ): UseChatNotificationsReturn => {
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
   const [unreadCount, setUnreadCount] = useState<number>(0);
@@ -54,9 +51,12 @@ export const useChatNotifications = (
         0,
       );
       setUnreadCount(totalUnread);
-    } catch (err: any) {
+    } catch (err) {
+      const apiError = err as ApiError;
       setError(
-        err?.response?.data?.error?.message || "Failed to load chat rooms",
+        apiError?.response?.data?.error?.message ||
+          apiError?.message ||
+          "Failed to load chat rooms",
       );
     } finally {
       setIsLoading(false);

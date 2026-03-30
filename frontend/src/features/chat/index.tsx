@@ -38,7 +38,7 @@ export default function ChatPage() {
             replace: true,
           });
         }
-      } catch (err: any) {
+      } catch (err) {
         console.error("Error loading chat rooms:", err);
         setError(
           err?.response?.data?.error?.message || "Failed to load chat rooms",
@@ -49,7 +49,7 @@ export default function ChatPage() {
     };
 
     loadChatRooms();
-  }, [authToken]);
+  }, [authToken, chatRoomId, navigate]);
 
   // Get the current chat room
   const currentChatRoom = chatRoomId

@@ -85,8 +85,12 @@ const WithdrawMoneyDialog: React.FC<WithdrawMoneyDialogProps> = ({
     try {
       await onWithdraw(amount);
       handleClose();
-    } catch (error: any) {
-      setError(error.message || "Withdrawal failed. Please try again.");
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Withdrawal failed. Please try again.",
+      );
     } finally {
       setIsWithdrawing(false);
     }

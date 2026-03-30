@@ -63,7 +63,7 @@ export const ChatNotification = () => {
 
       // Otherwise show the date
       return format(date, "MMM d");
-    } catch (e) {
+    } catch {
       return "";
     }
   };

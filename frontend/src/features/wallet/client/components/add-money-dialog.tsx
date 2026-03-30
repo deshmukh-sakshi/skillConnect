@@ -20,9 +20,39 @@ import { toast } from "sonner";
 import type { AddMoneyOrderRequest, VerifyPaymentRequest } from "../apis";
 import apis from "../apis";
 
+interface RazorpayPaymentResponse {
+  razorpay_order_id: string;
+  razorpay_payment_id: string;
+  razorpay_signature: string;
+}
+
+interface RazorpayOptions {
+  key: string;
+  amount: number;
+  currency: string;
+  order_id: string;
+  name: string;
+  description: string;
+  handler: (response: RazorpayPaymentResponse) => void;
+  prefill: {
+    name: string;
+    email: string;
+  };
+  theme: {
+    color: string;
+  };
+  modal: {
+    ondismiss: () => void;
+  };
+}
+
+interface RazorpayInstance {
+  open: () => void;
+}
+
 declare global {
   interface Window {
-    Razorpay: any;
+    Razorpay: new (options: RazorpayOptions) => RazorpayInstance;
   }
 }
 
@@ -51,10 +81,10 @@ export const AddMoneyDialog = ({ userId, refetchDetails }: Props) => {
   const { isLoading: isCreatingOrder, mutate: createOrder } = useMutation({
     mutationFn: (data: AddMoneyOrderRequest) =>
       apis.createAddMoneyOrder({ data, authToken: authToken as string }),
-    onSuccess: (response: any) => {
+    onSuccess: (response) => {
       openRazorpayPayment(response.data.data);
     },
-    onError: (error: any) => {
+    onError: (error) => {
       console.error("Order creation failed:", error);
       toast.error("Failed to create payment order. Please try again.");
     },
@@ -69,7 +99,7 @@ export const AddMoneyDialog = ({ userId, refetchDetails }: Props) => {
       setAmount("");
       setIsOpen(false);
     },
-    onError: (error: any) => {
+    onError: (error) => {
       console.error("Payment verification failed:", error);
       toast.error("Payment verification failed. Please contact support.");
     },
@@ -94,7 +124,7 @@ export const AddMoneyDialog = ({ userId, refetchDetails }: Props) => {
       order_id: orderData.orderId,
       name: orderData.companyName || "SkillConnect",
       description: orderData.description || "Add money to wallet",
-      handler: function (response: any) {
+      handler: function (response: RazorpayPaymentResponse) {
         const verificationData: VerifyPaymentRequest = {
           razorpayOrderId: response.razorpay_order_id,
           razorpayPaymentId: response.razorpay_payment_id,

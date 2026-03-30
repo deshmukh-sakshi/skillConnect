@@ -2,6 +2,15 @@ import { request } from "@/apis";
 
 import urls from "./urls";
 
+interface UpdateProjectRequest {
+  title: string;
+  description: string;
+  category: string;
+  budget: number;
+  deadline: string;
+  clientId: number;
+}
+
 // apis/index.ts (add this to your existing apis object)
 const apis = {
   getClientProjects: ({ authToken, id }: { authToken: string; id: string }) =>
@@ -25,7 +34,7 @@ const apis = {
   }: {
     authToken: string;
     id: string;
-    data: any;
+    data: UpdateProjectRequest;
   }) =>
     request({
       method: "PUT",

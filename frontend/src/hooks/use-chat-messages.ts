@@ -39,7 +39,6 @@ export const useChatMessages = ({
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState<number>(0);
   const [hasMore, setHasMore] = useState<boolean>(true);
-  const [hasInitiallyLoaded, setHasInitiallyLoaded] = useState<boolean>(false);
 
   const chatService = useChatService();
   const user = useSelector((state: RootState) => state.auth?.user);
@@ -120,10 +119,7 @@ export const useChatMessages = ({
     if (!chatRoomId) return;
 
     const loadInitialMessages = async () => {
-      // Only show loading if we haven't loaded messages yet
-      if (!hasInitiallyLoaded) {
-        setIsLoading(true);
-      }
+      setIsLoading(true);
       setError(null);
 
       try {
@@ -140,19 +136,18 @@ export const useChatMessages = ({
         setMessages(enhancedMessages);
         setHasMore(data.totalPages > 1);
         setPage(0);
-        setHasInitiallyLoaded(true);
 
         // Mark messages as read
         await chatService.markAsRead(chatRoomId);
-      } catch (err: any) {
-        setError(err?.message || "Failed to load messages");
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Failed to load messages",
+        );
       } finally {
         setIsLoading(false);
       }
     };
 
-    // Reset initial load flag when chat room changes
-    setHasInitiallyLoaded(false);
     loadInitialMessages();
   }, [chatRoomId, chatService]);
 
@@ -162,7 +157,7 @@ export const useChatMessages = ({
 
     try {
       await chatService.markAsRead(chatRoomId);
-    } catch (err: any) {
+    } catch (err) {
       console.error("Failed to mark messages as read:", err);
     }
   }, [chatRoomId, chatService]);
@@ -218,7 +213,7 @@ export const useChatMessages = ({
 
         // Remove from pending messages
         pendingMessages.current.delete(clientId);
-      } catch (err: any) {
+      } catch (err) {
         // Update the message status to error
         setMessages((prev) => {
           return prev.map((msg) => {
@@ -232,7 +227,9 @@ export const useChatMessages = ({
           });
         });
 
-        setError(err?.message || "Failed to send message");
+        setError(
+          err instanceof Error ? err.message : "Failed to send message",
+        );
       }
     },
     [chatRoomId, user, chatService],
@@ -283,7 +280,7 @@ export const useChatMessages = ({
 
         // Remove from pending messages if it's still there
         pendingMessages.current.delete(clientId);
-      } catch (err: any) {
+      } catch (err) {
         // Update the message status to error
         setMessages((prev) => {
           return prev.map((msg) => {
@@ -297,7 +294,9 @@ export const useChatMessages = ({
           });
         });
 
-        setError(err?.message || "Failed to send message");
+        setError(
+          err instanceof Error ? err.message : "Failed to send message",
+        );
       }
     },
     [messages, chatRoomId, chatService],
@@ -324,8 +323,10 @@ export const useChatMessages = ({
       setMessages((prev) => [...prev, ...enhancedMessages]);
       setHasMore(nextPage < data.totalPages - 1);
       setPage(nextPage);
-    } catch (err: any) {
-      setError(err?.message || "Failed to load more messages");
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to load more messages",
+      );
     } finally {
       setIsLoading(false);
     }

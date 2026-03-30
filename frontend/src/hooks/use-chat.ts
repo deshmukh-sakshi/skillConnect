@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store";
 import { chatApis } from "@/features/chat/apis";
-import type { ChatMessage } from "@/types";
+import type { ApiError, ChatMessage } from "@/types";
 
 interface UseChatParams {
   chatRoomId?: number;
@@ -56,9 +56,12 @@ export const useChat = ({
 
         // Mark messages as read
         await chatApis.markAsRead({ chatRoomId, authToken });
-      } catch (err: any) {
+      } catch (err) {
+        const apiError = err as ApiError;
         setError(
-          err?.response?.data?.error?.message || "Failed to load messages",
+          apiError?.response?.data?.error?.message ||
+            apiError?.message ||
+            "Failed to load messages",
         );
       } finally {
         setIsLoading(false);
@@ -80,9 +83,12 @@ export const useChat = ({
           authToken,
         });
         // The message will be added via the real-time subscription
-      } catch (err: any) {
+      } catch (err) {
+        const apiError = err as ApiError;
         setError(
-          err?.response?.data?.error?.message || "Failed to send message",
+          apiError?.response?.data?.error?.message ||
+            apiError?.message ||
+            "Failed to send message",
         );
       }
     },
@@ -95,7 +101,7 @@ export const useChat = ({
 
     try {
       await chatApis.markAsRead({ chatRoomId, authToken });
-    } catch (err: any) {
+    } catch (err) {
       console.error("Failed to mark messages as read:", err);
     }
   }, [chatRoomId, authToken]);
@@ -119,9 +125,12 @@ export const useChat = ({
       setMessages((prev) => [...prev, ...data.content]);
       setHasMore(nextPage < data.totalPages - 1);
       setPage(nextPage);
-    } catch (err: any) {
+    } catch (err) {
+      const apiError = err as ApiError;
       setError(
-        err?.response?.data?.error?.message || "Failed to load more messages",
+        apiError?.response?.data?.error?.message ||
+          apiError?.message ||
+          "Failed to load more messages",
       );
     } finally {
       setIsLoading(false);

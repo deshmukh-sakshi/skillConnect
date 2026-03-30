@@ -49,7 +49,7 @@ export class ChatPollingService {
 
     let lastPollTime = Date.now();
 
-    let isPolling = true;
+    const isPolling = true;
     let consecutiveEmptyPolls = 0;
     const MAX_EMPTY_POLLS = 3;
 

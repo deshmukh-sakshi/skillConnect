@@ -58,13 +58,15 @@ const RevenueDetail = () => {
               }
             : null,
         );
-      } catch (error: any) {
+      } catch (error) {
         throw new Error(
-          error.message || "Withdrawal failed. Please try again.",
+          error instanceof Error
+            ? error.message
+            : "Withdrawal failed. Please try again.",
         );
       }
     },
-    [formatCurrency],
+    [],
   );
 
   if (isLoading || !revenueData) {

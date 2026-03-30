@@ -79,7 +79,7 @@ export const useProjectCounts = () => {
   // Fetch project counts on component mount (single API call as specified)
   useEffect(() => {
     fetchProjectCounts();
-  }, []); // Empty dependency array ensures single call on mount
+  }, [fetchProjectCounts]);
 
   return {
     // State data

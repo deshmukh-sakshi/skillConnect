@@ -25,6 +25,12 @@ interface MarkAsReadParams {
   authToken: string;
 }
 
+interface MilestonePayload {
+  title: string;
+  description?: string;
+  dueDate: string;
+}
+
 export const chatApis = {
   /**
    * Create a chat room for a bid
@@ -222,7 +228,7 @@ export const chatApis = {
    */
   createMilestoneFromChat: (
     chatRoomId: number,
-    milestoneData: any,
+    milestoneData: MilestonePayload,
     authToken: string,
   ) => {
     return request({
@@ -270,7 +276,7 @@ export const chatApis = {
    */
   updateMilestoneDirect: (
     milestoneId: number,
-    milestoneData: any,
+    milestoneData: MilestonePayload,
     authToken: string,
   ) => {
     return request({
@@ -286,7 +292,7 @@ export const chatApis = {
    */
   createMilestoneDirect: (
     contractId: number,
-    milestoneData: any,
+    milestoneData: MilestonePayload,
     authToken: string,
   ) => {
     return request({

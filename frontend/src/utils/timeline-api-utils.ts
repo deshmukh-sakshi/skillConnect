@@ -4,6 +4,34 @@
 
 import type { PastWork } from "@/types";
 
+interface TimelineValidationError {
+  field?: string;
+  message?: string;
+}
+
+interface TimelineErrorData {
+  errors?: TimelineValidationError[];
+  message?: string;
+  error?: {
+    message?: string;
+  };
+}
+
+interface TimelineApiError {
+  response?: {
+    data?: TimelineErrorData;
+  };
+}
+
+interface PastWorkApiPayload {
+  id?: number;
+  title: string;
+  link: string;
+  description: string;
+  startDate?: string | null;
+  endDate?: string | null;
+}
+
 /**
  * Validates timeline data before sending to API
  */
@@ -34,17 +62,19 @@ export function validateTimelineData(
 /**
  * Processes timeline-related API errors and returns user-friendly messages
  */
-export function handleTimelineApiError(error: any): string {
-  if (!error?.response?.data) {
+export function handleTimelineApiError(error: unknown): string {
+  const apiError = error as TimelineApiError;
+
+  if (!apiError?.response?.data) {
     return "Failed to update timeline data. Please try again.";
   }
 
-  const errorData = error.response.data;
+  const errorData = apiError.response.data;
 
   // Handle validation errors
   if (errorData.errors && Array.isArray(errorData.errors)) {
     const timelineErrors = errorData.errors.filter(
-      (err: any) =>
+      (err: TimelineValidationError) =>
         err.field === "startDate" ||
         err.field === "endDate" ||
         err.field === "dateRange",
@@ -81,7 +111,7 @@ export function handleTimelineApiError(error: any): string {
 /**
  * Prepares past work data for API submission, ensuring timeline fields are properly formatted
  */
-export function preparePastWorkForApi(pastWork: PastWork): any {
+export function preparePastWorkForApi(pastWork: PastWork): PastWorkApiPayload {
   return {
     id: pastWork.id,
     title: pastWork.title,
@@ -95,9 +125,9 @@ export function preparePastWorkForApi(pastWork: PastWork): any {
 /**
  * Processes past work data from API response, ensuring timeline fields are properly typed
  */
-export function processPastWorkFromApi(pastWork: any): PastWork {
+export function processPastWorkFromApi(pastWork: PastWorkApiPayload): PastWork {
   return {
-    id: pastWork.id,
+    id: pastWork.id ?? 0,
     title: pastWork.title,
     link: pastWork.link,
     description: pastWork.description,
@@ -109,7 +139,7 @@ export function processPastWorkFromApi(pastWork: any): PastWork {
 /**
  * Checks if API response contains timeline data
  */
-export function hasTimelineData(pastWork: any): boolean {
+export function hasTimelineData(pastWork: Partial<PastWorkApiPayload>): boolean {
   return (
     pastWork &&
     (pastWork.startDate !== undefined || pastWork.endDate !== undefined)

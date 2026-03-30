@@ -21,7 +21,7 @@ const SearchInput = ({
 
   useEffect(() => {
     fn(debouncedSearch);
-  }, [debouncedSearch]);
+  }, [debouncedSearch, fn]);
 
   return (
     <Input

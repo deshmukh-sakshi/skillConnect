@@ -9,13 +9,13 @@ export function cn(...inputs: ClassValue[]) {
  * Creates a debounced function that delays invoking func until after wait milliseconds
  * have elapsed since the last time the debounced function was invoked.
  */
-export function debounce<T extends (...args: any[]) => any>(
-  func: T,
+export function debounce<TArgs extends readonly unknown[]>(
+  func: (...args: TArgs) => void,
   wait: number,
-): (...args: Parameters<T>) => void {
+): (...args: TArgs) => void {
   let timeout: ReturnType<typeof setTimeout> | null = null;
 
-  return function (...args: Parameters<T>) {
+  return function (...args: TArgs) {
     const later = () => {
       timeout = null;
       func(...args);

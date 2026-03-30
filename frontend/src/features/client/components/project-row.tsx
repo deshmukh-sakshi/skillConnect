@@ -12,6 +12,7 @@ import { useMutation } from "react-query";
 import apis from "../apis";
 import useAuth from "@/hooks/use-auth";
 import { toast } from "sonner";
+import type { ApiError } from "@/types";
 
 interface Props {
   project: Project;
@@ -36,9 +37,10 @@ const ProjectRowWithUpdate = ({
       refetchProjects();
       toast.success("🎉 Project deleted successfully!");
     },
-    onError: (error: any) => {
+    onError: (error) => {
+      const apiError = error as ApiError;
       const errorMessage =
-        error?.response?.data?.message || "Failed to delete project";
+        apiError?.response?.data?.message || "Failed to delete project";
       toast.error(`${errorMessage}`);
     },
   });

@@ -26,7 +26,10 @@ const apis = {
   getContractById: ({
     params,
     authToken,
-  }: RequestType): Promise<AxiosResponse<ApiResponse<Contract>>> =>
+  }: {
+    params: { id: number };
+    authToken: string;
+  }): Promise<AxiosResponse<ApiResponse<Contract>>> =>
     request({
       method: "GET",
       url: `${urls.getContract}/${params.id}`,
@@ -41,7 +44,12 @@ const apis = {
     data,
     authToken,
     isPlainText = false,
-  }: RequestType & { isPlainText?: boolean }): Promise<
+  }: {
+    params: { id: number };
+    data: { contractStatus: string; freelancerRating: number | null };
+    authToken: string;
+    isPlainText?: boolean;
+  }): Promise<
     AxiosResponse<ApiResponse<Contract>>
   > =>
     request({
@@ -58,7 +66,10 @@ const apis = {
   deleteContract: ({
     params,
     authToken,
-  }: RequestType): Promise<AxiosResponse<ApiResponse<void>>> =>
+  }: {
+    params: { id: number };
+    authToken: string;
+  }): Promise<AxiosResponse<ApiResponse<void>>> =>
     request({
       method: "DELETE",
       url: `${urls.deleteContract}/${params.id}`,

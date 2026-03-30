@@ -1,5 +1,5 @@
 import { request } from "@/apis";
-import type { ProjectCountsResponse } from "@/types";
+import type { ApiError, ProjectCountsResponse } from "@/types";
 
 /**
  * Fetches project counts by category from the backend API
@@ -13,18 +13,20 @@ export const getProjectCounts = async (): Promise<ProjectCountsResponse> => {
     });
 
     return response.data.data || response.data;
-  } catch (error: any) {
+  } catch (error) {
+    const apiError = error as ApiError;
+
     // Enhanced error handling with specific error types
-    if (error.response?.status === 404) {
+    if (apiError.response?.status === 404) {
       throw new Error("Project counts endpoint not found");
-    } else if (error.response?.status === 500) {
+    } else if (apiError.response?.status === 500) {
       throw new Error("Server error while fetching project counts");
-    } else if (error.code === "NETWORK_ERROR" || !error.response) {
+    } else if (apiError.code === "NETWORK_ERROR" || !apiError.response) {
       throw new Error("Network error: Unable to connect to server");
-    } else if (error.response?.data?.error?.message) {
-      throw new Error(error.response.data.error.message);
+    } else if (apiError.response?.data?.error?.message) {
+      throw new Error(apiError.response.data.error.message);
     } else {
-      throw new Error(error.message || "Failed to fetch project counts");
+      throw new Error(apiError.message || "Failed to fetch project counts");
     }
   }
 };

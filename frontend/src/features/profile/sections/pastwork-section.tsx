@@ -92,7 +92,7 @@ const PastWorkSection: React.FC<PastWorkSectionProps> = ({
       prev
         ? {
             ...prev,
-            pastWorks: prev.pastWorks.filter((w: any) => w.id !== id),
+            pastWorks: prev.pastWorks.filter((w) => w.id !== id),
           }
         : null,
     );

@@ -143,7 +143,7 @@ const ContractStatusUpdateForm: React.FC<ContractStatusUpdateFormProps> = ({
     }
 
     try {
-      const result = await dispatch(
+      await dispatch(
         updateContractStatus({
           contractId: contract.contractId,
           data: {
@@ -151,18 +151,14 @@ const ContractStatusUpdateForm: React.FC<ContractStatusUpdateFormProps> = ({
             freelancerRating: clientRating ?? null,
           },
           authToken,
-        }) as any,
-      );
+        }),
+      ).unwrap();
 
-      if (result.meta.requestStatus === "fulfilled") {
-        setShowSuccessMessage(true);
-        setTimeout(() => {
-          onClose();
-          dispatch(
-            fetchContractById({ contractId: contract.contractId, authToken }),
-          );
-        }, 1500);
-      }
+      setShowSuccessMessage(true);
+      setTimeout(() => {
+        onClose();
+        dispatch(fetchContractById({ contractId: contract.contractId, authToken }));
+      }, 1500);
     } catch (error) {
       console.error("Error updating contract status:", error);
     }
