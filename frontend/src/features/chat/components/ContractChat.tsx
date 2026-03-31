@@ -2,15 +2,15 @@ import { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import {
   Loader2,
-  CalendarIcon,
+  CalendarDays,
   IndianRupee,
-  CheckCircleIcon,
+  CheckCircle2,
+  LayoutList,
+  MessageSquare,
 } from "lucide-react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 import { ChatInterface } from "./ChatInterface";
@@ -61,12 +61,10 @@ export const ContractChat = ({ chatRoomId, className }: ContractChatProps) => {
 
   const authToken = useSelector((state: RootState) => state.auth?.authToken);
 
-  // Function to refresh milestone data (for the other person via polling)
   const refreshMilestoneData = useCallback(async () => {
     if (!authToken || !contractDetails?.contractId) return;
 
     try {
-      // Get milestone completion percentage
       const completionResponse = await chatApis.getMilestoneCompletionForChat(
         chatRoomId,
         authToken,
@@ -75,7 +73,6 @@ export const ContractChat = ({ chatRoomId, className }: ContractChatProps) => {
         setCompletionPercentage(completionResponse.data.data);
       }
 
-      // Get overdue milestones count
       const overdueResponse = await chatApis.getOverdueMilestonesForChat(
         chatRoomId,
         authToken,
@@ -88,7 +85,6 @@ export const ContractChat = ({ chatRoomId, className }: ContractChatProps) => {
     }
   }, [chatRoomId, authToken, contractDetails?.contractId]);
 
-  // Fetch contract details and milestone information
   useEffect(() => {
     const fetchContractDetails = async () => {
       if (!authToken) return;
@@ -101,10 +97,8 @@ export const ContractChat = ({ chatRoomId, className }: ContractChatProps) => {
         );
         setContractDetails(response.data.data);
 
-        // Fetch completion percentage if contract details are available
         if (response.data.data?.contractId) {
           try {
-            // Get milestone completion percentage
             const completionResponse =
               await chatApis.getMilestoneCompletionForChat(
                 chatRoomId,
@@ -114,7 +108,6 @@ export const ContractChat = ({ chatRoomId, className }: ContractChatProps) => {
               setCompletionPercentage(completionResponse.data.data);
             }
 
-            // Get overdue milestones count
             const overdueResponse = await chatApis.getOverdueMilestonesForChat(
               chatRoomId,
               authToken,
@@ -141,7 +134,6 @@ export const ContractChat = ({ chatRoomId, className }: ContractChatProps) => {
     fetchContractDetails();
   }, [chatRoomId, authToken]);
 
-  // Handle milestone notifications
   const handleMilestoneNotification = useCallback(
     async (notification: MilestoneNotification) => {
       if (!authToken || !chatRoomId) return;
@@ -149,7 +141,6 @@ export const ContractChat = ({ chatRoomId, className }: ContractChatProps) => {
       try {
         setMilestoneNotification(notification);
 
-        // Format notification message based on action type
         let notificationMessage = "";
         switch (notification.action) {
           case "created":
@@ -168,17 +159,14 @@ export const ContractChat = ({ chatRoomId, className }: ContractChatProps) => {
             notificationMessage = `Milestone update: "${notification.title}"`;
         }
 
-        // Send notification to chat
         await chatApis.sendMilestoneNotification(
           chatRoomId,
           notificationMessage,
           authToken,
         );
 
-        // Refresh milestone data for the person who triggered the action
         await refreshMilestoneData();
 
-        // Clear notification after sending
         setTimeout(() => {
           setMilestoneNotification(null);
         }, 3000);
@@ -190,13 +178,11 @@ export const ContractChat = ({ chatRoomId, className }: ContractChatProps) => {
     [chatRoomId, authToken, refreshMilestoneData],
   );
 
-  // Handle milestone status update
   const handleMilestoneStatusUpdate = useCallback(
     async (milestoneId: number, title: string, status: string) => {
       if (!authToken || !chatRoomId) return;
 
       try {
-        // Update milestone status
         await chatApis.updateMilestoneStatusFromChat(
           chatRoomId,
           milestoneId,
@@ -204,7 +190,6 @@ export const ContractChat = ({ chatRoomId, className }: ContractChatProps) => {
           authToken,
         );
 
-        // Send notification to chat
         await handleMilestoneNotification({
           id: milestoneId,
           title,
@@ -212,7 +197,6 @@ export const ContractChat = ({ chatRoomId, className }: ContractChatProps) => {
           action: "status_change",
         });
 
-        // Refresh completion percentage
         const completionResponse = await chatApis.getMilestoneCompletionForChat(
           chatRoomId,
           authToken,
@@ -221,7 +205,6 @@ export const ContractChat = ({ chatRoomId, className }: ContractChatProps) => {
           setCompletionPercentage(completionResponse.data.data);
         }
 
-        // Refresh overdue milestones count
         const overdueResponse = await chatApis.getOverdueMilestonesForChat(
           chatRoomId,
           authToken,
@@ -237,31 +220,30 @@ export const ContractChat = ({ chatRoomId, className }: ContractChatProps) => {
     [chatRoomId, authToken, handleMilestoneNotification],
   );
 
-  // Get status badge color
   const getStatusColor = (status: string) => {
     switch (status) {
       case "COMPLETED":
-        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
+        return "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800";
       case "IN_PROGRESS":
-        return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300";
+        return "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800";
       case "CANCELLED":
-        return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300";
+        return "bg-red-50 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-300 dark:border-red-800";
       default:
-        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300";
+        return "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800";
     }
   };
 
   if (isLoading && !contractDetails) {
     return (
       <div className="flex items-center justify-center h-full">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex items-center justify-center h-full text-destructive">
+      <div className="flex items-center justify-center h-full text-destructive text-sm">
         {error}
       </div>
     );
@@ -269,7 +251,7 @@ export const ContractChat = ({ chatRoomId, className }: ContractChatProps) => {
 
   if (!contractDetails) {
     return (
-      <div className="flex items-center justify-center h-full text-muted-foreground">
+      <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
         Contract details not available.
       </div>
     );
@@ -277,114 +259,107 @@ export const ContractChat = ({ chatRoomId, className }: ContractChatProps) => {
 
   return (
     <div className={cn("flex flex-col h-full max-h-full", className)}>
-      {/* Contract details card - fixed at top */}
-      <div className="flex-shrink-0">
-        <Card className="mb-2">
-          <CardHeader className="py-2 px-4">
-            <div className="flex justify-between items-center">
-              <CardTitle className="text-base font-medium">
-                Contract: {contractDetails.projectTitle}
-              </CardTitle>
-              <Badge
-                variant="outline"
-                className={getStatusColor(contractDetails.contractStatus)}
-              >
-                {contractDetails.contractStatus}
-              </Badge>
-            </div>
-          </CardHeader>
-          <CardContent className="py-2 px-4">
-            <div className="grid grid-cols-3 gap-2 text-sm">
-              <div className="flex items-center gap-1">
-                <IndianRupee className="h-3 w-3 text-muted-foreground" />
-                <span>{contractDetails.contractAmount.toFixed(2)}</span>
-              </div>
+      {/* Compact contract header */}
+      <div className="flex-shrink-0 border-b bg-background px-4 py-3 space-y-2">
+        <div className="flex items-center justify-between">
+          <h2 className="font-semibold text-sm truncate pr-4">
+            {contractDetails.projectTitle}
+          </h2>
+          <Badge
+            variant="outline"
+            className={cn("text-xs font-medium shrink-0", getStatusColor(contractDetails.contractStatus))}
+          >
+            {contractDetails.contractStatus.replace("_", " ")}
+          </Badge>
+        </div>
 
-              <div className="flex items-center gap-1">
-                <CalendarIcon className="h-3 w-3 text-muted-foreground" />
-                <span>{contractDetails.durationDays} days</span>
-              </div>
+        <div className="flex items-center gap-5 text-xs text-muted-foreground">
+          <span className="flex items-center gap-1">
+            <IndianRupee className="h-3 w-3" />
+            {contractDetails.contractAmount.toFixed(0)}
+          </span>
+          <span className="flex items-center gap-1">
+            <CalendarDays className="h-3 w-3" />
+            {contractDetails.durationDays} days
+          </span>
+          <span className="flex items-center gap-2 flex-1">
+            <CheckCircle2 className="h-3 w-3 shrink-0" />
+            <Progress value={completionPercentage} className="h-1.5 flex-1 max-w-24" />
+            <span className="shrink-0">{Math.round(completionPercentage)}%</span>
+          </span>
+        </div>
 
-              <div className="flex items-center gap-1">
-                <CheckCircleIcon className="h-3 w-3 text-muted-foreground" />
-                <Progress
-                  value={completionPercentage}
-                  className="h-2 w-12 inline-block mr-1"
-                />
-                <span>{Math.round(completionPercentage)}%</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Milestone notification alert */}
+        {/* Milestone notification */}
         {milestoneNotification && (
-          <Alert className="mb-2 bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
-            <AlertDescription className="flex items-center justify-between">
-              <span>
-                {milestoneNotification.action === "status_change" ? (
-                  <>
-                    Milestone "{milestoneNotification.title}" status changed to{" "}
-                    <Badge
-                      variant="outline"
-                      className={getStatusColor(milestoneNotification.status)}
-                    >
-                      {milestoneNotification.status}
-                    </Badge>
-                  </>
-                ) : (
-                  <>
-                    Milestone "{milestoneNotification.title}"{" "}
-                    {milestoneNotification.action}
-                  </>
-                )}
-              </span>
+          <Alert className="py-1.5 px-3 bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
+            <AlertDescription className="text-xs text-blue-700 dark:text-blue-300">
+              {milestoneNotification.action === "status_change" ? (
+                <>
+                  Milestone &quot;{milestoneNotification.title}&quot; →{" "}
+                  <span className="font-medium">{milestoneNotification.status}</span>
+                </>
+              ) : (
+                <>Milestone &quot;{milestoneNotification.title}&quot; {milestoneNotification.action}</>
+              )}
             </AlertDescription>
           </Alert>
         )}
+
+        {/* Tab switcher — pill style */}
+        <div className="flex gap-1 bg-muted rounded-lg p-1 w-fit">
+          <button
+            onClick={() => setActiveTab("chat")}
+            className={cn(
+              "flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-all",
+              activeTab === "chat"
+                ? "bg-background shadow-sm text-foreground"
+                : "text-muted-foreground hover:text-foreground",
+            )}
+          >
+            <MessageSquare className="h-3 w-3" />
+            Chat
+          </button>
+          <button
+            onClick={() => setActiveTab("milestones")}
+            className={cn(
+              "flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-all relative",
+              activeTab === "milestones"
+                ? "bg-background shadow-sm text-foreground"
+                : "text-muted-foreground hover:text-foreground",
+            )}
+          >
+            <LayoutList className="h-3 w-3" />
+            Milestones
+            {overdueMilestones > 0 && (
+              <span className="ml-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] text-white font-bold">
+                {overdueMilestones}
+              </span>
+            )}
+          </button>
+        </div>
       </div>
 
-      {/* Tabs for Chat and Milestones - takes remaining height */}
-      <div className="flex-1 min-h-0 flex flex-col">
-        <Tabs
-          value={activeTab}
-          onValueChange={setActiveTab}
-          className="flex flex-col h-full"
-        >
-          <TabsList className="grid w-full grid-cols-2 flex-shrink-0">
-            <TabsTrigger value="chat">Chat</TabsTrigger>
-            <TabsTrigger value="milestones" className="relative">
-              Milestones
-              {overdueMilestones > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] text-white">
-                  {overdueMilestones}
-                </span>
-              )}
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="chat" className="flex-1 min-h-0 mt-2">
-            <ChatInterface
-              chatRoomId={chatRoomId}
-              chatType="CONTRACT"
-              referenceId={contractDetails?.contractId || 0}
-              className="h-full"
-              onMilestoneAction={refreshMilestoneData}
-            />
-          </TabsContent>
-
-          <TabsContent
-            value="milestones"
-            className="flex-1 min-h-0 mt-2 overflow-auto"
-          >
+      {/* Tab content */}
+      <div className="flex-1 min-h-0 overflow-hidden">
+        {activeTab === "chat" && (
+          <ChatInterface
+            chatRoomId={chatRoomId}
+            chatType="CONTRACT"
+            referenceId={contractDetails?.contractId || 0}
+            className="h-full"
+            onMilestoneAction={refreshMilestoneData}
+          />
+        )}
+        {activeTab === "milestones" && (
+          <div className="h-full overflow-auto">
             <MilestonePanel
               contractId={contractDetails.contractId}
               chatRoomId={chatRoomId}
               onMilestoneNotification={handleMilestoneNotification}
               onMilestoneStatusUpdate={handleMilestoneStatusUpdate}
             />
-          </TabsContent>
-        </Tabs>
+          </div>
+        )}
       </div>
     </div>
   );

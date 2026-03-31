@@ -1,5 +1,4 @@
 import { useEffect, useState, useCallback } from "react";
-import { Card, CardContent } from "@/components/ui/card";
 import { useChatMessages } from "@/hooks/use-chat-messages";
 import { MessageList } from "./MessageList";
 import { MessageInput } from "./MessageInput";
@@ -123,38 +122,31 @@ export const ChatInterface = ({
   }, [retryCount, messages, retryMessage]);
 
   return (
-    <Card className={`h-full flex flex-col ${className || ""}`}>
-      <CardContent className="p-0 flex flex-col h-full min-h-0">
-        {error && (
-          <Alert variant="destructive" className="mb-2 mx-2 mt-2 flex-shrink-0">
-            <AlertDescription className="flex items-center justify-between">
-              <span>{error}</span>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleRetryAll}
-                className="ml-2"
-              >
-                <RefreshCcw className="mr-1 h-3 w-3" /> Retry
-              </Button>
-            </AlertDescription>
-          </Alert>
-        )}
+    <div className={`h-full flex flex-col ${className || ""}`}>
+      {error && (
+        <Alert variant="destructive" className="mx-3 mt-3 flex-shrink-0">
+          <AlertDescription className="flex items-center justify-between text-sm">
+            <span>{error}</span>
+            <Button variant="outline" size="sm" onClick={handleRetryAll} className="ml-2 h-6 text-xs">
+              <RefreshCcw className="mr-1 h-3 w-3" /> Retry
+            </Button>
+          </AlertDescription>
+        </Alert>
+      )}
 
-        <MessageList
-          messages={messages}
-          isLoading={isLoading}
-          hasMore={hasMore}
-          onLoadMore={loadMore}
-          onRetry={retryMessage}
-        />
+      <MessageList
+        messages={messages}
+        isLoading={isLoading}
+        hasMore={hasMore}
+        onLoadMore={loadMore}
+        onRetry={retryMessage}
+      />
 
-        <MessageInput
-          onSendMessage={handleSendMessage}
-          disabled={isLoading || disabled}
-          sendingState={sendingState}
-        />
-      </CardContent>
-    </Card>
+      <MessageInput
+        onSendMessage={handleSendMessage}
+        disabled={isLoading || disabled}
+        sendingState={sendingState}
+      />
+    </div>
   );
 };
