@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { format, formatDistanceToNow } from "date-fns";
+import { format } from "date-fns";
 import { MessageSquare, Search, RefreshCw } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -84,7 +84,8 @@ export const ChatList = () => {
     try {
       const date = new Date(dateString);
       const now = new Date();
-      if (date.toDateString() === now.toDateString()) return format(date, "h:mm a");
+      if (date.toDateString() === now.toDateString())
+        return format(date, "h:mm a");
       if (now.getTime() - date.getTime() < 7 * 24 * 60 * 60 * 1000)
         return format(date, "EEE");
       return format(date, "MMM d");
@@ -206,7 +207,9 @@ const ChatRoomsList = ({
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center h-full gap-3 p-8 text-center">
-        <p className="text-sm text-destructive font-medium">Failed to load chats</p>
+        <p className="text-sm text-destructive font-medium">
+          Failed to load chats
+        </p>
         <p className="text-xs text-muted-foreground">{error}</p>
         <Button
           variant="outline"

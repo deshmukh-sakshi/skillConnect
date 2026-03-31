@@ -25,28 +25,32 @@ const AdminDashboard = () => {
     }
   );
 
-  const deleteMutation = useMutation({
-    mutationFn: ({ projectId, reportId }: { projectId: number; reportId: number }) =>
+  const deleteMutation = useMutation(
+    ({ projectId, reportId }: { projectId: number; reportId: number }) =>
       adminApis.deleteProject({ authToken: authToken!, projectId, reportId }),
-    onSuccess: () => {
-      toast.success("Project deleted successfully");
-      queryClient.invalidateQueries(["admin-reports"]);
-      setConfirmDelete(null);
-      setViewReport(null);
-    },
-    onError: () => toast.error("Failed to delete project"),
-  });
+    {
+      onSuccess: () => {
+        toast.success("Project deleted successfully");
+        queryClient.invalidateQueries(["admin-reports"]);
+        setConfirmDelete(null);
+        setViewReport(null);
+      },
+      onError: () => { toast.error("Failed to delete project"); },
+    }
+  );
 
-  const dismissMutation = useMutation({
-    mutationFn: ({ reportId }: { reportId: number }) =>
+  const dismissMutation = useMutation(
+    ({ reportId }: { reportId: number }) =>
       adminApis.dismissReport({ authToken: authToken!, reportId }),
-    onSuccess: () => {
-      toast.success("Report dismissed");
-      queryClient.invalidateQueries(["admin-reports"]);
-      setViewReport(null);
-    },
-    onError: () => toast.error("Failed to dismiss report"),
-  });
+    {
+      onSuccess: () => {
+        toast.success("Report dismissed");
+        queryClient.invalidateQueries(["admin-reports"]);
+        setViewReport(null);
+      },
+      onError: () => { toast.error("Failed to dismiss report"); },
+    }
+  );
 
   const reports: Report[] = data ?? [];
 

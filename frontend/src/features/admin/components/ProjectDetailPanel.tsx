@@ -19,7 +19,6 @@ import {
   type ProjectDetails,
   formatDate,
   formatBudget,
-  getReasonStyle,
 } from "./types";
 
 interface ProjectDetailPanelProps {
@@ -43,17 +42,21 @@ const ProjectDetailPanel = ({
 }: ProjectDetailPanelProps) => {
   const { data, isLoading, isError, refetch } = useQuery(
     ["admin-project-details", report.projectId],
-    () => adminApis.getProjectDetails({ authToken, projectId: report.projectId }),
+    () =>
+      adminApis.getProjectDetails({ authToken, projectId: report.projectId }),
     {
       select: (res) => res.data?.data as ProjectDetails,
       retry: 1,
-    }
+    },
   );
 
   return (
     <>
       {/* Backdrop */}
-      <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40" onClick={onClose} />
+      <div
+        className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
+        onClick={onClose}
+      />
 
       {/* Panel */}
       <div className="fixed right-0 top-0 h-full w-[480px] bg-white shadow-2xl z-50 flex flex-col">
@@ -61,7 +64,9 @@ const ProjectDetailPanel = ({
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
           <div className="flex items-center gap-2">
             <FileText className="w-4 h-4 text-gray-400" />
-            <span className="text-sm font-semibold text-gray-800">Project Details</span>
+            <span className="text-sm font-semibold text-gray-800">
+              Project Details
+            </span>
           </div>
           <button
             onClick={onClose}
@@ -80,10 +85,13 @@ const ProjectDetailPanel = ({
                 Reported for: {report.reason}
               </p>
               <p className="text-xs text-gray-500">
-                by {report.reportedByName ?? report.reportedByEmail} · {formatDate(report.createdAt)}
+                by {report.reportedByName ?? report.reportedByEmail} ·{" "}
+                {formatDate(report.createdAt)}
               </p>
               {report.description && (
-                <p className="text-xs text-gray-600 mt-1.5 italic">"{report.description}"</p>
+                <p className="text-xs text-gray-600 mt-1.5 italic">
+                  "{report.description}"
+                </p>
               )}
             </div>
           </div>
@@ -101,7 +109,9 @@ const ProjectDetailPanel = ({
               <div className="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center mb-3">
                 <FileText className="w-5 h-5 text-red-300" />
               </div>
-              <p className="text-sm font-medium text-gray-600">Failed to load project</p>
+              <p className="text-sm font-medium text-gray-600">
+                Failed to load project
+              </p>
               <p className="text-xs text-gray-400 mt-1 mb-4">
                 Restart the backend and try again.
               </p>
@@ -149,7 +159,9 @@ const ProjectContent = ({ project }: { project: ProjectDetails }) => (
     {/* Title + status */}
     <div>
       <div className="flex items-start justify-between gap-3 mb-2">
-        <h2 className="text-lg font-bold text-gray-900 leading-snug">{project.title}</h2>
+        <h2 className="text-lg font-bold text-gray-900 leading-snug">
+          {project.title}
+        </h2>
         <span
           className={`flex-shrink-0 text-xs font-semibold px-2.5 py-1 rounded-full border ${
             project.status === "OPEN"
@@ -181,14 +193,18 @@ const ProjectContent = ({ project }: { project: ProjectDetails }) => (
           <DollarSign className="w-3.5 h-3.5 text-emerald-500" />
           <span className="text-xs text-gray-400 font-medium">Budget</span>
         </div>
-        <p className="text-base font-bold text-gray-900">{formatBudget(project.budget)}</p>
+        <p className="text-base font-bold text-gray-900">
+          {formatBudget(project.budget)}
+        </p>
       </div>
       <div className="bg-gray-50 rounded-xl p-3 border border-gray-100">
         <div className="flex items-center gap-2 mb-1">
           <Calendar className="w-3.5 h-3.5 text-blue-500" />
           <span className="text-xs text-gray-400 font-medium">Deadline</span>
         </div>
-        <p className="text-sm font-bold text-gray-900">{formatDate(project.deadline)}</p>
+        <p className="text-sm font-bold text-gray-900">
+          {formatDate(project.deadline)}
+        </p>
       </div>
     </div>
 
@@ -198,20 +214,26 @@ const ProjectContent = ({ project }: { project: ProjectDetails }) => (
         Project Description
       </h3>
       <div className="bg-gray-50 border border-gray-100 rounded-xl p-4">
-        <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{project.description}</p>
+        <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
+          {project.description}
+        </p>
       </div>
     </div>
 
     {/* Client */}
     {project.client && (
       <div>
-        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Posted By</h3>
+        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+          Posted By
+        </h3>
         <div className="flex items-center gap-3 bg-gray-50 border border-gray-100 rounded-xl p-3">
           <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0">
             <User className="w-4 h-4 text-gray-400" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-gray-800">{project.client.name ?? "Client"}</p>
+            <p className="text-sm font-semibold text-gray-800">
+              {project.client.name ?? "Client"}
+            </p>
             {project.client.email && (
               <p className="text-xs text-gray-400 flex items-center gap-1">
                 <Mail className="w-3 h-3" />
