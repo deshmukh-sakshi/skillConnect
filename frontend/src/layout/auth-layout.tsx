@@ -2,8 +2,11 @@ import useAuth from "@/hooks/use-auth";
 import { Navigate, Outlet } from "react-router-dom";
 
 const AuthLayout = () => {
-  const { isAuth } = useAuth();
-  if (isAuth) return <Navigate to="/" />;
+  const { isAuth, user } = useAuth();
+  if (isAuth) {
+    if (user?.role === "ROLE_ADMIN") return <Navigate to="/admin" />;
+    return <Navigate to="/" />;
+  }
 
   return (
     <div className="relative min-h-screen bg-[#FAF8F5] overflow-hidden">

@@ -7,8 +7,14 @@ import {
   User,
   MessageSquare,
   Share2,
+  Flag,
+  X,
 } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store";
 
 import ProjectDetailsSkeleton from "@/components/shared/project-details-skeleton";
 import useGetBids from "../hooks/use-get-bids";
@@ -18,11 +24,46 @@ import SubmitProposal from "./submit-proposal";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import request from "@/apis/request";
+
+const REPORT_REASONS = [
+  "Scam / Fake Job",
+  "Misleading Description",
+  "Inappropriate Content",
+  "Spam",
+  "Other",
+];
 
 const ProjectDetails = () => {
   const navigate = useNavigate();
   const { project, error, isLoading } = useGetProjectDetails();
   const { bids, isLoading: bidIsLoading, refetch } = useGetBids();
+  const { user, authToken } = useSelector((state: RootState) => state.auth);
+
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [selectedReason, setSelectedReason] = useState("");
+  const [reportDescription, setReportDescription] = useState("");
+
+  const reportMutation = useMutation({
+    mutationFn: () =>
+      request({
+        method: "POST",
+        url: `/reports/${project?.id}`,
+        authToken,
+        data: { reason: selectedReason, description: reportDescription },
+      }),
+    onSuccess: () => {
+      toast.success("Report submitted. Our team will review it.");
+      setShowReportModal(false);
+      setSelectedReason("");
+      setReportDescription("");
+    },
+    onError: (err: { response?: { data?: { error?: { message?: string } } } }) => {
+      toast.error(
+        err?.response?.data?.error?.message ?? "Failed to submit report"
+      );
+    },
+  });
 
   const handleShare = async () => {
     try {
@@ -119,7 +160,6 @@ const ProjectDetails = () => {
                 <Share2 className="h-4 w-4 mr-2" />
                 Share
               </Button>
-              {/* Mobile share button */}
               <Button
                 variant="ghost"
                 size="sm"
@@ -128,6 +168,17 @@ const ProjectDetails = () => {
               >
                 <Share2 className="h-4 w-4" />
               </Button>
+              {user?.role === "ROLE_FREELANCER" && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-[#FF6B47] hover:text-[#FF6B47] hover:bg-[#FF6B47]/10"
+                  onClick={() => setShowReportModal(true)}
+                >
+                  <Flag className="h-4 w-4 mr-1.5" />
+                  <span className="hidden sm:inline">Report</span>
+                </Button>
+              )}
             </div>
           </div>
         </div>
@@ -299,6 +350,81 @@ const ProjectDetails = () => {
           </div>
         </div>
       </div>
+
+      {/* Report Modal */}
+      {showReportModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Flag className="w-5 h-5 text-[#FF6B47]" />
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Report Project
+                </h2>
+              </div>
+              <button
+                onClick={() => setShowReportModal(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <p className="text-sm text-gray-600 mb-4">
+              Help us keep SkillConnect safe. Select a reason for reporting this
+              project.
+            </p>
+
+            <div className="space-y-2 mb-4">
+              {REPORT_REASONS.map((reason) => (
+                <label
+                  key={reason}
+                  className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
+                    selectedReason === reason
+                      ? "border-[#FF6B47] bg-[#FF6B47]/5"
+                      : "border-gray-200 hover:border-gray-300"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="reason"
+                    value={reason}
+                    checked={selectedReason === reason}
+                    onChange={() => setSelectedReason(reason)}
+                    className="accent-[#FF6B47]"
+                  />
+                  <span className="text-sm text-gray-700">{reason}</span>
+                </label>
+              ))}
+            </div>
+
+            <textarea
+              placeholder="Additional details (optional)"
+              value={reportDescription}
+              onChange={(e) => setReportDescription(e.target.value)}
+              rows={3}
+              className="w-full border border-gray-200 rounded-lg p-3 text-sm text-gray-700 resize-none focus:outline-none focus:border-[#FF6B47] mb-4"
+            />
+
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => setShowReportModal(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                className="flex-1 bg-[#FF6B47] hover:bg-[#e55a38] text-white"
+                disabled={!selectedReason || reportMutation.isLoading}
+                onClick={() => reportMutation.mutate()}
+              >
+                {reportMutation.isLoading ? "Submitting..." : "Submit Report"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

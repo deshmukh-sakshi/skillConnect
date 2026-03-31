@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { ArrowLeft, Loader2, AlertTriangle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { BidNegotiationChat } from "./BidNegotiationChat";
 import { ContractChat } from "./ContractChat";
 import { fetchUserChatRooms } from "@/store/slices/chat-slice";
@@ -20,48 +19,28 @@ export const ChatDetail: React.FC = () => {
     (state: RootState) => state.chat.loading.chatRooms,
   );
 
-  // Find the chat room
   const chatRoom = chatRooms.find((room) => room.id === Number(chatRoomId));
 
-  // Fetch chat rooms if not loaded
   useEffect(() => {
     if (authToken && (!chatRooms.length || !chatRoom)) {
       dispatch(fetchUserChatRooms({ authToken }));
     }
   }, [authToken, dispatch, chatRooms.length, chatRoom]);
 
-  const handleBack = () => {
-    navigate("/dashboard/chats");
-  };
+  const handleBack = () => navigate("/dashboard/chats");
 
-  // Only show loading on initial load when there are no chat rooms at all
   if (loading && chatRooms.length === 0 && !chatRoom) {
     return (
       <div className="h-full flex flex-col">
-        <div className="mb-4 flex items-center">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleBack}
-            className="mr-2"
-          >
+        <div className="flex items-center gap-2 px-2 py-3 border-b">
+          <Button variant="ghost" size="sm" onClick={handleBack} className="-ml-1">
             <ArrowLeft className="h-4 w-4 mr-1" />
             Back
           </Button>
-
-          <div>
-            <h1 className="text-2xl font-bold">Loading...</h1>
-          </div>
         </div>
-
-        <Card className="flex-1 overflow-hidden">
-          <CardContent className="p-0 h-full flex items-center justify-center">
-            <div className="text-center">
-              <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-primary" />
-              <p>Loading chat...</p>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="flex-1 flex items-center justify-center">
+          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        </div>
       </div>
     );
   }
@@ -69,69 +48,69 @@ export const ChatDetail: React.FC = () => {
   if (!chatRoom) {
     return (
       <div className="h-full flex flex-col">
-        <div className="mb-4 flex items-center">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleBack}
-            className="mr-2"
-          >
+        <div className="flex items-center gap-2 px-2 py-3 border-b">
+          <Button variant="ghost" size="sm" onClick={handleBack} className="-ml-1">
             <ArrowLeft className="h-4 w-4 mr-1" />
             Back
           </Button>
-
-          <div>
-            <h1 className="text-2xl font-bold">Chat Not Found</h1>
-          </div>
         </div>
-
-        <Card className="flex-1 overflow-hidden">
-          <CardContent className="p-0 h-full flex items-center justify-center">
-            <div className="text-center">
-              <AlertTriangle className="h-8 w-8 mx-auto mb-4 text-destructive" />
-              <h3 className="text-lg font-medium mb-2">Chat not found</h3>
-              <p className="text-muted-foreground mb-4">
-                The chat you're looking for doesn't exist or you don't have
-                access to it.
-              </p>
-              <Button onClick={handleBack}>Return to Chats</Button>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="flex-1 flex flex-col items-center justify-center gap-3 text-center px-6">
+          <AlertTriangle className="h-8 w-8 text-destructive" />
+          <div>
+            <h3 className="font-semibold mb-1">Chat not found</h3>
+            <p className="text-sm text-muted-foreground">
+              This conversation doesn't exist or you don't have access to it.
+            </p>
+          </div>
+          <Button size="sm" onClick={handleBack}>Return to Chats</Button>
+        </div>
       </div>
     );
   }
 
+  const chatTypeLabel =
+    chatRoom.chatType === "BID_NEGOTIATION" ? "Bid Discussion" : "Contract Chat";
+
   return (
-    <div className="h-full flex flex-col">
-      <div className="mb-4 flex items-center">
-        <Button variant="ghost" size="sm" onClick={handleBack} className="mr-2">
+    <div className="h-full flex flex-col overflow-hidden">
+      {/* Header */}
+      <div className="flex items-center gap-3 px-3 py-2.5 border-b bg-background shrink-0">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleBack}
+          className="-ml-1 h-8 px-2 text-muted-foreground hover:text-foreground"
+        >
           <ArrowLeft className="h-4 w-4 mr-1" />
           Back
         </Button>
 
-        <div>
-          <h1 className="text-2xl font-bold">{chatRoom.otherParty.name}</h1>
-          <p className="text-muted-foreground">
-            {chatRoom.chatType === "BID_NEGOTIATION"
-              ? "Bid Discussion"
-              : "Contract Chat"}
+        <div className="h-4 w-px bg-border" />
+
+        {/* Avatar */}
+        <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-semibold shrink-0">
+          {chatRoom.otherParty.name.charAt(0).toUpperCase()}
+        </div>
+
+        <div className="min-w-0">
+          <p className="font-semibold text-sm leading-tight truncate">
+            {chatRoom.otherParty.name}
           </p>
+          <p className="text-xs text-muted-foreground leading-tight">{chatTypeLabel}</p>
         </div>
       </div>
 
-      <Card className="flex-1 overflow-hidden">
-        <CardContent className="p-0 h-full">
-          {chatRoom.chatType === "BID_NEGOTIATION" ? (
-            <BidNegotiationChat
-              chatRoomId={Number(chatRoomId)}
-              className="h-full"
-            />
-          ) : (
-            <ContractChat chatRoomId={Number(chatRoomId)} className="h-full" />
-          )}
-        </CardContent>
-      </Card>
+      {/* Chat content — no extra Card wrapper */}
+      <div className="flex-1 min-h-0 overflow-hidden">
+        {chatRoom.chatType === "BID_NEGOTIATION" ? (
+          <BidNegotiationChat
+            chatRoomId={Number(chatRoomId)}
+            className="h-full"
+          />
+        ) : (
+          <ContractChat chatRoomId={Number(chatRoomId)} className="h-full" />
+        )}
+      </div>
     </div>
   );
 };

@@ -19,7 +19,7 @@ export interface RequestType {
   isFormData?: boolean;
 }
 
-export type UserRoles = "ROLE_FREELANCER" | "ROLE_CLIENT";
+export type UserRoles = "ROLE_FREELANCER" | "ROLE_CLIENT" | "ROLE_ADMIN";
 
 export interface User {
   id?: number;

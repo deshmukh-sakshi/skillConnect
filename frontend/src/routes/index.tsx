@@ -11,6 +11,8 @@ import SignInPage from "@/features/auth/sign-in";
 import SignUpPage from "@/features/auth/sign-up";
 import BrowseProjects from "@/features/freelancer";
 import DashboardLayout from "@/layout/dashboard-layout";
+import AdminLayout from "@/layout/admin-layout";
+import AdminDashboard from "@/features/admin";
 import ResetPasswordPage from "@/features/auth/reset-password";
 import ForgotPasswordPage from "@/features/auth/forgot-password";
 
@@ -38,6 +40,9 @@ const router = createBrowserRouter(
       </Route>
       <Route element={<AppLayout />}>
         <Route index element={<HomePage />} />
+      </Route>
+      <Route path="admin" element={<AdminLayout />}>
+        <Route index element={<AdminDashboard />} />
       </Route>
       <Route path="dashboard" element={<DashboardLayout />}>
         <Route path="profile" element={<Profile />} />
