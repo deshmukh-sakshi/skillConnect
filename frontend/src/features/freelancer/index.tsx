@@ -45,8 +45,8 @@ const BrowseProjects = () => {
   }
 
   return (
-    <section className="space-y-6 p-4 min-h-screen">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white border border-blue-100 rounded-lg px-4 py-3 shadow-sm">
+    <section className="space-y-6 p-4 min-h-screen bg-background">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white border border-[#E5E0D8] rounded-lg px-4 py-3 shadow-sm">
         <h1 className="text-lg font-semibold text-gray-800">Browse Projects</h1>
         <ProjectFilters
           onSearch={setSearchText}
@@ -69,7 +69,7 @@ const BrowseProjects = () => {
       )}
 
       {error ? (
-        <div className="w-full text-red-500 font-medium text-center py-8">
+        <div className="w-full text-[#FF6B47] font-medium text-center py-8">
           Failed to load projects. Please try again.
         </div>
       ) : sortedProjects.length === 0 ? (

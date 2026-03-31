@@ -54,13 +54,13 @@ interface BidListProps {
 const getStatusConfig = (status: string) => {
   switch (status.toLowerCase()) {
     case "accepted":
-      return { className: "bg-green-100 text-green-800", label: "Accepted" };
+      return { className: "bg-[#2EC4B6]/20 text-[#1A1A2E]", label: "Accepted" };
     case "rejected":
-      return { className: "bg-red-100 text-red-800", label: "Rejected" };
+      return { className: "bg-[#FF6B47]/20 text-[#1A1A2E]", label: "Rejected" };
     case "pending":
-      return { className: "bg-yellow-100 text-yellow-800", label: "Pending" };
+      return { className: "bg-[#F0EDE8] text-[#1A1A2E]", label: "Pending" };
     case "under review":
-      return { className: "bg-blue-100 text-blue-800", label: "Under Review" };
+      return { className: "bg-[#2EC4B6]/15 text-[#1A1A2E]", label: "Under Review" };
     default:
       return { className: "bg-gray-100 text-gray-800", label: status };
   }
@@ -134,8 +134,8 @@ const BidList = ({ bids }: BidListProps) => {
                       {getFreelancerName(bid)}
                     </h3>
                     <div className="flex items-center gap-1">
-                      <IndianRupee className="h-3 w-3 text-green-600" />
-                      <span className="font-semibold text-green-700 text-sm">
+                      <IndianRupee className="h-3 w-3 text-[#2EC4B6]" />
+                      <span className="font-semibold text-[#1A1A2E] text-sm">
                         {bid.bidAmount.toLocaleString("en-IN")}
                       </span>
                     </div>
@@ -163,7 +163,7 @@ const BidList = ({ bids }: BidListProps) => {
                 </div>
               </div>
 
-              <div className="bg-white rounded-md mt-4 p-3 border border-l-2 border-l-blue-500">
+              <div className="bg-white rounded-md mt-4 p-3 border border-l-2 border-l-[#FF6B47]">
                 <p className="text-sm text-gray-700 leading-relaxed line-clamp-3">
                   {bid.proposal}
                 </p>

@@ -119,7 +119,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
               >
                 {project.status.toLowerCase()}
               </Badge>
-              <Badge variant="outline" className="text-xs bg-slate-50">
+              <Badge variant="outline" className="text-xs bg-[#F0EDE8] border-[#E5E0D8]">
                 {project.category}
               </Badge>
             </div>
@@ -134,16 +134,16 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         <CardContent className="space-y-3 pb-0">
           <div className="grid grid-cols-5 gap-4 text-sm">
             <div className="flex items-center gap-2 col-span-2">
-              <div className="bg-blue-50 p-1.5 rounded-full">
-                <IndianRupee className="h-3.5 w-3.5 text-blue-500" />
+              <div className="bg-[#2EC4B6]/15 p-1.5 rounded-full">
+                <IndianRupee className="h-3.5 w-3.5 text-[#2EC4B6]" />
               </div>
               <span className="font-medium">
                 {project.budget.toLocaleString()}
               </span>
             </div>
             <div className="flex items-center gap-2 col-span-3">
-              <div className="bg-green-50 p-1.5 rounded-full">
-                <CalendarIcon className="h-3.5 w-3.5 text-green-500" />
+              <div className="bg-[#FF6B47]/15 p-1.5 rounded-full">
+                <CalendarIcon className="h-3.5 w-3.5 text-[#FF6B47]" />
               </div>
               <span className="whitespace-nowrap">
                 {formatDeadline(project.deadline)}
@@ -152,8 +152,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           </div>
 
           <div className="flex items-center gap-2 text-sm">
-            <div className="bg-purple-50 p-1.5 rounded-full">
-              <MessageSquareIcon className="h-3.5 w-3.5 text-purple-500" />
+            <div className="bg-[#F0EDE8] p-1.5 rounded-full">
+              <MessageSquareIcon className="h-3.5 w-3.5 text-[#1A1A2E]" />
             </div>
             <span>
               {project.bidCount || 0} bid
@@ -237,7 +237,7 @@ const EmptyProjectList: React.FC<{
   }
 
   return (
-    <div className="flex flex-col items-center justify-center py-12 text-center bg-white rounded-lg border shadow-sm p-6">
+    <div className="flex flex-col items-center justify-center py-12 text-center bg-white rounded-lg border border-[#E5E0D8] shadow-sm p-6">
       <div className="rounded-full bg-primary/10 p-6 mb-4">
         <MessageSquareIcon className="h-12 w-12 text-primary" />
       </div>

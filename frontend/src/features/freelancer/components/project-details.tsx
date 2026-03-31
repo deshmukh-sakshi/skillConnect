@@ -42,11 +42,11 @@ const ProjectDetails = () => {
 
   if (error || !project) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="bg-white rounded-xl shadow-sm p-8 max-w-md w-full text-center border">
-          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 bg-[#FF6B47]/15 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg
-              className="w-8 h-8 text-red-600"
+              className="w-8 h-8 text-[#FF6B47]"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -88,9 +88,9 @@ const ProjectDetails = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Clean Header */}
-      <div className="bg-white border-b border-gray-200">
+      <div className="bg-white border-b border-[#E5E0D8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
@@ -145,7 +145,7 @@ const ProjectDetails = () => {
                     }
                     className={`${
                       project.status === "OPEN"
-                        ? "bg-green-100 text-green-800"
+                        ? "bg-[#2EC4B6]/20 text-[#1A1A2E]"
                         : "bg-gray-100 text-gray-600"
                     } px-3 py-1`}
                   >
@@ -173,9 +173,9 @@ const ProjectDetails = () => {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="bg-[#F0EDE8] rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <IndianRupee className="h-4 w-4 text-gray-600" />
+                      <IndianRupee className="h-4 w-4 text-[#2EC4B6]" />
                       <span className="text-sm font-medium text-gray-700">
                         Budget
                       </span>
@@ -185,9 +185,9 @@ const ProjectDetails = () => {
                     </p>
                   </div>
 
-                  <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="bg-[#F0EDE8] rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <Calendar className="h-4 w-4 text-gray-600" />
+                      <Calendar className="h-4 w-4 text-[#FF6B47]" />
                       <span className="text-sm font-medium text-gray-700">
                         Deadline
                       </span>
@@ -197,9 +197,9 @@ const ProjectDetails = () => {
                     </p>
                   </div>
 
-                  <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="bg-[#F0EDE8] rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <Tag className="h-4 w-4 text-gray-600" />
+                      <Tag className="h-4 w-4 text-[#1A1A2E]" />
                       <span className="text-sm font-medium text-gray-700">
                         Category
                       </span>
@@ -213,10 +213,10 @@ const ProjectDetails = () => {
 
               {project.status === "OPEN" && (
                 <div className="lg:w-80 flex-shrink-0">
-                  <div className="bg-gray-50 rounded-xl border border-gray-200 p-6">
+                  <div className="bg-[#F0EDE8] rounded-xl border border-[#E5E0D8] p-6">
                     <div className="text-center mb-6">
-                      <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium mb-3">
-                        <div className="w-2 h-2 bg-green-500 rounded-full" />
+                      <div className="inline-flex items-center gap-2 bg-[#2EC4B6]/20 text-[#1A1A2E] px-3 py-1 rounded-full text-sm font-medium mb-3">
+                        <div className="w-2 h-2 bg-[#2EC4B6] rounded-full" />
                         Open for Proposals
                       </div>
                       <p className="text-sm text-gray-600">
@@ -246,7 +246,7 @@ const ProjectDetails = () => {
         </div>
 
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="bg-gray-50 border-b border-gray-200 p-6">
+          <div className="bg-[#F0EDE8] border-b border-[#E5E0D8] p-6">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-xl font-semibold text-gray-900">

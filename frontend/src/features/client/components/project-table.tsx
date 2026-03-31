@@ -47,7 +47,7 @@ const ProjectTable = ({ projects, isLoading, refetchProjects }: Props) => {
   }
 
   return (
-    <div className="rounded-sm border border-muted shadow-sm overflow-x-auto bg-white">
+    <div className="rounded-sm border border-[#E5E0D8] shadow-sm overflow-x-auto bg-white">
       <Table className="min-w-[900px]">
         <TableHeader>
           <TableRow className="bg-muted/40 border-b">
@@ -62,7 +62,7 @@ const ProjectTable = ({ projects, isLoading, refetchProjects }: Props) => {
             ].map((head, i) => (
               <TableHead
                 key={i}
-                className="font-semibold text-sm text-blue-600 border-r last:border-none text-center"
+                className="font-semibold text-sm text-[#1A1A2E] border-r last:border-none text-center"
               >
                 {head}
               </TableHead>

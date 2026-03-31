@@ -10,7 +10,7 @@ const NavLinks = ({ links }: NavLinksProps) => {
   const { isAuth } = useAuth();
 
   return (
-    <div className="items-center justify-center space-x-4 hidden md:flex">
+    <div className="items-center justify-center space-x-6 hidden md:flex">
       {links.map((link) => {
         // Skip protected links if user is not authenticated
         if (link.isProtected && !isAuth) {
@@ -23,7 +23,8 @@ const NavLinks = ({ links }: NavLinksProps) => {
               key={link.id}
               onClick={link.action}
               className={cn(
-                "hover:text-primary transition-all space-x-1 flex items-center text-muted-foreground justify-center",
+                "nav-link-hover transition-all space-x-1 flex items-center justify-center",
+                "text-[#1A1A2E]/70 hover:text-[#FF6B47] font-medium",
               )}
             >
               <span className="text-sm">{link.title}</span>
@@ -37,8 +38,9 @@ const NavLinks = ({ links }: NavLinksProps) => {
             to={link.path!}
             className={({ isActive }) =>
               cn(
-                "hover:text-primary transition-all space-x-1 flex items-center text-muted-foreground justify-center",
-                isActive && "text-primary font-semibold",
+                "nav-link-hover transition-all space-x-1 flex items-center justify-center font-medium",
+                "text-[#1A1A2E]/70 hover:text-[#FF6B47]",
+                isActive && "text-[#FF6B47] font-semibold",
               )
             }
           >

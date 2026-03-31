@@ -61,26 +61,26 @@ const BidCard = ({ bid, onRefetch }: BidCardProps) => {
       case "Pending":
         return {
           variant: "secondary" as const,
-          borderColor: "border-l-amber-400",
-          bgGradient: "bg-gradient-to-r from-amber-50 to-yellow-50",
-          textColor: "text-amber-700",
-          iconBg: "bg-gradient-to-r from-amber-400 to-yellow-400",
+          borderColor: "border-l-[#FFB900]",
+          bgGradient: "bg-gradient-to-r from-[#F0EDE8] to-[#FAF8F5]",
+          textColor: "text-[#1A1A2E]",
+          iconBg: "bg-gradient-to-r from-[#FFB900] to-[#FF6B47]",
         };
       case "Accepted":
         return {
           variant: "default" as const,
-          borderColor: "border-l-emerald-400",
-          bgGradient: "bg-gradient-to-r from-emerald-50 to-green-50",
-          textColor: "text-emerald-700",
-          iconBg: "bg-gradient-to-r from-emerald-400 to-green-400",
+          borderColor: "border-l-[#2EC4B6]",
+          bgGradient: "bg-gradient-to-r from-[#2EC4B6]/10 to-[#FAF8F5]",
+          textColor: "text-[#1A1A2E]",
+          iconBg: "bg-gradient-to-r from-[#2EC4B6] to-[#5ED4C9]",
         };
       case "Rejected":
         return {
           variant: "destructive" as const,
-          borderColor: "border-l-red-400",
-          bgGradient: "bg-gradient-to-r from-red-50 to-rose-50",
-          textColor: "text-red-700",
-          iconBg: "bg-gradient-to-r from-red-400 to-rose-400",
+          borderColor: "border-l-[#FF6B47]",
+          bgGradient: "bg-gradient-to-r from-[#FF6B47]/10 to-[#FAF8F5]",
+          textColor: "text-[#1A1A2E]",
+          iconBg: "bg-gradient-to-r from-[#FF6B47] to-[#FF8A6F]",
         };
       default:
         return {
@@ -104,7 +104,7 @@ const BidCard = ({ bid, onRefetch }: BidCardProps) => {
   return (
     <>
       <Card
-        className={`${statusConfig.borderColor} border-l-4 hover:shadow-lg transition-all duration-200 group bg-gradient-to-br from-white via-slate-50/30 to-blue-50/20 backdrop-blur-sm border border-slate-200/60 rounded-lg overflow-hidden hover:scale-[1.01]`}
+        className={`${statusConfig.borderColor} border-l-4 hover:shadow-lg transition-all duration-200 group bg-gradient-to-br from-white via-[#FAF8F5]/60 to-[#F0EDE8]/40 backdrop-blur-sm border border-[#E5E0D8] rounded-lg overflow-hidden hover:scale-[1.01]`}
       >
         <CardContent className="p-3">
           {/* Header Section */}
@@ -121,7 +121,7 @@ const BidCard = ({ bid, onRefetch }: BidCardProps) => {
                     {bid.project.title}
                   </h3>
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    <Badge className="bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 border-purple-200 text-xs font-medium px-2 py-0.5">
+                    <Badge className="bg-gradient-to-r from-[#FF6B47]/15 to-[#2EC4B6]/15 text-[#1A1A2E] border-[#E5E0D8] text-xs font-medium px-2 py-0.5">
                       {bid.project.category}
                     </Badge>
                     <Badge
@@ -131,7 +131,7 @@ const BidCard = ({ bid, onRefetch }: BidCardProps) => {
                       {bid.status}
                     </Badge>
                     {isCompetitive && (
-                      <Badge className="bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 border-green-200 text-xs font-medium px-1.5 py-0.5">
+                      <Badge className="bg-gradient-to-r from-[#2EC4B6]/20 to-[#2EC4B6]/10 text-[#1A1A2E] border-[#2EC4B6]/30 text-xs font-medium px-1.5 py-0.5">
                         <TrendingUp className="h-2.5 w-2.5 mr-0.5" />
                         Competitive
                       </Badge>
@@ -155,7 +155,7 @@ const BidCard = ({ bid, onRefetch }: BidCardProps) => {
                 {isPending && (
                   <DropdownMenuItem
                     onClick={() => setIsUpdateDialogOpen(true)}
-                    className="text-blue-600 focus:text-blue-700 focus:bg-blue-50 text-xs"
+                    className="text-[#FF6B47] focus:text-[#E55A38] focus:bg-[#FF6B47]/10 text-xs"
                   >
                     <Edit3 className="h-3 w-3 mr-1.5" />
                     Edit Proposal
@@ -164,7 +164,7 @@ const BidCard = ({ bid, onRefetch }: BidCardProps) => {
                 <DropdownMenuItem
                   onClick={handleDelete}
                   disabled={isDeleting}
-                  className="text-red-600 focus:text-red-700 focus:bg-red-50 text-xs"
+                  className="text-[#FF6B47] focus:text-[#E55A38] focus:bg-[#FF6B47]/10 text-xs"
                 >
                   <Trash2 className="h-3 w-3 mr-1.5" />
                   {isDeleting ? "Deleting..." : "Delete"}
@@ -189,20 +189,20 @@ const BidCard = ({ bid, onRefetch }: BidCardProps) => {
             </div>
 
             {/* Your Bid */}
-            <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-2 rounded-lg border border-emerald-200/50 text-center">
+            <div className="bg-gradient-to-br from-[#2EC4B6]/12 to-[#FAF8F5] p-2 rounded-lg border border-[#2EC4B6]/30 text-center">
               <div className="flex items-center justify-center mb-1">
-                <IndianRupee className="h-3 w-3 text-emerald-600" />
+                <IndianRupee className="h-3 w-3 text-[#2EC4B6]" />
               </div>
-              <p className="text-xs text-emerald-700 font-medium mb-0.5">
+              <p className="text-xs text-[#1A1A2E] font-medium mb-0.5">
                 Your Bid
               </p>
-              <p className="text-xs font-bold text-emerald-800">
+              <p className="text-xs font-bold text-[#1A1A2E]">
                 ₹{(bid.bidAmount / 1000).toFixed(0)}k
               </p>
               {bidDifference !== 0 && (
                 <p
                   className={`text-xs font-medium ${
-                    bidDifference > 0 ? "text-red-600" : "text-green-600"
+                    bidDifference > 0 ? "text-[#FF6B47]" : "text-[#2EC4B6]"
                   }`}
                 >
                   {bidDifference > 0 ? "+" : ""}
@@ -212,38 +212,38 @@ const BidCard = ({ bid, onRefetch }: BidCardProps) => {
             </div>
 
             {/* Duration */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-2 rounded-lg border border-blue-200/50 text-center">
+            <div className="bg-gradient-to-br from-[#FF6B47]/12 to-[#FAF8F5] p-2 rounded-lg border border-[#FF6B47]/30 text-center">
               <div className="flex items-center justify-center mb-1">
-                <Clock className="h-3 w-3 text-blue-600" />
+                <Clock className="h-3 w-3 text-[#FF6B47]" />
               </div>
-              <p className="text-xs text-blue-700 font-medium mb-0.5">
+              <p className="text-xs text-[#1A1A2E] font-medium mb-0.5">
                 Duration
               </p>
-              <p className="text-xs font-bold text-blue-800">
+              <p className="text-xs font-bold text-[#1A1A2E]">
                 {bid.durationDays}d
               </p>
             </div>
 
             {/* Team Size - Hidden on mobile */}
-            <div className="bg-gradient-to-br from-purple-50 to-violet-50 p-2 rounded-lg border border-purple-200/50 text-center lg:block hidden">
+            <div className="bg-gradient-to-br from-[#2EC4B6]/10 to-[#F0EDE8] p-2 rounded-lg border border-[#2EC4B6]/25 text-center lg:block hidden">
               <div className="flex items-center justify-center mb-1">
-                <Users className="h-3 w-3 text-purple-600" />
+                <Users className="h-3 w-3 text-[#2EC4B6]" />
               </div>
-              <p className="text-xs text-purple-700 font-medium mb-0.5">Team</p>
-              <p className="text-xs font-bold text-purple-800">
+              <p className="text-xs text-[#1A1A2E] font-medium mb-0.5">Team</p>
+              <p className="text-xs font-bold text-[#1A1A2E]">
                 {bid.teamSize || 1}
               </p>
             </div>
 
             {/* Deadline - Hidden on mobile */}
-            <div className="bg-gradient-to-br from-orange-50 to-amber-50 p-2 rounded-lg border border-orange-200/50 text-center lg:block hidden">
+            <div className="bg-gradient-to-br from-[#FFB900]/15 to-[#FAF8F5] p-2 rounded-lg border border-[#FFB900]/35 text-center lg:block hidden">
               <div className="flex items-center justify-center mb-1">
-                <Calendar className="h-3 w-3 text-orange-600" />
+                <Calendar className="h-3 w-3 text-[#FFB900]" />
               </div>
-              <p className="text-xs text-orange-700 font-medium mb-0.5">
+              <p className="text-xs text-[#1A1A2E] font-medium mb-0.5">
                 Deadline
               </p>
-              <p className="text-xs font-bold text-orange-800">
+              <p className="text-xs font-bold text-[#1A1A2E]">
                 {new Date(bid.project.deadline).toLocaleDateString("en-IN", {
                   month: "short",
                   day: "numeric",
@@ -272,7 +272,7 @@ const BidCard = ({ bid, onRefetch }: BidCardProps) => {
                 variant="outline"
                 size="sm"
                 onClick={() => setIsUpdateDialogOpen(true)}
-                className="bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 border-blue-200 hover:from-blue-100 hover:to-indigo-100 font-medium px-3 py-1 h-6 text-xs rounded-md transition-all duration-200"
+                className="bg-gradient-to-r from-[#FF6B47]/10 to-[#2EC4B6]/10 text-[#1A1A2E] border-[#E5E0D8] hover:from-[#FF6B47]/20 hover:to-[#2EC4B6]/20 font-medium px-3 py-1 h-6 text-xs rounded-md transition-all duration-200"
               >
                 <Edit3 className="h-3 w-3 mr-1" />
                 Edit
@@ -284,7 +284,7 @@ const BidCard = ({ bid, onRefetch }: BidCardProps) => {
               size="sm"
               onClick={handleDelete}
               disabled={isDeleting}
-              className="bg-gradient-to-r from-red-50 to-rose-50 text-red-700 border-red-200 hover:from-red-100 hover:to-rose-100 font-medium px-3 py-1 h-6 text-xs rounded-md transition-all duration-200"
+              className="bg-gradient-to-r from-[#FF6B47]/10 to-[#FF8A6F]/10 text-[#1A1A2E] border-[#FF6B47]/30 hover:from-[#FF6B47]/20 hover:to-[#FF8A6F]/20 font-medium px-3 py-1 h-6 text-xs rounded-md transition-all duration-200"
             >
               <Trash2 className="h-3 w-3 mr-1" />
               {isDeleting ? "..." : "Delete"}

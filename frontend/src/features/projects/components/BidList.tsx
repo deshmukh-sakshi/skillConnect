@@ -315,10 +315,10 @@ const BidCard: React.FC<BidCardProps> = ({
           <Button
             variant="outline"
             size="sm"
-            className="ml-2 border-green-700 bg-green-100 text-green-700 hover:bg-green-200 flex items-center gap-2"
+            className="ml-2 border-[#2EC4B6]/50 bg-[#2EC4B6]/15 text-[#1A1A2E] hover:bg-[#2EC4B6]/25 flex items-center gap-2"
             onClick={() => navigate(`/dashboard/profile/${bid.freelancerId}`)}
           >
-            <Eye className="w-4 h-4 text-green-700" />
+            <Eye className="w-4 h-4 text-[#2EC4B6]" />
             View Freelancer
           </Button>
           <ChatButton

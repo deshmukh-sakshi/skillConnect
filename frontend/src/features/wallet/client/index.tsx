@@ -11,7 +11,7 @@ export const ClientWallet = () => {
   if (isLoading) return <FullscreenLoader lable="Details are loading..." />;
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6 p-6 min-h-screen bg-background">
       <WalletSummary wallet={walletDetails} refetchDetails={refetch} />
       <FrozenAmountsTable frozenAmounts={frozanAmount || []} />
     </div>

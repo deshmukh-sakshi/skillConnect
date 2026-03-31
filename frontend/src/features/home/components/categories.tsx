@@ -1,67 +1,66 @@
 import { CATEGORIES } from "@/constants/categories";
 import type { CategoryType } from "@/types";
-import { ListComponent } from "@/components";
 import { useProjectCounts } from "@/hooks/useProjectCounts";
 import CategoryCard from "./category-card";
+import useScrollReveal from "@/hooks/use-scroll-reveal";
 
 const Categories = () => {
   const { isLoading, error, getCountForCategory } = useProjectCounts();
+  const { ref: titleRef, isVisible: titleVisible } = useScrollReveal();
+
+  // Double the array for seamless infinite marquee
+  const doubledCategories = [...CATEGORIES, ...CATEGORIES];
 
   return (
-    <section className="py-8 md:py-10 md:mt-8 mx-auto container">
-      <div className="container mx-auto px-4 sm:px-0">
-        <div className="text-center mb-16">
+    <section className="py-20 md:py-32 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
+        <div
+          ref={titleRef}
+          className={`text-center mb-16 scroll-reveal ${titleVisible ? "visible" : ""}`}
+        >
           <span
-            className="
-              inline-block px-4 py-1 rounded-full 
-              bg-primary/10 dark:bg-primary/60
-              text-primary dark:text-primary-foreground
-              text-sm font-medium mb-4
-            "
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full mb-6
+              bg-[#FF6B47]/10 text-[#FF6B47] text-sm font-semibold uppercase tracking-widest"
           >
+            <div className="w-1.5 h-1.5 rounded-full bg-[#FF6B47]" />
             Categories
           </span>
 
-          <h1
-            className="
-              text-4xl md:text-5xl font-bold tracking-tight
-              text-primary dark:text-primary-foreground
-              mb-4
-            "
+          <h2
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#1A1A2E] mb-4"
+            style={{ fontFamily: "'Space Grotesk', sans-serif" }}
           >
-            Browse by Categories
-          </h1>
+            Browse by{" "}
+            <span className="text-[#2EC4B6]">Categories</span>
+          </h2>
 
-          <p
-            className="
-              text-sm sm:text-md 
-              text-muted-foreground dark:text-gray-400
-              mb-6
-            "
-          >
-            Browse categories to get started quickly.
+          <p className="text-lg text-[#1A1A2E]/60 max-w-xl mx-auto">
+            Browse categories to find your perfect project.
           </p>
         </div>
       </div>
 
-      <div className="grid sm:grid-cols-3 lg:grid-cols-4 gap-4 px-4 md:px-0">
-        <ListComponent
-          data={CATEGORIES}
-          renderItem={(item: CategoryType) => {
-            // Get the actual count from backend data
-            const actualCount = getCountForCategory(item.id);
+      {/* Horizontal scrolling marquee */}
+      <div className="relative">
+        {/* Fade edges */}
+        <div className="absolute left-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-r from-[#FAF8F5] to-transparent pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-l from-[#FAF8F5] to-transparent pointer-events-none" />
 
+        <div className="flex animate-marquee w-max gap-6 py-4">
+          {doubledCategories.map((item: CategoryType, idx: number) => {
+            const actualCount = getCountForCategory(item.id);
             return (
-              <CategoryCard
-                key={item.id}
-                item={item}
-                activeProjectCount={actualCount} // This will be 0 if no data found
-                isCountLoading={isLoading}
-                hasCountError={!!error}
-              />
+              <div key={`${item.id}-${idx}`} className="flex-shrink-0 w-72">
+                <CategoryCard
+                  item={item}
+                  activeProjectCount={actualCount}
+                  isCountLoading={isLoading}
+                  hasCountError={!!error}
+                />
+              </div>
             );
-          }}
-        />
+          })}
+        </div>
       </div>
     </section>
   );

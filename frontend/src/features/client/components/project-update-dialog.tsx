@@ -50,9 +50,9 @@ export const ProjectUpdateDialog = ({
       disabled={isLoading}
     >
       {isLoading ? (
-        <Loader2 className="size-4 text-green-600 animate-spin" />
+        <Loader2 className="size-4 text-[#FF6B47] animate-spin" />
       ) : (
-        <PencilIcon className="size-4 text-green-600" />
+        <PencilIcon className="size-4 text-[#FF6B47]" />
       )}
     </Button>
   );

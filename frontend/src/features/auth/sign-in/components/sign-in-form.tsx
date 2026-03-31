@@ -38,12 +38,12 @@ const SignInForm = () => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel className="text-[#1A1A2E]/70 text-sm font-medium">Email</FormLabel>
               <FormControl>
                 <Input
                   type="email"
-                  placeholder="example@skillconnect.com"
-                  className="focus-visible:ring-1 border-black"
+                  placeholder="you@example.com"
+                  className="h-12 bg-white border-[#E5E0D8] rounded-xl focus:border-[#FF6B47] focus:ring-[#FF6B47]/20 focus-visible:ring-[#FF6B47]/20 transition-all placeholder:text-[#1A1A2E]/30"
                   {...field}
                 />
               </FormControl>
@@ -57,12 +57,12 @@ const SignInForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel className="text-[#1A1A2E]/70 text-sm font-medium">Password</FormLabel>
               <FormControl>
                 <Input
                   type="password"
-                  placeholder="********"
-                  className="focus-visible:ring-1 border-black"
+                  placeholder="••••••••"
+                  className="h-12 bg-white border-[#E5E0D8] rounded-xl focus:border-[#FF6B47] focus:ring-[#FF6B47]/20 focus-visible:ring-[#FF6B47]/20 transition-all placeholder:text-[#1A1A2E]/30"
                   {...field}
                 />
               </FormControl>
@@ -71,13 +71,17 @@ const SignInForm = () => {
           )}
         />
 
-        <Button className="cursor-pointer" type="submit" disabled={isLoading}>
-          Login An Account
+        <Button
+          className="cursor-pointer h-12 rounded-xl shimmer-btn text-white font-semibold text-base shadow-lg hover:shadow-xl transition-all duration-300"
+          type="submit"
+          disabled={isLoading}
+        >
+          Sign In
           {isLoading ? (
             <LoaderCircle className="ml-2 size-4 animate-spin" />
           ) : (
             <ArrowRight className="ml-2 size-4" />
-          )}{" "}
+          )}
         </Button>
       </form>
     </Form>
