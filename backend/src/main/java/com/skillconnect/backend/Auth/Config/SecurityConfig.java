@@ -41,6 +41,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         // private endpoints
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/reports/**").hasRole("FREELANCER")
                         .requestMatchers("/api/wallet/add-money").hasRole("CLIENT")
                         .requestMatchers("/api/wallet/withdraw").hasRole("FREELANCER")
                         .requestMatchers("/api/wallet/freeze").hasRole("CLIENT")
@@ -52,7 +54,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/freelancers/**").hasAnyRole("FREELANCER", "CLIENT")
                         .requestMatchers("/api/freelancer/**").hasAnyRole("FREELANCER", "CLIENT")
                         .requestMatchers("/api/projects/counts-by-category").permitAll()
-                        .requestMatchers("/api/projects/**").hasAnyRole("CLIENT", "FREELANCER")
+                        .requestMatchers("/api/projects/**").hasAnyRole("CLIENT", "FREELANCER", "ADMIN")
                         .requestMatchers("/api/bids/**").hasRole("FREELANCER")
                         .requestMatchers("/api/contracts/**").hasAnyRole("CLIENT", "FREELANCER")
                         // public endpoints

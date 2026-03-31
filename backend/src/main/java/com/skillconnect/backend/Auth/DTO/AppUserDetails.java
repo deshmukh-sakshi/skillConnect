@@ -25,9 +25,13 @@ public class AppUserDetails implements UserDetails {
         if (appUser.getRole() == Role.ROLE_CLIENT) {
             this.name = appUser.getClientProfile().getName();
             this.profileId = appUser.getClientProfile().getId();
-        } else {
+        } else if (appUser.getRole() == Role.ROLE_FREELANCER) {
             this.name = appUser.getFreelancerProfile().getName();
             this.profileId = appUser.getFreelancerProfile().getId();
+        } else {
+            // ROLE_ADMIN — no client/freelancer profile
+            this.name = appUser.getEmail();
+            this.profileId = appUser.getId();
         }
         this.authorities = Collections.singletonList(new SimpleGrantedAuthority(appUser.getRole().toString()));
     }
